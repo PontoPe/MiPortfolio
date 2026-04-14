@@ -207,6 +207,15 @@ body::before {
     position: relative;
 }
 
+.project-carousel .project-media-card {
+    background: rgba(250, 249, 255, 0.22);
+    box-shadow: none;
+}
+
+.project-carousel .project-media {
+    background: transparent;
+}
+
 .project-carousel-track {
     display: flex;
     gap: 1rem;
