@@ -158,6 +158,123 @@ body::before {
     width: 3rem;
 }
 
+.project-detail-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.project-detail-section {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.36);
+    border-radius: 1.5rem;
+    box-shadow: 0 1rem 2.5rem rgba(65, 58, 120, 0.08);
+    padding: clamp(1.35rem, 3vw, 2.5rem);
+}
+
+.project-detail-section-wide {
+    grid-column: 1 / -1;
+}
+
+.project-media-card {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 1.5rem;
+    box-shadow: 0 1rem 2.25rem rgba(65, 58, 120, 0.1);
+    overflow: hidden;
+}
+
+.project-media {
+    aspect-ratio: 16 / 10;
+    background: rgba(250, 249, 255, 0.26);
+    display: block;
+    object-fit: cover;
+    width: 100%;
+}
+
+.project-media-html {
+    min-height: 22rem;
+    position: relative;
+}
+
+.project-media-caption {
+    color: #5a5b60;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding: 1rem 1.15rem 1.15rem;
+}
+
+.project-carousel {
+    position: relative;
+}
+
+.project-carousel-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding-bottom: 0.2rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.project-carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.project-carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+}
+
+.project-carousel-controls {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.project-carousel-button {
+    align-items: center;
+    aspect-ratio: 1;
+    background: rgba(250, 249, 255, 0.48);
+    border: 1px solid rgba(255, 255, 255, 0.52);
+    border-radius: 9999px;
+    color: #1A1B20;
+    display: inline-flex;
+    justify-content: center;
+    transition: background-color 200ms ease, color 200ms ease, opacity 200ms ease;
+    width: 2.75rem;
+}
+
+.project-carousel-button:hover {
+    background: #5b509f;
+    color: #FAF9FF;
+}
+
+.project-carousel-button:disabled {
+    cursor: default;
+    opacity: 0.35;
+}
+
+.project-carousel-counter {
+    color: #5a5b60;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 4rem;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .project-detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-detail-section:first-child {
+        grid-column: 1 / -1;
+    }
+}
+
 .material-symbols-outlined {
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }

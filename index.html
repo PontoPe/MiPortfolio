@@ -200,7 +200,7 @@
             mask: var(--story-asset) center / contain no-repeat;
         }
         .story-book {
-            --story-asset: url("book.png");
+            --story-asset: url("assets/ui/book.png");
             height: 0.58em;
             left: -0.2em;
             top: -0.2em;
@@ -208,7 +208,7 @@
             width: 1.18em;
         }
         .story-ship {
-            --story-asset: url("ship.svg");
+            --story-asset: url("assets/ui/ship.svg");
             bottom: -0.32em;
             height: 0.72em;
             right: -0.54em;
@@ -455,40 +455,7 @@
 <div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
 <span class="font-label text-sm text-on-surface-variant">Selected Works</span>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-<div class="group cursor-pointer">
-<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
-<div class="project-visual absolute inset-[-6%] bg-[radial-gradient(circle_at_28%_22%,rgba(255,255,255,0.72),transparent_28%),linear-gradient(135deg,rgba(255,195,186,0.72),rgba(175,163,249,0.34))]"></div>
-<div class="project-visual absolute inset-x-10 bottom-12 rounded-[1.5rem] bg-white/30 border border-white/40 p-8 backdrop-blur-md">
-<p class="font-label text-primary text-sm mb-3">visual identity</p>
-<p class="font-headline text-4xl font-bold text-on-surface">Marea</p>
-</div>
-</div>
-<div class="mt-6 flex justify-between items-end gap-6">
-<div>
-<p class="font-label text-primary text-xs font-bold mb-1">Brand System • Editorial</p>
-<h3 class="font-headline text-2xl font-bold text-on-surface">Marea Identity</h3>
-</div>
-<a class="project-arrow bg-surface-container-highest group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="#" aria-label="Open Marea Identity project">
-<span class="material-symbols-outlined">arrow_outward</span>
-</a>
-</div>
-</div>
-<div class="group cursor-pointer">
-<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
-<img alt="Brand identity project with stationery and elegant pastel layout" class="project-visual w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNQKaVvwtPmGJXP-cbtMvO0upWg7fuiEdAwtpXYYyOt6X6Kp7_OshdG2gqwWQBHP_GbY_RGQj-6E9wrfaKyViS3EwsjV85k1edMMOu18P-HttU7l_Wdbb6MUwuTNClGe5_OwKpQJGmJjPWMsMptkwgkl6hubOJWt6_gCqWifnS6gVopKzyMr3Fq8fYlbrbpURFvAJdjv97EHFWM4TAF_Opa7rrjuwST9KDKP2RFbnv21_N0QM8yb5DL5_L59xNthjW9-kk7DMfx2_U"/>
-</div>
-<div class="mt-6 flex justify-between items-end gap-6">
-<div>
-<p class="font-label text-primary text-xs font-bold mb-1">Packaging • Campaign</p>
-<h3 class="font-headline text-2xl font-bold text-on-surface">Lumina Studio</h3>
-</div>
-<a class="project-arrow bg-surface-container-highest group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="#" aria-label="Open Lumina Studio project">
-<span class="material-symbols-outlined">arrow_outward</span>
-</a>
-</div>
-</div>
-</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12" data-featured-projects="design-grafico"></div>
 </section>
 <section class="portfolio-section space-y-12" id="ux-ui">
 <div class="flex items-center justify-between">
@@ -496,45 +463,7 @@
 <div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
 <span class="font-label text-sm text-on-surface-variant">Selected Works</span>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-<div class="group cursor-pointer">
-<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
-<img alt="Mobile app interface project with soft colors and clean typography" class="project-visual w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCglzDGmX90BANGA1QSyA7xQNkBsjgRS645dxah18MDmrDRgAI6A_3_M_liO_9jx9A0YggNot3uBzXFwiJS6nCI97VkxqvgCtzkFpUtSFti47HNo0jiz5xGyKPw9W1esWoBwmUgipYFimE-TO3AC96B-WiAnr-2ajTypzsPvuexJ3USed0S2xkbLECVe4glxoMByQj_UogjPr_SnhaqRkEpP-BcH9cgcep71SUIOGNEAEv0V9HJ4GiKXa-rn98WjEeeD28KoMy920be"/>
-</div>
-<div class="mt-6 flex justify-between items-end gap-6">
-<div>
-<p class="font-label text-primary text-xs font-bold mb-1">Mobile App • UX Flow</p>
-<h3 class="font-headline text-2xl font-bold text-on-surface">EcoFlow Experience</h3>
-</div>
-<a class="project-arrow bg-surface-container-highest group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="#" aria-label="Open EcoFlow Experience project">
-<span class="material-symbols-outlined">arrow_outward</span>
-</a>
-</div>
-</div>
-<div class="group cursor-pointer">
-<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
-<div class="project-visual absolute inset-[-6%] bg-[linear-gradient(145deg,rgba(214,201,238,0.72),rgba(255,195,186,0.5))]"></div>
-<div class="project-visual absolute left-8 right-8 top-12 rounded-[1.5rem] bg-white/36 border border-white/40 p-6 backdrop-blur-md">
-<div class="h-3 w-24 rounded-full bg-primary/35 mb-6"></div>
-<div class="grid grid-cols-2 gap-4">
-<div class="aspect-square rounded-2xl bg-white/45"></div>
-<div class="aspect-square rounded-2xl bg-primary/25"></div>
-<div class="aspect-square rounded-2xl bg-secondary-fixed/55"></div>
-<div class="aspect-square rounded-2xl bg-white/35"></div>
-</div>
-</div>
-</div>
-<div class="mt-6 flex justify-between items-end gap-6">
-<div>
-<p class="font-label text-primary text-xs font-bold mb-1">Dashboard • Product</p>
-<h3 class="font-headline text-2xl font-bold text-on-surface">Pulse Board</h3>
-</div>
-<a class="project-arrow bg-surface-container-highest group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="#" aria-label="Open Pulse Board project">
-<span class="material-symbols-outlined">arrow_outward</span>
-</a>
-</div>
-</div>
-</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12" data-featured-projects="ux-ui"></div>
 </section>
 <section class="portfolio-section space-y-12" id="ilustracao">
 <div class="flex items-center justify-between">
@@ -542,38 +471,7 @@
 <div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
 <span class="font-label text-sm text-on-surface-variant">Selected Works</span>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-<div class="group cursor-pointer">
-<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
-<div class="project-visual absolute inset-[-6%] bg-[linear-gradient(135deg,rgba(255,238,226,0.78),rgba(214,201,238,0.58))]"></div>
-<img alt="Open book illustration" class="project-visual-centered absolute left-1/2 top-1/2 w-3/4 -translate-x-1/2 -translate-y-1/2 opacity-70" src="book.png"/>
-</div>
-<div class="mt-6 flex justify-between items-end gap-6">
-<div>
-<p class="font-label text-primary text-xs font-bold mb-1">Illustration • Narrative</p>
-<h3 class="font-headline text-2xl font-bold text-on-surface">Tiny Stories</h3>
-</div>
-<a class="project-arrow bg-surface-container-highest group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="#" aria-label="Open Tiny Stories project">
-<span class="material-symbols-outlined">arrow_outward</span>
-</a>
-</div>
-</div>
-<div class="group cursor-pointer">
-<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
-<div class="project-visual absolute inset-[-6%] bg-[radial-gradient(circle_at_48%_34%,rgba(255,255,255,0.68),transparent_25%),linear-gradient(145deg,rgba(175,163,249,0.58),rgba(253,177,165,0.48))]"></div>
-<img alt="Ship illustration" class="project-visual-centered absolute left-1/2 top-1/2 w-2/5 -translate-x-1/2 -translate-y-1/2 opacity-65" src="ship.svg"/>
-</div>
-<div class="mt-6 flex justify-between items-end gap-6">
-<div>
-<p class="font-label text-primary text-xs font-bold mb-1">Character • Print</p>
-<h3 class="font-headline text-2xl font-bold text-on-surface">Paper Voyage</h3>
-</div>
-<a class="project-arrow bg-surface-container-highest group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="#" aria-label="Open Paper Voyage project">
-<span class="material-symbols-outlined">arrow_outward</span>
-</a>
-</div>
-</div>
-</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12" data-featured-projects="ilustracao"></div>
 </section>
 </div>
 <!-- About Section -->
@@ -616,6 +514,8 @@
 </div>
 </footer>
 <div class="hero-cursor-note" id="hero-cursor-note" role="status" aria-live="polite"></div>
+<script src="data/projects-data.js"></script>
+<script src="scripts/portfolio-render.js"></script>
 <script>
         const parallaxLayers = document.querySelectorAll(".parallax-layer[data-depth]");
         let pointerX = 0;
