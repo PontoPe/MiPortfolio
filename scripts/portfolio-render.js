@@ -61,7 +61,7 @@
         return `
             <article class="project-card group cursor-pointer">
                 <a class="block" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
-                    <div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
+                    <div class="project-frame relative aspect-square overflow-hidden rounded-[2rem] bg-white/25">
                         ${renderThumbnail(project)}
                     </div>
                 </a>
@@ -340,8 +340,8 @@
 
         const sections = [
             renderTextSection("Overview", [project.summary]),
-            renderToolsSection(project.tools),
             renderCarouselSection(carouselItems),
+            renderToolsSection(project.tools),
             ...sectionEntries.map(([key, content]) => renderProjectSection(key, content)),
             renderGallerySection(galleryItems)
         ].filter(Boolean).join("");
