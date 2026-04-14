@@ -1,9 +1,5 @@
-// Portfolio TODOs:
-// TODO 1: Keep project cards and project pages data-driven from this file.
-// TODO 2: Replace placeholder copy and visuals with final case-study material.
-// TODO 3: Add stronger contact behavior, such as mailto, form handling, or scheduling.
-// TODO 4: Add accessibility and performance passes after the final images are in.
-// TODO 5: Add richer page transitions once the project structure is stable.
+// Portfolio TODOs live in ../TODO.md.
+// Keep project content, media, visibility, and case-study data editable from this file.
 
 // Put project files in imagesProjects/project-slug/.
 // Media supports images and videos:
