@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UX/UI | Mimizo</title>
+<script>
+    tailwind = {
+        config: {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#5b509f",
+                        "primary-container": "#afa3f9",
+                        "primary-dim": "#4f4493",
+                        "secondary-fixed": "#ffc3ba",
+                        "surface-container-highest": "#dcdce4",
+                        "on-surface": "#1A1B20",
+                        "on-surface-variant": "#5a5b60"
+                    },
+                    fontFamily: {
+                        headline: ["Poppins", "sans-serif"],
+                        body: ["Poppins", "sans-serif"],
+                        label: ["Pixelify Sans", "monospace"]
+                    }
+                }
+            }
+        }
+    };
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="page-style.css" rel="stylesheet"/>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container">
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+</div>
+<nav class="fixed top-0 w-full z-50 bg-[#FAF9FF]/10 backdrop-blur-sm">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto w-full">
+<a class="text-2xl font-semibold text-[#1A1B20]" href="index.html">Mimizo</a>
+<div class="hidden md:flex items-center space-x-8">
+<a class="nav-link" href="design-grafico.html">design gráfico</a>
+<a class="nav-link is-active" href="ux-ui.html">ux/ui</a>
+<a class="nav-link" href="ilustracao.html">ilustração</a>
+<a class="nav-link" href="about.html">about</a>
+<a class="bg-[#FAF9FF]/35 text-[#1A1B20] px-6 py-2 rounded-full font-semibold border border-[#FAF9FF]/40 shadow-lg shadow-primary/10" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+<a class="bg-[#FAF9FF]/35 text-[#1A1B20] px-6 py-2 rounded-full font-semibold border border-[#FAF9FF]/40 shadow-lg shadow-primary/10" href="index.html#contact">Contact</a>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
+<section class="glass-card rounded-[2.5rem] p-8 md:p-16">
+<div class="max-w-3xl mb-16">
+<p class="font-label text-primary font-bold mb-4">ux/ui</p>
+<h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6">Interfaces that move cleanly from idea to hand.</h1>
+<p class="text-on-surface-variant text-lg leading-8">Flows, prototypes, and product screens designed to make complex decisions feel calm and readable.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<article class="project-card cursor-pointer">
+<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
+<img alt="Mobile app interface project with soft colors and clean typography" class="project-visual w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCglzDGmX90BANGA1QSyA7xQNkBsjgRS645dxah18MDmrDRgAI6A_3_M_liO_9jx9A0YggNot3uBzXFwiJS6nCI97VkxqvgCtzkFpUtSFti47HNo0jiz5xGyKPw9W1esWoBwmUgipYFimE-TO3AC96B-WiAnr-2ajTypzsPvuexJ3USed0S2xkbLECVe4glxoMByQj_UogjPr_SnhaqRkEpP-BcH9cgcep71SUIOGNEAEv0V9HJ4GiKXa-rn98WjEeeD28KoMy920be"/>
+</div>
+<div class="mt-6 flex justify-between items-end gap-6">
+<div>
+<p class="font-label text-primary text-xs font-bold mb-1">Mobile App • UX Flow</p>
+<h2 class="font-headline text-2xl font-bold">EcoFlow Experience</h2>
+</div>
+<a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-white transition-colors" href="#" aria-label="Open EcoFlow Experience project"><span class="material-symbols-outlined">arrow_outward</span></a>
+</div>
+</article>
+<article class="project-card cursor-pointer">
+<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
+<div class="project-visual absolute inset-[-6%] bg-[linear-gradient(145deg,rgba(214,201,238,0.72),rgba(255,195,186,0.5))]"></div>
+<div class="project-visual absolute left-8 right-8 top-12 rounded-[1.5rem] bg-white/36 border border-white/40 p-6 backdrop-blur-md">
+<div class="h-3 w-24 rounded-full bg-primary/35 mb-6"></div>
+<div class="grid grid-cols-2 gap-4">
+<div class="aspect-square rounded-2xl bg-white/45"></div>
+<div class="aspect-square rounded-2xl bg-primary/25"></div>
+<div class="aspect-square rounded-2xl bg-secondary-fixed/55"></div>
+<div class="aspect-square rounded-2xl bg-white/35"></div>
+</div>
+</div>
+</div>
+<div class="mt-6 flex justify-between items-end gap-6">
+<div>
+<p class="font-label text-primary text-xs font-bold mb-1">Dashboard • Product</p>
+<h2 class="font-headline text-2xl font-bold">Pulse Board</h2>
+</div>
+<a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-white transition-colors" href="#" aria-label="Open Pulse Board project"><span class="material-symbols-outlined">arrow_outward</span></a>
+</div>
+</article>
+</div>
+</section>
+</main>
+<script src="page-motion.js"></script>
+</body>
+</html>

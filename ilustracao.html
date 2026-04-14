@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ilustração | Mimizo</title>
+<script>
+    tailwind = {
+        config: {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#5b509f",
+                        "primary-container": "#afa3f9",
+                        "secondary-fixed": "#ffc3ba",
+                        "surface-container-highest": "#dcdce4",
+                        "on-surface": "#2d2e33",
+                        "on-surface-variant": "#5a5b60"
+                    },
+                    fontFamily: {
+                        headline: ["Poppins", "sans-serif"],
+                        body: ["Poppins", "sans-serif"],
+                        label: ["Pixelify Sans", "monospace"]
+                    }
+                }
+            }
+        }
+    };
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="page-style.css" rel="stylesheet"/>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container">
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+</div>
+<nav class="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-sm">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto w-full">
+<a class="text-2xl font-semibold text-slate-900" href="index.html">Mimizo</a>
+<div class="hidden md:flex items-center space-x-8">
+<a class="nav-link" href="design-grafico.html">design gráfico</a>
+<a class="nav-link" href="ux-ui.html">ux/ui</a>
+<a class="nav-link is-active" href="ilustracao.html">ilustração</a>
+<a class="nav-link" href="about.html">about</a>
+<a class="bg-white/35 text-slate-800 px-6 py-2 rounded-full font-semibold border border-white/40 shadow-lg shadow-primary/10" href="index.html#contact">Contact</a>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
+<section class="glass-card rounded-[2.5rem] p-8 md:p-16">
+<div class="max-w-3xl mb-16">
+<p class="font-label text-primary font-bold mb-4">ilustracao</p>
+<h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6">Small worlds with visible fingerprints.</h1>
+<p class="text-on-surface-variant text-lg leading-8">Editorial images, character moments, and decorative systems that add warmth without stealing the story.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<article class="project-card cursor-pointer">
+<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
+<div class="project-visual absolute inset-[-6%] bg-[linear-gradient(135deg,rgba(255,238,226,0.78),rgba(214,201,238,0.58))]"></div>
+<img alt="Open book illustration" class="project-visual-centered absolute left-1/2 top-1/2 w-3/4 -translate-x-1/2 -translate-y-1/2 opacity-70" src="book.png"/>
+</div>
+<div class="mt-6 flex justify-between items-end gap-6">
+<div>
+<p class="font-label text-primary text-xs font-bold mb-1">Illustration • Narrative</p>
+<h2 class="font-headline text-2xl font-bold">Tiny Stories</h2>
+</div>
+<a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-white transition-colors" href="#" aria-label="Open Tiny Stories project"><span class="material-symbols-outlined">arrow_outward</span></a>
+</div>
+</article>
+<article class="project-card cursor-pointer">
+<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
+<div class="project-visual absolute inset-[-6%] bg-[radial-gradient(circle_at_48%_34%,rgba(255,255,255,0.68),transparent_25%),linear-gradient(145deg,rgba(175,163,249,0.58),rgba(253,177,165,0.48))]"></div>
+<img alt="Ship illustration" class="project-visual-centered absolute left-1/2 top-1/2 w-2/5 -translate-x-1/2 -translate-y-1/2 opacity-65" src="ship.svg"/>
+</div>
+<div class="mt-6 flex justify-between items-end gap-6">
+<div>
+<p class="font-label text-primary text-xs font-bold mb-1">Character • Print</p>
+<h2 class="font-headline text-2xl font-bold">Paper Voyage</h2>
+</div>
+<a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-white transition-colors" href="#" aria-label="Open Paper Voyage project"><span class="material-symbols-outlined">arrow_outward</span></a>
+</div>
+</article>
+</div>
+</section>
+</main>
+<script src="page-motion.js"></script>
+</body>
+</html>

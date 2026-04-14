@@ -1,0 +1,162 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        linear-gradient(135deg, rgba(255, 215, 184, 0.78) 0%, rgba(250, 232, 244, 0.92) 38%, rgba(202, 205, 255, 0.82) 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -4;
+    background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 42%),
+        radial-gradient(ellipse at 18% 16%, rgba(255, 230, 202, 0.75), transparent 42%),
+        radial-gradient(ellipse at 82% 70%, rgba(176, 184, 255, 0.55), transparent 48%);
+    pointer-events: none;
+}
+
+.parallax-bg {
+    position: fixed;
+    inset: -12vmax;
+    z-index: -3;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.parallax-layer {
+    position: absolute;
+    will-change: transform;
+    transition: transform 500ms ease-out;
+}
+
+.parallax-layer:nth-child(1) {
+    width: 68vmax;
+    height: 32vmax;
+    left: -18vmax;
+    top: 2vmax;
+    border-radius: 45% 55% 62% 38%;
+    background: linear-gradient(135deg, rgba(255, 191, 150, 0.48), rgba(255, 233, 213, 0.18));
+    filter: blur(10px);
+}
+
+.parallax-layer:nth-child(2) {
+    width: 72vmax;
+    height: 36vmax;
+    right: -22vmax;
+    bottom: -2vmax;
+    border-radius: 56% 44% 42% 58%;
+    background: linear-gradient(145deg, rgba(174, 181, 255, 0.42), rgba(244, 211, 255, 0.14));
+    filter: blur(12px);
+}
+
+.parallax-layer:nth-child(3) {
+    width: 110vmax;
+    height: 22vmax;
+    left: 4vmax;
+    bottom: -8vmax;
+    border-radius: 55% 45% 0 0;
+    background: rgba(226, 224, 255, 0.38);
+}
+
+.glass-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.33), rgba(255, 255, 255, 0.16));
+    backdrop-filter: blur(34px) saturate(1.25);
+    -webkit-backdrop-filter: blur(34px) saturate(1.25);
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.18),
+        0 2rem 5rem rgba(65, 58, 120, 0.12);
+}
+
+.glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.04) 38%, rgba(255, 255, 255, 0.18) 72%, rgba(255, 255, 255, 0.02)),
+        radial-gradient(ellipse at 22% 14%, rgba(255, 249, 242, 0.56), transparent 35%);
+    pointer-events: none;
+}
+
+.glass-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.nav-link {
+    border-bottom: 2px solid transparent;
+    color: #1A1B20;
+    padding-bottom: 0.25rem;
+    transition: color 240ms ease, border-color 240ms ease, opacity 240ms ease;
+}
+
+.nav-link:hover,
+.nav-link.is-active {
+    border-color: #818cf8;
+    color: #4338ca;
+}
+
+.nav-link.is-active {
+    font-weight: 600;
+}
+
+.project-frame {
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.44),
+        0 1.5rem 3rem rgba(65, 58, 120, 0.12);
+    transition: box-shadow 520ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+}
+
+.project-card:hover .project-frame,
+.project-card:focus-within .project-frame {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.52),
+        0 2.2rem 4.5rem rgba(65, 58, 120, 0.18);
+    transform: scale(1.035);
+}
+
+.project-visual {
+    transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+}
+
+.project-card:hover .project-visual,
+.project-card:focus-within .project-visual {
+    transform: rotate(-2.5deg) scale(1.08);
+}
+
+.project-visual-centered {
+    transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+}
+
+.project-card:hover .project-visual-centered,
+.project-card:focus-within .project-visual-centered {
+    transform: translate(-50%, -50%) rotate(-3deg) scale(1.12);
+}
+
+.project-arrow {
+    align-items: center;
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    display: inline-flex;
+    flex: 0 0 3rem;
+    height: 3rem;
+    justify-content: center;
+    width: 3rem;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}

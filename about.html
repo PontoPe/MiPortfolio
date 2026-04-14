@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About | Mimizo</title>
+<script>
+    tailwind = {
+        config: {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#5b509f",
+                        "primary-container": "#afa3f9",
+                        "secondary-fixed": "#ffc3ba",
+                        "surface-container-highest": "#dcdce4",
+                        "on-surface": "#2d2e33",
+                        "on-surface-variant": "#5a5b60"
+                    },
+                    fontFamily: {
+                        headline: ["Poppins", "sans-serif"],
+                        body: ["Poppins", "sans-serif"],
+                        label: ["Pixelify Sans", "monospace"]
+                    }
+                }
+            }
+        }
+    };
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="page-style.css" rel="stylesheet"/>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container">
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+</div>
+<nav class="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-sm">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto w-full">
+<a class="text-2xl font-semibold text-slate-900" href="index.html">Mimizo</a>
+<div class="hidden md:flex items-center space-x-8">
+<a class="nav-link" href="design-grafico.html">design gráfico</a>
+<a class="nav-link" href="ux-ui.html">ux/ui</a>
+<a class="nav-link" href="ilustracao.html">ilustração</a>
+<a class="nav-link is-active" href="about.html">about</a>
+<a class="bg-white/35 text-slate-800 px-6 py-2 rounded-full font-semibold border border-white/40 shadow-lg shadow-primary/10" href="index.html#contact">Contact</a>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
+<section class="glass-card rounded-[2.5rem] p-8 md:p-16">
+<div class="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-12 items-center">
+<div>
+<p class="font-label text-primary font-bold mb-4">about</p>
+<h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-8">Playful systems, clear stories, useful details.</h1>
+<a class="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-semibold shadow-xl shadow-primary/20" href="index.html#contact">
+                    Send a message
+                    <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
+</div>
+<div class="rounded-[2rem] border border-white/35 bg-white/20 p-8 md:p-10 backdrop-blur-md shadow-xl shadow-primary/5">
+<p class="text-on-surface-variant text-lg leading-8 mb-8">
+                    I build visual identities, interfaces, and illustrations that feel soft at first glance and thoughtful up close. The work starts with people, then turns into layouts, flows, and images that can carry a story without making users work too hard.
+                </p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="rounded-2xl bg-white/28 border border-white/35 p-5">
+<p class="font-label text-primary text-sm mb-2">01</p>
+<p class="font-headline font-bold">story-first design</p>
+</div>
+<div class="rounded-2xl bg-white/28 border border-white/35 p-5">
+<p class="font-label text-primary text-sm mb-2">02</p>
+<p class="font-headline font-bold">fast visual systems</p>
+</div>
+<div class="rounded-2xl bg-white/28 border border-white/35 p-5">
+<p class="font-label text-primary text-sm mb-2">03</p>
+<p class="font-headline font-bold">soft playful polish</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<script src="page-motion.js"></script>
+</body>
+</html>
