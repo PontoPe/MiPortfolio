@@ -5,6 +5,7 @@ let ticking = false;
 
 const renderParallax = () => {
     const scrollShift = window.scrollY * 0.035;
+    document.documentElement.style.setProperty("--ambient-scroll-y", `${window.scrollY * -0.14}px`);
 
     parallaxLayers.forEach((layer) => {
         const depth = Number(layer.dataset.depth);

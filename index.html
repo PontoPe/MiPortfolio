@@ -104,11 +104,36 @@
             pointer-events: none;
         }
         .parallax-bg {
+            --ambient-scroll-y: 0px;
             position: fixed;
             inset: -12vmax;
             z-index: -3;
             overflow: hidden;
             pointer-events: none;
+        }
+        .parallax-bg::before,
+        .parallax-bg::after {
+            animation: ambientCircleFloat 24s ease-in-out infinite alternate;
+            content: "";
+            inset: 0;
+            opacity: 0.56;
+            position: absolute;
+        }
+        .parallax-bg::before {
+            background:
+                radial-gradient(circle at 14% 28%, rgba(255, 250, 255, 0.62) 0 4.2rem, transparent 4.35rem),
+                radial-gradient(circle at 82% 18%, rgba(255, 213, 231, 0.46) 0 3.1rem, transparent 3.25rem),
+                radial-gradient(circle at 22% 80%, rgba(198, 204, 255, 0.42) 0 5.2rem, transparent 5.35rem),
+                radial-gradient(circle at 72% 76%, rgba(255, 238, 210, 0.44) 0 3.8rem, transparent 3.95rem);
+        }
+        .parallax-bg::after {
+            animation-duration: 31s;
+            animation-name: ambientCircleFloatReverse;
+            background:
+                radial-gradient(circle at 33% 12%, rgba(255, 255, 255, 0.52) 0 2.6rem, transparent 2.75rem),
+                radial-gradient(circle at 88% 56%, rgba(229, 220, 255, 0.48) 0 5.6rem, transparent 5.8rem),
+                radial-gradient(circle at 8% 62%, rgba(255, 205, 187, 0.34) 0 4.6rem, transparent 4.75rem);
+            opacity: 0.42;
         }
         .parallax-layer {
             position: absolute;
@@ -151,6 +176,32 @@
             background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 221, 236, 0.34), rgba(255, 255, 255, 0.06));
             filter: blur(3px);
             rotate: -10deg;
+        }
+        @keyframes ambientCircleFloat {
+            0% {
+                transform: translate3d(-1.2rem, calc(var(--ambient-scroll-y, 0px) + 0.8rem), 0) rotate(0deg) scale(1);
+            }
+
+            50% {
+                transform: translate3d(1.6rem, calc(var(--ambient-scroll-y, 0px) - 1.1rem), 0) rotate(4deg) scale(1.025);
+            }
+
+            100% {
+                transform: translate3d(0.4rem, calc(var(--ambient-scroll-y, 0px) + 1.5rem), 0) rotate(-3deg) scale(0.985);
+            }
+        }
+        @keyframes ambientCircleFloatReverse {
+            0% {
+                transform: translate3d(1.1rem, calc(var(--ambient-scroll-y, 0px) - 0.7rem), 0) rotate(0deg) scale(1);
+            }
+
+            50% {
+                transform: translate3d(-1.5rem, calc(var(--ambient-scroll-y, 0px) + 1rem), 0) rotate(-5deg) scale(0.98);
+            }
+
+            100% {
+                transform: translate3d(-0.3rem, calc(var(--ambient-scroll-y, 0px) - 1.4rem), 0) rotate(3deg) scale(1.02);
+            }
         }
         .glass-card {
             position: relative;
@@ -524,6 +575,7 @@
 
         const renderParallax = () => {
             const scrollShift = window.scrollY * 0.035;
+            document.documentElement.style.setProperty("--ambient-scroll-y", `${window.scrollY * -0.14}px`);
 
             parallaxLayers.forEach((layer) => {
                 const depth = Number(layer.dataset.depth);
