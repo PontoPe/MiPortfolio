@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Pixelify+Sans:wght@500;600&amp;family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.cdnfonts.com/css/braaap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#d6c9ee",
+                    "on-tertiary-fixed": "#403755",
+                    "on-background": "#2d2e33",
+                    "on-secondary-fixed-variant": "#794138",
+                    "error": "#b41340",
+                    "on-error": "#ffefef",
+                    "on-tertiary-fixed-variant": "#5d5372",
+                    "on-primary-fixed": "#120050",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-dim": "#544b6a",
+                    "on-primary-container": "#2d206f",
+                    "primary-fixed": "#afa3f9",
+                    "surface-variant": "#dcdce4",
+                    "on-primary-fixed-variant": "#362a78",
+                    "on-tertiary": "#f8f0ff",
+                    "inverse-on-surface": "#9c9ca2",
+                    "tertiary-container": "#e4d7fd",
+                    "outline": "#76767c",
+                    "on-secondary-container": "#6e3830",
+                    "inverse-surface": "#0d0e12",
+                    "primary": "#5b509f",
+                    "secondary-fixed-dim": "#fdb1a5",
+                    "on-secondary-fixed": "#57251e",
+                    "secondary-container": "#ffc3ba",
+                    "surface-container-highest": "#dcdce4",
+                    "primary-container": "#afa3f9",
+                    "surface-dim": "#d3d4dc",
+                    "on-surface-variant": "#5a5b60",
+                    "tertiary-fixed": "#e4d7fd",
+                    "surface-container": "#e8e7ee",
+                    "primary-fixed-dim": "#a196eb",
+                    "surface-tint": "#5b509f",
+                    "surface-container-low": "#f1f0f7",
+                    "on-primary": "#f6f0ff",
+                    "secondary-fixed": "#ffc3ba",
+                    "secondary-dim": "#784037",
+                    "error-dim": "#a70138",
+                    "surface-container-high": "#e2e2e9",
+                    "primary-dim": "#4f4493",
+                    "on-surface": "#2d2e33",
+                    "inverse-primary": "#afa3f9",
+                    "background": "#f7f6fc",
+                    "surface-bright": "#f7f6fc",
+                    "error-container": "#f74b6d",
+                    "surface": "#f7f6fc",
+                    "on-error-container": "#510017",
+                    "on-tertiary-container": "#534968",
+                    "tertiary": "#605676",
+                    "outline-variant": "#adadb2",
+                    "secondary": "#864b42",
+                    "on-secondary": "#ffefed"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Poppins", "sans-serif"],
+                    "body": ["Poppins", "sans-serif"],
+                    "label": ["Pixelify Sans", "monospace"],
+                    "signature": ["Caveat", "cursive"],
+                    "marker": ["Kalam", "cursive"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background:
+                linear-gradient(135deg, rgba(255, 215, 184, 0.78) 0%, rgba(250, 232, 244, 0.92) 38%, rgba(202, 205, 255, 0.82) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -4;
+            background:
+                linear-gradient(120deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 42%),
+                radial-gradient(ellipse at 18% 16%, rgba(255, 230, 202, 0.75), transparent 42%),
+                radial-gradient(ellipse at 82% 70%, rgba(176, 184, 255, 0.55), transparent 48%);
+            pointer-events: none;
+        }
+        .parallax-bg {
+            position: fixed;
+            inset: -12vmax;
+            z-index: -3;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .parallax-layer {
+            position: absolute;
+            will-change: transform;
+            transition: transform 500ms ease-out;
+        }
+        .parallax-layer:nth-child(1) {
+            width: 68vmax;
+            height: 32vmax;
+            left: -18vmax;
+            top: 2vmax;
+            border-radius: 45% 55% 62% 38%;
+            background: linear-gradient(135deg, rgba(255, 191, 150, 0.48), rgba(255, 233, 213, 0.18));
+            filter: blur(10px);
+        }
+        .parallax-layer:nth-child(2) {
+            width: 72vmax;
+            height: 36vmax;
+            right: -22vmax;
+            bottom: -2vmax;
+            border-radius: 56% 44% 42% 58%;
+            background: linear-gradient(145deg, rgba(174, 181, 255, 0.42), rgba(244, 211, 255, 0.14));
+            filter: blur(12px);
+        }
+        .parallax-layer:nth-child(3) {
+            width: 110vmax;
+            height: 22vmax;
+            left: 4vmax;
+            bottom: -8vmax;
+            border-radius: 55% 45% 0 0;
+            background: rgba(226, 224, 255, 0.38);
+            transform-origin: center;
+        }
+        .parallax-layer:nth-child(4) {
+            width: 54vmax;
+            height: 16vmax;
+            left: 34vmax;
+            top: 10vmax;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 221, 236, 0.34), rgba(255, 255, 255, 0.06));
+            filter: blur(3px);
+            rotate: -10deg;
+        }
+        .glass-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.33), rgba(255, 255, 255, 0.16));
+            backdrop-filter: blur(34px) saturate(1.25);
+            -webkit-backdrop-filter: blur(34px) saturate(1.25);
+            border: 1px solid rgba(255, 255, 255, 0.48);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.65),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.18),
+                0 2rem 5rem rgba(65, 58, 120, 0.12);
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(115deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.04) 38%, rgba(255, 255, 255, 0.18) 72%, rgba(255, 255, 255, 0.02)),
+                radial-gradient(ellipse at 22% 14%, rgba(255, 249, 242, 0.56), transparent 35%);
+            pointer-events: none;
+        }
+        .glass-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-copy {
+            text-wrap: balance;
+        }
+        .hero-hotspot[data-topic="storytelling"] {
+            font-size: 1.13em;
+            font-weight: 600;
+            line-height: 0.82;
+            margin-inline: 0.22em 0.34em;
+            padding-inline: 0.12em 0.16em;
+        }
+        .story-icon {
+            background: currentColor;
+            display: block;
+            opacity: 0.5;
+            pointer-events: none;
+            position: absolute;
+            -webkit-mask: var(--story-asset) center / contain no-repeat;
+            mask: var(--story-asset) center / contain no-repeat;
+        }
+        .story-book {
+            --story-asset: url("book.png");
+            height: 0.58em;
+            left: -0.52em;
+            top: -0.42em;
+            transform: rotate(-10deg);
+            width: 1.18em;
+        }
+        .story-ship {
+            --story-asset: url("ship.svg");
+            bottom: -0.32em;
+            height: 0.72em;
+            right: -0.54em;
+            transform: rotate(8deg);
+            width: 0.72em;
+        }
+        .hero-hotspot[data-topic="fast-paced"] {
+            font-family: "Braaap", "Poppins", sans-serif;
+            font-size: 1.12em;
+            font-style: normal;
+            font-synthesis: none;
+            font-weight: 400;
+            line-height: 0.86;
+        }
+        .hero-hotspot[data-topic="creativity"] {
+            font-size: 1.08em;
+            line-height: 0.84;
+        }
+        .hero-hotspot[data-topic="innovation"] {
+            font-size: 0.94em;
+            line-height: 0.9;
+            text-transform: lowercase;
+            background: transparent;
+            padding: 0;
+            border: 0;
+        }
+        .project-frame {
+            border: 1px solid rgba(255, 255, 255, 0.42);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.44),
+                0 1.5rem 3rem rgba(65, 58, 120, 0.12);
+        }
+        .hero-copy .hero-piece,
+        .hero-copy .hero-hotspot {
+            transition: opacity 220ms ease, transform 220ms ease, translate 220ms ease, scale 220ms ease, color 220ms ease, background-color 220ms ease, border-color 220ms ease;
+        }
+        .hero-hotspot {
+            cursor: help;
+            position: relative;
+        }
+        .hero-hotspot:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 0.18em;
+        }
+        .hero-copy:has(.hero-hotspot:is(:hover, :focus-visible)) .hero-piece,
+        .hero-copy:has(.hero-hotspot:is(:hover, :focus-visible)) .hero-hotspot {
+            opacity: 0.18;
+        }
+        .hero-copy .hero-hotspot:is(:hover, :focus-visible) {
+            opacity: 1;
+            translate: 0 -0.08em;
+            scale: 1.03;
+        }
+        .hero-cursor-note {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 80;
+            max-width: min(18rem, calc(100vw - 2rem));
+            padding: 0.8rem 0.95rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(173, 173, 178, 0.25);
+            background: rgba(255, 255, 255, 0.76);
+            box-shadow: 0 1rem 2.5rem rgba(45, 46, 51, 0.14);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            color: #2d2e33;
+            font-family: "Poppins", sans-serif;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate3d(var(--tooltip-x, 0), var(--tooltip-y, 0), 0) scale(0.96);
+            transition: opacity 160ms ease, transform 160ms ease;
+            visibility: hidden;
+        }
+        .hero-cursor-note.is-visible {
+            opacity: 1;
+            transform: translate3d(var(--tooltip-x, 0), var(--tooltip-y, 0), 0) scale(1);
+            visibility: visible;
+        }
+        .hero-cursor-note::before {
+            content: "";
+            position: absolute;
+            top: 0.9rem;
+            left: -1.55rem;
+            width: 1.75rem;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.35;
+            transform: rotate(24deg);
+            transform-origin: right center;
+        }
+        .hero-cursor-note::after {
+            content: "";
+            position: absolute;
+            top: 0.55rem;
+            left: -1.85rem;
+            width: 0.42rem;
+            height: 0.42rem;
+            border-radius: 9999px;
+            background: currentColor;
+            opacity: 0.75;
+        }
+        .hero-cursor-note.is-left::before {
+            left: auto;
+            right: -1.55rem;
+            transform: rotate(-24deg);
+            transform-origin: left center;
+        }
+        .hero-cursor-note.is-left::after {
+            left: auto;
+            right: -1.85rem;
+        }
+        .hero-cursor-note.is-above::before {
+            top: auto;
+            bottom: 0.9rem;
+            transform: rotate(-24deg);
+        }
+        .hero-cursor-note.is-left.is-above::before {
+            transform: rotate(24deg);
+        }
+        .hero-cursor-note.is-above::after {
+            top: auto;
+            bottom: 0.55rem;
+        }
+    </style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Parallax Background -->
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+<div class="parallax-layer" data-depth="-20"></div>
+</div>
+<!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-sm">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto w-full">
+<div class="text-2xl font-semibold text-slate-900">
+                Mimizo
+            </div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-slate-700 hover:text-indigo-500 transition-all duration-300 hover:opacity-80" href="#">design gráfico</a>
+<a class="text-indigo-700 font-semibold border-b-2 border-indigo-400 pb-1 transition-all duration-300 hover:opacity-80" href="#">ux/ui</a>
+<a class="text-slate-700 hover:text-indigo-500 transition-all duration-300 hover:opacity-80" href="#">ilustracao</a>
+<a class="text-slate-700 hover:text-indigo-500 transition-all duration-300 hover:opacity-80" href="#">about</a>
+<button class="bg-white/35 text-slate-800 px-6 py-2 rounded-full font-semibold transition-all duration-300 scale-95 active:transition-transform border border-white/40 shadow-lg shadow-primary/10">
+                    Contact
+                </button>
+</div>
+<button class="md:hidden p-2">
+<span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
+</button>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
+<!-- Main Glass Container -->
+<section class="glass-card rounded-[2.5rem] p-8 md:p-16 shadow-2xl shadow-primary/5">
+<!-- Hero Content -->
+<div class="max-w-4xl mx-auto text-center mb-24">
+<h1 class="hero-copy font-headline text-4xl md:text-5xl lg:text-[3.35rem] font-normal leading-[1.16] text-on-surface mb-5">
+                    <span class="hero-piece">Hi, I am </span><span class="hero-hotspot text-primary inline-block" data-topic="milena" tabindex="0">Milena</span><span class="hero-piece">. I’m a Brazilian Graphic Designer passionate about </span>
+                    <span class="hero-hotspot font-signature text-secondary inline-block px-2 -rotate-2" data-topic="storytelling" tabindex="0"><span class="story-icon story-book" aria-hidden="true"></span><span class="story-text">storytelling</span><span class="story-icon story-ship" aria-hidden="true"></span></span><span class="hero-piece"> 
+                    and crafting creative solutions to real-world challenges. 
+                    I thrive in </span>
+                    <span class="hero-hotspot text-primary-dim inline-block relative" data-topic="fast-paced" tabindex="0">
+                        fast-paced
+                    </span><span class="hero-piece"> 
+                    environments and enjoy collaborating with teams that embrace </span>
+                    <span class="hero-hotspot font-marker text-tertiary inline-block rotate-1 scale-110 mx-2" data-topic="creativity" tabindex="0">creativity</span><span class="hero-piece"> 
+                    and </span>
+                    <span class="hero-hotspot font-label text-on-surface-variant" data-topic="innovation" tabindex="0">innovation</span><span class="hero-piece">.</span>
+</h1>
+</div>
+<!-- Project Grid Section -->
+<div class="space-y-12">
+<div class="flex items-center justify-between">
+<h2 class="font-headline text-3xl font-bold text-on-surface">Product Design</h2>
+<div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
+<span class="font-label text-sm text-on-surface-variant">Selected Works</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<!-- Project Card 1 -->
+<div class="group cursor-pointer">
+<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25 transition-transform duration-500 group-hover:scale-[0.98]">
+<img alt="Product Design Project" class="w-full h-full object-cover" data-alt="Modern mobile app interface design with vibrant colors, soft shadows, and clean typography on a high-end smartphone screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCglzDGmX90BANGA1QSyA7xQNkBsjgRS645dxah18MDmrDRgAI6A_3_M_liO_9jx9A0YggNot3uBzXFwiJS6nCI97VkxqvgCtzkFpUtSFti47HNo0jiz5xGyKPw9W1esWoBwmUgipYFimE-TO3AC96B-WiAnr-2ajTypzsPvuexJ3USed0S2xkbLECVe4glxoMByQj_UogjPr_SnhaqRkEpP-BcH9cgcep71SUIOGNEAEv0V9HJ4GiKXa-rn98WjEeeD28KoMy920be"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="mt-6 flex justify-between items-end">
+<div>
+<p class="font-label text-primary text-xs font-bold mb-1">Visual Identity • UI/UX</p>
+<h3 class="font-headline text-2xl font-bold text-on-surface">EcoFlow Experience</h3>
+</div>
+<div class="bg-surface-container-highest p-3 rounded-full group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">arrow_outward</span>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="group cursor-pointer">
+<div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25 transition-transform duration-500 group-hover:scale-[0.98]">
+<img alt="Product Design Project" class="w-full h-full object-cover" data-alt="Sophisticated minimalist brand identity design showing business cards and stationary with elegant serif typography and muted pastel colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNQKaVvwtPmGJXP-cbtMvO0upWg7fuiEdAwtpXYYyOt6X6Kp7_OshdG2gqwWQBHP_GbY_RGQj-6E9wrfaKyViS3EwsjV85k1edMMOu18P-HttU7l_Wdbb6MUwuTNClGe5_OwKpQJGmJjPWMsMptkwgkl6hubOJWt6_gCqWifnS6gVopKzyMr3Fq8fYlbrbpURFvAJdjv97EHFWM4TAF_Opa7rrjuwST9KDKP2RFbnv21_N0QM8yb5DL5_L59xNthjW9-kk7DMfx2_U"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="mt-6 flex justify-between items-end">
+<div>
+<p class="font-label text-primary text-xs font-bold mb-1">Web Design • Brand</p>
+<h3 class="font-headline text-2xl font-bold text-on-surface">Lumina Studio</h3>
+</div>
+<div class="bg-surface-container-highest p-3 rounded-full group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">arrow_outward</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Call to Action -->
+<div class="mt-32 text-center p-12 bg-primary-container/10 rounded-[2rem] border border-primary/5">
+<p class="font-label text-primary font-bold mb-4">Wanna work together?</p>
+<h2 class="font-headline text-4xl font-bold text-on-surface mb-8">Let's build something <br/>extraordinary.</h2>
+<button class="bg-primary text-on-primary px-10 py-4 rounded-full font-bold text-lg hover:bg-primary-dim transition-all shadow-xl shadow-primary/20">
+                    Send a message
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-white/15 backdrop-blur-md full-width py-12 border-t border-white/25">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto w-full">
+<div class="mb-6 md:mb-0">
+<span class="text-lg font-semibold text-slate-800">Milena Portfolio.</span>
+<p class="text-slate-500 text-sm mt-1">© 2024 Milena Portfolio. Built with storytelling and creativity.</p>
+</div>
+<div class="flex space-x-8 text-sm">
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Instagram</a>
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">LinkedIn</a>
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Behance</a>
+</div>
+</div>
+</footer>
+<div class="hero-cursor-note" id="hero-cursor-note" role="status" aria-live="polite"></div>
+<script>
+        const parallaxLayers = document.querySelectorAll(".parallax-layer[data-depth]");
+        let pointerX = 0;
+        let pointerY = 0;
+        let ticking = false;
+
+        const renderParallax = () => {
+            const scrollShift = window.scrollY * 0.035;
+
+            parallaxLayers.forEach((layer) => {
+                const depth = Number(layer.dataset.depth);
+                const x = pointerX * depth;
+                const y = pointerY * depth + scrollShift * depth;
+
+                layer.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            });
+
+            ticking = false;
+        };
+
+        const queueParallax = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(renderParallax);
+                ticking = true;
+            }
+        };
+
+        window.addEventListener("pointermove", (event) => {
+            pointerX = (event.clientX / window.innerWidth - 0.5) * 2;
+            pointerY = (event.clientY / window.innerHeight - 0.5) * 2;
+            queueParallax();
+        });
+
+        window.addEventListener("scroll", queueParallax, { passive: true });
+        renderParallax();
+
+        const heroComments = {
+            milena: "Milena brings a warm Brazilian lens to systems, stories, and visuals that feel human.",
+            storytelling: "Storytelling is the thread: every choice should help the audience feel where to go next.",
+            "fast-paced": "Fast-paced work needs clarity, rhythm, and the confidence to keep moving without losing care.",
+            creativity: "Creativity is treated as practical magic: playful ideas shaped into useful design decisions.",
+            innovation: "Innovation means making things feel fresher, simpler, and more generous for the people using them."
+        };
+
+        const tooltip = document.querySelector("#hero-cursor-note");
+        const hotspots = document.querySelectorAll(".hero-hotspot[data-topic]");
+
+        const moveTooltip = (clientX, clientY) => {
+            const spacing = 26;
+            const margin = 16;
+            const tooltipWidth = tooltip.offsetWidth || 288;
+            const tooltipHeight = tooltip.offsetHeight || 92;
+            const showLeft = clientX + tooltipWidth + spacing > window.innerWidth - margin;
+            const showAbove = clientY + tooltipHeight + spacing > window.innerHeight - margin;
+            const x = showLeft ? clientX - tooltipWidth - spacing : clientX + spacing;
+            const y = showAbove ? clientY - tooltipHeight - spacing : clientY + spacing;
+
+            tooltip.style.setProperty("--tooltip-x", `${Math.max(margin, x)}px`);
+            tooltip.style.setProperty("--tooltip-y", `${Math.max(margin, y)}px`);
+            tooltip.classList.toggle("is-left", showLeft);
+            tooltip.classList.toggle("is-above", showAbove);
+        };
+
+        const showTooltip = (target, clientX, clientY) => {
+            tooltip.textContent = heroComments[target.dataset.topic] || "";
+            moveTooltip(clientX, clientY);
+            tooltip.classList.add("is-visible");
+        };
+
+        const hideTooltip = () => {
+            tooltip.classList.remove("is-visible", "is-left", "is-above");
+        };
+
+        hotspots.forEach((hotspot) => {
+            hotspot.addEventListener("pointerenter", (event) => showTooltip(hotspot, event.clientX, event.clientY));
+            hotspot.addEventListener("pointermove", (event) => moveTooltip(event.clientX, event.clientY));
+            hotspot.addEventListener("pointerleave", hideTooltip);
+            hotspot.addEventListener("focus", () => {
+                const rect = hotspot.getBoundingClientRect();
+                showTooltip(hotspot, rect.left + rect.width / 2, rect.bottom);
+            });
+            hotspot.addEventListener("blur", hideTooltip);
+        });
+    </script>
+</body></html>
