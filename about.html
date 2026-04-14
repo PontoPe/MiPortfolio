@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>About | Mimizo</title>
 <script>
-    tailwind = {
+    window.tailwind = {
         config: {
             theme: {
                 extend: {
@@ -14,7 +14,7 @@
                         "primary-container": "#afa3f9",
                         "secondary-fixed": "#ffc3ba",
                         "surface-container-highest": "#dcdce4",
-                        "on-surface": "#2d2e33",
+                        "on-surface": "#1A1B20",
                         "on-surface-variant": "#5a5b60"
                     },
                     fontFamily: {
@@ -38,15 +38,16 @@
 <div class="parallax-layer" data-depth="-12"></div>
 <div class="parallax-layer" data-depth="7"></div>
 </div>
-<nav class="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-sm">
+<nav class="fixed top-0 w-full z-50 bg-[#FAF9FF]/10 backdrop-blur-sm">
 <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto w-full">
-<a class="text-2xl font-semibold text-slate-900" href="index.html">Mimizo</a>
+<a class="text-2xl font-semibold text-[#1A1B20]" href="index.html">Mimizo</a>
 <div class="hidden md:flex items-center space-x-8">
 <a class="nav-link" href="design-grafico.html">design gráfico</a>
 <a class="nav-link" href="ux-ui.html">ux/ui</a>
 <a class="nav-link" href="ilustracao.html">ilustração</a>
 <a class="nav-link is-active" href="about.html">about</a>
-<a class="bg-white/35 text-slate-800 px-6 py-2 rounded-full font-semibold border border-white/40 shadow-lg shadow-primary/10" href="index.html#contact">Contact</a>
+<a class="bg-[#FAF9FF]/35 text-[#1A1B20] px-6 py-2 rounded-full font-semibold border border-[#FAF9FF]/40 shadow-lg shadow-primary/10" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+<a class="bg-[#FAF9FF]/35 text-[#1A1B20] px-6 py-2 rounded-full font-semibold border border-[#FAF9FF]/40 shadow-lg shadow-primary/10" href="index.html#contact">Contact</a>
 </div>
 </div>
 </nav>
@@ -56,9 +57,13 @@
 <div>
 <p class="font-label text-primary font-bold mb-4">about</p>
 <h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-8">Playful systems, clear stories, useful details.</h1>
-<a class="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-semibold shadow-xl shadow-primary/20" href="index.html#contact">
+<a class="inline-flex items-center gap-3 bg-primary text-[#1A1B20] px-8 py-4 rounded-full font-semibold shadow-xl shadow-primary/20" href="index.html#contact">
                     Send a message
                     <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
+<a class="ml-3 inline-flex items-center gap-3 bg-[#FAF9FF]/35 text-[#1A1B20] px-8 py-4 rounded-full font-semibold border border-[#FAF9FF]/40 shadow-xl shadow-primary/10" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                    View CV
+                    <span class="material-symbols-outlined">description</span>
                 </a>
 </div>
 <div class="rounded-[2rem] border border-white/35 bg-white/20 p-8 md:p-10 backdrop-blur-md shadow-xl shadow-primary/5">

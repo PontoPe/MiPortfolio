@@ -5,6 +5,7 @@ html {
 body {
     background:
         linear-gradient(135deg, rgba(255, 215, 184, 0.78) 0%, rgba(250, 232, 244, 0.92) 38%, rgba(202, 205, 255, 0.82) 100%);
+    color: #1A1B20;
     min-height: 100vh;
     overflow-x: hidden;
 }
