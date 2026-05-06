@@ -248,6 +248,34 @@ body::before {
     grid-column: 1 / -1;
 }
 
+.project-detail-nav {
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.project-detail-next {
+    align-items: center;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+    text-decoration: none;
+    transition: transform 200ms ease;
+}
+
+.project-detail-next:hover {
+    transform: translateX(4px);
+}
+
+.project-detail-next-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.project-detail-next:hover .project-arrow {
+    background: #5b509f;
+    color: #FAF9FF;
+}
+
 .project-media-card {
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.38);
