@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Pixelify+Sans:wght@500;600&amp;family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.cdnfonts.com/css/braaap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="page-style.css" rel="stylesheet"/>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -521,34 +522,36 @@
 <div class="parallax-layer" data-depth="-20"></div>
 </div>
 <!-- Navigation -->
-<nav class="fixed top-0 w-full z-50 bg-[#FAF9FF]/10 backdrop-blur-sm">
-<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto w-full">
+<nav class="site-nav">
+<div class="site-nav-inner">
 <div class="text-2xl font-semibold text-[#1A1B20]">
                 Mimizo
             </div>
-<div class="hidden md:flex items-center space-x-8">
+<div class="hidden md:flex items-center">
+<div class="site-nav-links">
+<a class="nav-link is-active" href="index.html">home</a>
 <a class="nav-link" href="design-grafico.html">design gráfico</a>
 <a class="nav-link" href="ux-ui.html">ux/ui</a>
 <a class="nav-link" href="ilustracao.html">ilustração</a>
 <a class="nav-link" href="about.html">about</a>
-<a class="bg-[#FAF9FF]/35 text-[#1A1B20] px-6 py-2 rounded-full font-semibold transition-all duration-300 scale-95 active:transition-transform border border-[#FAF9FF]/40 shadow-lg shadow-primary/10" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-                    View CV
-                </a>
-<a class="bg-[#FAF9FF]/35 text-[#1A1B20] px-6 py-2 rounded-full font-semibold transition-all duration-300 scale-95 active:transition-transform border border-[#FAF9FF]/40 shadow-lg shadow-primary/10" href="#contact">
-                    Contact
-                </a>
+</div>
+<div class="site-nav-cta-group">
+<a class="nav-cta" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+<a class="nav-cta" href="#contact">Contact</a>
+</div>
 </div>
 <button class="md:hidden p-2">
 <span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
 </button>
 </div>
 </nav>
-<main class="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-[110rem] mx-auto">
 <!-- Main Glass Container -->
 <section class="glass-card rounded-[2.5rem] p-8 md:p-16 shadow-2xl shadow-primary/5">
 <!-- Hero Content -->
-<div class="max-w-4xl mx-auto text-center mb-24">
-<h1 class="hero-copy font-headline text-3xl md:text-5xl lg:text-[2.85rem] font-normal leading-[1.18] text-on-surface mb-5" data-liquid-text>
+<div class="hero-row">
+<div class="hero-portrait" aria-label="Profile photo placeholder"></div>
+<h1 class="hero-copy font-headline text-3xl md:text-5xl lg:text-[2.85rem] font-normal leading-[1.18] text-on-surface mb-5 flex-1" data-liquid-text>
                     <span class="hero-piece">Hi, I am </span><span class="hero-hotspot text-primary inline-block" data-topic="milena" tabindex="0">Milena</span><span class="hero-piece">. I’m a Brazilian Graphic Designer passionate about </span>
                     <span class="hero-hotspot font-signature text-secondary inline-block px-2 -rotate-2" data-topic="storytelling" tabindex="0"><span class="story-icon story-book" aria-hidden="true"></span><span class="story-text">storytelling</span><span class="story-icon story-ship" aria-hidden="true"></span></span><span class="hero-piece"> 
                     and crafting creative solutions to real-world challenges. 
@@ -616,7 +619,7 @@
 </main>
 <!-- Footer -->
 <footer class="bg-white/15 backdrop-blur-md full-width py-12 border-t border-white/25">
-<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto w-full">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-[110rem] mx-auto w-full">
 <div class="mb-6 md:mb-0">
 <span class="text-lg font-semibold text-[#1A1B20]">Milena Portfolio.</span>
 <p class="text-slate-500 text-sm mt-1">© 2024 Milena Portfolio. Built with storytelling and creativity.</p>
