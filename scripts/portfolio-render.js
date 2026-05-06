@@ -297,6 +297,56 @@
         });
     };
 
+    const renderProjectNav = (project) => {
+        const categoryIndex = data.categories.findIndex((category) => category.id === project.categoryId);
+        const category = data.categories[categoryIndex];
+
+        if (!category) {
+            return "";
+        }
+
+        const projectIndex = category.projects.findIndex((item) => item.slug === project.slug);
+        const nextProject = category.projects[projectIndex + 1];
+
+        if (nextProject) {
+            return `
+                <section class="project-detail-section project-detail-section-wide project-detail-nav">
+                    <a class="project-detail-next" href="${escapeHtml(projectHref(nextProject))}">
+                        <span class="project-detail-next-meta">
+                            <span class="font-label text-primary font-bold text-xs">next project</span>
+                            <span class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(nextProject.title)}</span>
+                        </span>
+                        <span class="project-arrow bg-surface-container-highest">
+                            <span class="material-symbols-outlined">arrow_outward</span>
+                        </span>
+                    </a>
+                </section>
+            `;
+        }
+
+        const nextCategory = data.categories[(categoryIndex + 1) % data.categories.length];
+
+        if (!nextCategory) {
+            return "";
+        }
+
+        const nextLabel = nextCategory.displayLabel || nextCategory.label;
+
+        return `
+            <section class="project-detail-section project-detail-section-wide project-detail-nav">
+                <a class="project-detail-next" href="${escapeHtml(nextCategory.page)}">
+                    <span class="project-detail-next-meta">
+                        <span class="font-label text-primary font-bold text-xs">next category</span>
+                        <span class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(nextLabel)}</span>
+                    </span>
+                    <span class="project-arrow bg-surface-container-highest">
+                        <span class="material-symbols-outlined">arrow_outward</span>
+                    </span>
+                </a>
+            </section>
+        `;
+    };
+
     const renderProjectDetail = () => {
         const root = document.querySelector("[data-project-detail]");
 
@@ -343,7 +393,8 @@
             renderCarouselSection(carouselItems),
             renderToolsSection(project.tools),
             ...sectionEntries.map(([key, content]) => renderProjectSection(key, content)),
-            renderGallerySection(galleryItems)
+            renderGallerySection(galleryItems),
+            renderProjectNav(project)
         ].filter(Boolean).join("");
 
         root.innerHTML = `
