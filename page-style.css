@@ -363,28 +363,71 @@ body::before {
     padding: clamp(1.25rem, 2.5vw, 2rem);
 }
 
-.project-detail-next {
+.project-detail-nav-bare {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    margin-top: 1rem;
+    padding: 0.5rem 0.25rem;
+}
+
+.project-detail-nav-row {
     align-items: center;
     display: flex;
     gap: 1.5rem;
     justify-content: space-between;
+    width: 100%;
+}
+
+.project-detail-nav-spacer {
+    flex: 0 0 auto;
+}
+
+.project-detail-prev,
+.project-detail-next {
+    align-items: center;
+    color: #1A1B20;
+    display: inline-flex;
+    gap: 1rem;
     text-decoration: none;
-    transition: transform 200ms ease;
+    transition: transform 200ms ease, color 200ms ease;
+}
+
+.project-detail-prev {
+    margin-right: auto;
+}
+
+.project-detail-next {
+    margin-left: auto;
+    text-align: right;
+}
+
+.project-detail-prev:hover {
+    transform: translateX(-4px);
+    color: #1A1B20;
 }
 
 .project-detail-next:hover {
     transform: translateX(4px);
+    color: #1A1B20;
 }
 
-.project-detail-next-meta {
+.project-detail-nav-meta {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.15rem;
 }
 
-.project-detail-next:hover .project-arrow {
-    background: #5b509f;
-    color: #FAF9FF;
+.project-detail-prev .material-symbols-outlined,
+.project-detail-next .material-symbols-outlined {
+    color: #1A1B20;
+    font-size: 1.25rem;
+}
+
+.project-detail-prev .font-label,
+.project-detail-next .font-label {
+    color: #1A1B20;
+    opacity: 0.6;
 }
 
 .project-media-card {

@@ -96,15 +96,17 @@
             : `<p class="text-on-surface-variant">Projects are coming soon.</p>`;
     });
 
-    const renderTextSection = (title, paragraphs) => {
+    const renderTextSection = (title, paragraphs, options = {}) => {
         const content = Array.isArray(paragraphs) ? paragraphs : [paragraphs];
 
         if (!hasContent(content)) {
             return "";
         }
 
+        const wideClass = options.wide ? " project-detail-section-wide" : "";
+
         return `
-            <section class="project-detail-section">
+            <section class="project-detail-section${wideClass}">
                 <p class="font-label text-primary font-bold mb-3">${escapeHtml(title)}</p>
                 <div class="space-y-4">
                     ${content.map((paragraph) => `<p class="text-on-surface-variant text-lg leading-8">${escapeHtml(paragraph)}</p>`).join("")}
@@ -224,6 +226,8 @@
         `;
     };
 
+    const wideTextSectionKeys = new Set(["process", "outcome"]);
+
     const renderProjectSection = (key, content) => {
         if (key === "gallery") {
             return renderGallerySection(content);
@@ -233,7 +237,7 @@
             return renderCarouselSection(content);
         }
 
-        return renderTextSection(sectionTitles[key] || key, content);
+        return renderTextSection(sectionTitles[key] || key, content, { wide: wideTextSectionKeys.has(key) });
     };
 
     const initializeCarousels = () => {
@@ -306,43 +310,60 @@
         }
 
         const projectIndex = category.projects.findIndex((item) => item.slug === project.slug);
+        const prevProject = category.projects[projectIndex - 1];
         const nextProject = category.projects[projectIndex + 1];
 
+        const prevHtml = prevProject
+            ? `
+                <a class="project-detail-prev" href="${escapeHtml(projectHref(prevProject))}">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="project-detail-nav-meta">
+                        <span class="font-label text-[0.65rem]">previous project</span>
+                        <span class="font-headline text-sm font-bold">${escapeHtml(prevProject.title)}</span>
+                    </span>
+                </a>
+            `
+            : `<span class="project-detail-nav-spacer"></span>`;
+
+        let nextHtml = "";
         if (nextProject) {
-            return `
-                <section class="project-detail-section project-detail-section-wide project-detail-nav">
-                    <a class="project-detail-next" href="${escapeHtml(projectHref(nextProject))}">
-                        <span class="project-detail-next-meta">
-                            <span class="font-label text-primary font-bold text-xs">next project</span>
-                            <span class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(nextProject.title)}</span>
-                        </span>
-                        <span class="project-arrow bg-surface-container-highest">
-                            <span class="material-symbols-outlined">arrow_outward</span>
-                        </span>
-                    </a>
-                </section>
+            nextHtml = `
+                <a class="project-detail-next" href="${escapeHtml(projectHref(nextProject))}">
+                    <span class="project-detail-nav-meta">
+                        <span class="font-label text-[0.65rem]">next project</span>
+                        <span class="font-headline text-sm font-bold">${escapeHtml(nextProject.title)}</span>
+                    </span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </a>
             `;
+        } else {
+            const nextCategory = data.categories[(categoryIndex + 1) % data.categories.length];
+            if (nextCategory) {
+                const nextLabel = nextCategory.displayLabel || nextCategory.label;
+                nextHtml = `
+                    <a class="project-detail-next" href="${escapeHtml(nextCategory.page)}">
+                        <span class="project-detail-nav-meta">
+                            <span class="font-label text-[0.65rem]">next category</span>
+                            <span class="font-headline text-sm font-bold">${escapeHtml(nextLabel)}</span>
+                        </span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                `;
+            } else {
+                nextHtml = `<span class="project-detail-nav-spacer"></span>`;
+            }
         }
 
-        const nextCategory = data.categories[(categoryIndex + 1) % data.categories.length];
-
-        if (!nextCategory) {
+        if (!prevProject && !nextProject) {
             return "";
         }
 
-        const nextLabel = nextCategory.displayLabel || nextCategory.label;
-
         return `
-            <section class="project-detail-section project-detail-section-wide project-detail-nav">
-                <a class="project-detail-next" href="${escapeHtml(nextCategory.page)}">
-                    <span class="project-detail-next-meta">
-                        <span class="font-label text-primary font-bold text-xs">next category</span>
-                        <span class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(nextLabel)}</span>
-                    </span>
-                    <span class="project-arrow bg-surface-container-highest">
-                        <span class="material-symbols-outlined">arrow_outward</span>
-                    </span>
-                </a>
+            <section class="project-detail-section-wide project-detail-nav-bare">
+                <div class="project-detail-nav-row">
+                    ${prevHtml}
+                    ${nextHtml}
+                </div>
             </section>
         `;
     };
@@ -388,11 +409,16 @@
             ...((project.sections || {}).carousel || [])
         ];
 
+        const preCarouselKeys = new Set(["brief", "process"]);
+        const preCarouselEntries = sectionEntries.filter(([key]) => preCarouselKeys.has(key));
+        const postCarouselEntries = sectionEntries.filter(([key]) => !preCarouselKeys.has(key));
+
         const sections = [
             renderTextSection("Overview", [project.summary]),
-            renderCarouselSection(carouselItems),
             renderToolsSection(project.tools),
-            ...sectionEntries.map(([key, content]) => renderProjectSection(key, content)),
+            ...preCarouselEntries.map(([key, content]) => renderProjectSection(key, content)),
+            renderCarouselSection(carouselItems),
+            ...postCarouselEntries.map(([key, content]) => renderProjectSection(key, content)),
             renderGallerySection(galleryItems),
             renderProjectNav(project)
         ].filter(Boolean).join("");
