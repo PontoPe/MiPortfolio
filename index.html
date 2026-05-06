@@ -385,6 +385,15 @@
             justify-content: center;
             width: 3rem;
         }
+        .project-arrow .material-symbols-outlined {
+            transition: transform 220ms ease;
+        }
+        .group:hover .project-arrow .material-symbols-outlined,
+        .group:focus-within .project-arrow .material-symbols-outlined,
+        .project-arrow:hover .material-symbols-outlined,
+        .project-arrow:focus-visible .material-symbols-outlined {
+            transform: rotate(-45deg);
+        }
         .nav-link {
             border-bottom: 2px solid transparent;
             color: #1A1B20;

@@ -220,6 +220,17 @@ body::before {
     width: 3rem;
 }
 
+.project-arrow .material-symbols-outlined {
+    transition: transform 220ms ease;
+}
+
+.project-card:hover .project-arrow .material-symbols-outlined,
+.project-card:focus-within .project-arrow .material-symbols-outlined,
+.project-arrow:hover .material-symbols-outlined,
+.project-arrow:focus-visible .material-symbols-outlined {
+    transform: rotate(-45deg);
+}
+
 .project-detail-grid {
     display: grid;
     gap: 1.5rem;

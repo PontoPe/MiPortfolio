@@ -71,7 +71,7 @@
                         <${safeHeading} class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(project.title)}</${safeHeading}>
                     </div>
                     <a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-[#FAF9FF] group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
-                        <span class="material-symbols-outlined">arrow_outward</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
                     </a>
                 </div>
             </article>
