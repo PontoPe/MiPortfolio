@@ -618,14 +618,16 @@ body::before {
 
 .cta-btn-primary {
     background: #5b509f;
+    border: 1px solid transparent;
     box-shadow: 0 1rem 2rem rgba(91, 80, 159, 0.2);
     color: #FAF9FF;
 }
 
 .cta-btn-primary:hover {
-    background: #4f4493;
-    box-shadow: 0 1.25rem 2.5rem rgba(91, 80, 159, 0.32);
-    color: #FAF9FF;
+    background: rgba(250, 249, 255, 0.35);
+    border: 1px solid rgba(250, 249, 255, 0.4);
+    box-shadow: 0 1.25rem 2.5rem rgba(91, 80, 159, 0.2);
+    color: #5b509f;
     transform: translateY(-3px);
 }
 
@@ -639,7 +641,7 @@ body::before {
 
 .cta-btn-ghost:hover {
     background: #5b509f;
-    box-shadow: 0 1.25rem 2.5rem rgba(91, 80, 159, 0.28);
+    box-shadow: 0 1.25rem 2.5rem rgba(91, 80, 159, 0.2);
     color: #FAF9FF;
     transform: translateY(-3px);
 }
