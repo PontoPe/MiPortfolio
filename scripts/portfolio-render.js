@@ -67,7 +67,7 @@
                 </a>
                 <div class="mt-6 flex justify-between items-end gap-6">
                     <div>
-                        <p class="font-label text-primary text-xs font-bold mb-1">${escapeHtml(project.cardMeta)}</p>
+                        <p class="text-primary text-xs font-bold mb-1">${escapeHtml(project.cardMeta)}</p>
                         <${safeHeading} class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(project.title)}</${safeHeading}>
                     </div>
                     <a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-[#FAF9FF] group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
@@ -184,15 +184,13 @@
         `).join("");
         const controls = items.length > 1
             ? `
-                <div class="project-carousel-controls">
-                    <button class="project-carousel-button" type="button" data-carousel-prev aria-label="Previous media">
-                        <span class="material-symbols-outlined">chevron_left</span>
-                    </button>
-                    <span class="project-carousel-counter" data-carousel-counter>1 / ${items.length}</span>
-                    <button class="project-carousel-button" type="button" data-carousel-next aria-label="Next media">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
-                </div>
+                <button class="project-carousel-nav project-carousel-nav-prev" type="button" data-carousel-prev aria-label="Previous media">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button class="project-carousel-nav project-carousel-nav-next" type="button" data-carousel-next aria-label="Next media">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+                <span class="project-carousel-counter-pill" data-carousel-counter>1 / ${items.length}</span>
             `
             : "";
 
@@ -287,6 +285,16 @@
                 updateCounter();
                 ticking = false;
             };
+
+            carousel.querySelectorAll("video").forEach((video) => {
+                video.addEventListener("click", () => {
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                });
+            });
 
             previous?.addEventListener("click", () => goToSlide(currentIndex - 1));
             next?.addEventListener("click", () => goToSlide(currentIndex + 1));
@@ -398,28 +406,19 @@
         document.title = `${project.title} | Mimizo`;
 
         const media = project.media || {};
-        const sectionEntries = Object.entries(project.sections || {})
-            .filter(([key]) => key !== "gallery" && key !== "carousel");
-        const galleryItems = [
-            ...(media.gallery || []),
-            ...((project.sections || {}).gallery || [])
-        ];
+        const projectSections = project.sections || {};
         const carouselItems = [
             ...(media.carousel || []),
-            ...((project.sections || {}).carousel || [])
+            ...(projectSections.carousel || [])
         ];
 
-        const preCarouselKeys = new Set(["brief", "process"]);
-        const preCarouselEntries = sectionEntries.filter(([key]) => preCarouselKeys.has(key));
-        const postCarouselEntries = sectionEntries.filter(([key]) => !preCarouselKeys.has(key));
-
+        // Fixed order: Brief -> Tools -> Process -> Carousel -> Outcome. (Gallery removed.)
         const sections = [
-            renderTextSection("Overview", [project.summary]),
+            renderProjectSection("brief", projectSections.brief),
             renderToolsSection(project.tools),
-            ...preCarouselEntries.map(([key, content]) => renderProjectSection(key, content)),
+            renderProjectSection("process", projectSections.process),
             renderCarouselSection(carouselItems),
-            ...postCarouselEntries.map(([key, content]) => renderProjectSection(key, content)),
-            renderGallerySection(galleryItems),
+            renderProjectSection("outcome", projectSections.outcome),
             renderProjectNav(project)
         ].filter(Boolean).join("");
 
@@ -429,13 +428,14 @@
                     <span class="material-symbols-outlined text-base">arrow_back</span>
                     ${escapeHtml(project.categoryLabel)}
                 </a>
-                <div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-center mb-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-20">
                     <div>
                         <p class="font-label text-primary font-bold mb-4">${escapeHtml(project.cardMeta)}</p>
-                        <h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6">${escapeHtml(project.title)}</h1>
+                        <h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6" data-repel>${escapeHtml(project.title)}</h1>
+                        <p class="font-label text-primary font-bold mb-3">Overview</p>
                         <p class="text-on-surface-variant text-lg leading-8">${escapeHtml(project.summary)}</p>
                     </div>
-                    <div class="project-frame relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white/25">
+                    <div class="project-frame relative aspect-square overflow-hidden rounded-[2rem] bg-white/25 w-full">
                         ${renderThumbnail(project)}
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -28,7 +28,7 @@
     };
 </script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Pixelify+Sans:wght@500;600&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="page-style.css" rel="stylesheet"/>
 </head>
@@ -42,11 +42,11 @@
 <div class="site-nav-inner">
 <a class="text-2xl font-semibold text-[#1A1B20]" href="index.html">Mimizo</a>
 <div class="hidden md:flex items-center">
-<div class="site-nav-links">
+<div class="site-nav-links" data-repel="soft">
 <a class="nav-link" href="index.html">home</a>
-<a class="nav-link" href="design-grafico.html">design gráfico</a>
+<a class="nav-link" href="design-grafico.html">graphic design</a>
 <a class="nav-link" href="ux-ui.html">ux/ui</a>
-<a class="nav-link" href="ilustracao.html">ilustração</a>
+<a class="nav-link" href="ilustracao.html">illustration</a>
 <a class="nav-link is-active" href="about.html">about</a>
 </div>
 <div class="site-nav-cta-group">
@@ -60,8 +60,8 @@
 <section class="glass-card rounded-[2.5rem] p-8 md:p-16">
 <div class="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-12 items-center mb-16">
 <div>
-<p class="font-label text-primary font-bold mb-4">about</p>
-<h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6">Hi! Get to know me a little.</h1>
+<div class="about-portrait" role="img" aria-label="Photo of Milena"></div>
+<h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6" data-repel>Hi! Get to know me a little.</h1>
 <a class="inline-flex items-center gap-3 bg-[#1A1B20] text-[#FAF9FF] px-8 py-4 rounded-full font-semibold shadow-xl shadow-primary/20" href="mailto:milena.am.caldas@gmail.com">
                     Send a message
                     <span class="material-symbols-outlined">arrow_outward</span>
@@ -92,7 +92,6 @@
 <div class="flex items-center justify-between mb-8">
 <h2 class="font-headline text-3xl font-bold text-on-surface">Work Experience</h2>
 <div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
-<span class="font-label text-sm text-on-surface-variant">Selected Roles</span>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <article class="rounded-[1.75rem] border border-white/35 bg-white/20 p-7 backdrop-blur-md shadow-lg shadow-primary/5">
@@ -194,6 +193,31 @@
 </div>
 </section>
 </main>
+<!-- Call to Action -->
+<section class="max-w-[110rem] mx-auto px-4 md:px-8 mt-24" id="contact">
+<div class="text-center p-12 bg-primary-container/10 rounded-[2rem] border border-primary/5">
+<p class="font-marker text-primary font-bold mb-4">Wanna work together?</p>
+<h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary.</h2>
+<a class="inline-flex items-center bg-primary text-[#FAF9FF] px-10 py-4 rounded-full font-bold text-lg hover:bg-primary-dim transition-all shadow-xl shadow-primary/20" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
+<a class="ml-3 inline-flex items-center bg-[#FAF9FF]/35 text-[#1A1B20] px-10 py-4 rounded-full font-bold text-lg border border-[#FAF9FF]/40 shadow-xl shadow-primary/10" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white/15 backdrop-blur-md full-width py-12 border-t border-white/25 mt-24">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-[110rem] mx-auto w-full">
+<div class="mb-6 md:mb-0">
+<span class="text-lg font-semibold text-[#1A1B20]">Milena Portfolio.</span>
+<p class="text-slate-500 text-sm mt-1">© 2024 Milena Portfolio. Built with storytelling and creativity.</p>
+</div>
+<div class="flex space-x-8 text-sm">
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Instagram</a>
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">LinkedIn</a>
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Behance</a>
+</div>
+</div>
+</footer>
 <script src="scripts/page-motion.js"></script>
+<script src="scripts/repel-text.js"></script>
 </body>
 </html>
+

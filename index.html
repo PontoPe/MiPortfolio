@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="pt-BR"><head>
+<html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -272,58 +272,6 @@
         .hero-copy.is-liquid-active .liquid-word {
             transition-duration: 120ms;
         }
-        .hero-hotspot[data-topic="storytelling"] {
-            font-size: 1.13em;
-            font-weight: 600;
-            line-height: 0.82;
-            margin-inline: 0.22em 0.34em;
-            padding-inline: 0.12em 0.16em;
-        }
-        .story-icon {
-            background: currentColor;
-            display: block;
-            opacity: 0.5;
-            pointer-events: none;
-            position: absolute;
-            -webkit-mask: var(--story-asset) center / contain no-repeat;
-            mask: var(--story-asset) center / contain no-repeat;
-        }
-        .story-book {
-            --story-asset: url("assets/ui/book.png");
-            height: 0.58em;
-            left: -0.2em;
-            top: -0.2em;
-            transform: rotate(-10deg);
-            width: 1.18em;
-        }
-        .story-ship {
-            --story-asset: url("assets/ui/ship.svg");
-            bottom: -0.32em;
-            height: 0.72em;
-            right: -0.54em;
-            transform: rotate(8deg);
-            width: 0.72em;
-        }
-        .hero-hotspot[data-topic="fast-paced"] {
-            font-family: "Braaap", "Poppins", sans-serif;
-            font-size: 1.12em;
-            font-style: normal;
-            font-synthesis: none;
-            font-weight: 400;
-            line-height: 0.86;
-        }
-        .hero-hotspot[data-topic="creativity"] {
-            font-size: 1.08em;
-            line-height: 0.84;
-        }
-        .hero-hotspot[data-topic="innovation"] {
-            font-size: 0.94em;
-            line-height: 0.9;
-            text-transform: lowercase;
-            background: transparent;
-            padding: 0;
-            border: 0;
-        }
         .project-frame {
             border: 1px solid rgba(255, 255, 255, 0.42);
             box-shadow:
@@ -332,28 +280,13 @@
             transition: box-shadow 520ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
             will-change: transform;
         }
-        .group:hover .project-frame,
-        .group:focus-within .project-frame {
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.52),
-                0 2.2rem 4.5rem rgba(65, 58, 120, 0.18);
-            transform: scale(1.035);
-        }
         .project-visual {
             transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
             will-change: transform;
         }
-        .group:hover .project-visual,
-        .group:focus-within .project-visual {
-            transform: rotate(-2.5deg) scale(1.08);
-        }
         .project-visual-centered {
             transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
             will-change: transform;
-        }
-        .group:hover .project-visual-centered,
-        .group:focus-within .project-visual-centered {
-            transform: translate(-50%, -50%) rotate(-3deg) scale(1.12);
         }
         .portfolio-section {
             scroll-margin-top: 7rem;
@@ -417,100 +350,6 @@
         .section-title-link:hover {
             color: #5b509f;
         }
-        .hero-copy .hero-piece,
-        .hero-copy .hero-hotspot {
-            transition: opacity 220ms ease, transform 220ms ease, translate 220ms ease, scale 220ms ease, color 220ms ease, background-color 220ms ease, border-color 220ms ease;
-        }
-        .hero-hotspot {
-            cursor: help;
-            position: relative;
-        }
-        .hero-hotspot:focus-visible {
-            outline: 2px solid currentColor;
-            outline-offset: 0.18em;
-        }
-        .hero-copy:has(.hero-hotspot:is(:hover, :focus-visible)) .hero-piece,
-        .hero-copy:has(.hero-hotspot:is(:hover, :focus-visible)) .hero-hotspot {
-            opacity: 0.18;
-        }
-        .hero-copy .hero-hotspot:is(:hover, :focus-visible) {
-            opacity: 1;
-            translate: 0 -0.08em;
-            scale: 1.03;
-        }
-        .hero-cursor-note {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 80;
-            max-width: min(18rem, calc(100vw - 2rem));
-            padding: 0.8rem 0.95rem;
-            border-radius: 0.5rem;
-            border: 1px solid rgba(173, 173, 178, 0.25);
-            background: rgba(255, 255, 255, 0.76);
-            box-shadow: 0 1rem 2.5rem rgba(45, 46, 51, 0.14);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-            color: #1A1B20;
-            font-family: "Poppins", sans-serif;
-            font-size: 0.92rem;
-            line-height: 1.45;
-            opacity: 0;
-            pointer-events: none;
-            transform: translate3d(var(--tooltip-x, 0), var(--tooltip-y, 0), 0) scale(0.96);
-            transition: opacity 160ms ease, transform 160ms ease;
-            visibility: hidden;
-        }
-        .hero-cursor-note.is-visible {
-            opacity: 1;
-            transform: translate3d(var(--tooltip-x, 0), var(--tooltip-y, 0), 0) scale(1);
-            visibility: visible;
-        }
-        .hero-cursor-note::before {
-            content: "";
-            position: absolute;
-            top: 0.9rem;
-            left: -1.55rem;
-            width: 1.75rem;
-            height: 1px;
-            background: currentColor;
-            opacity: 0.35;
-            transform: rotate(24deg);
-            transform-origin: right center;
-        }
-        .hero-cursor-note::after {
-            content: "";
-            position: absolute;
-            top: 0.55rem;
-            left: -1.85rem;
-            width: 0.42rem;
-            height: 0.42rem;
-            border-radius: 9999px;
-            background: currentColor;
-            opacity: 0.75;
-        }
-        .hero-cursor-note.is-left::before {
-            left: auto;
-            right: -1.55rem;
-            transform: rotate(-24deg);
-            transform-origin: left center;
-        }
-        .hero-cursor-note.is-left::after {
-            left: auto;
-            right: -1.85rem;
-        }
-        .hero-cursor-note.is-above::before {
-            top: auto;
-            bottom: 0.9rem;
-            transform: rotate(-24deg);
-        }
-        .hero-cursor-note.is-left.is-above::before {
-            transform: rotate(24deg);
-        }
-        .hero-cursor-note.is-above::after {
-            top: auto;
-            bottom: 0.55rem;
-        }
     </style>
 </head>
 <body class="font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
@@ -528,11 +367,11 @@
                 Mimizo
             </div>
 <div class="hidden md:flex items-center">
-<div class="site-nav-links">
+<div class="site-nav-links" data-repel="soft">
 <a class="nav-link is-active" href="index.html">home</a>
-<a class="nav-link" href="design-grafico.html">design gráfico</a>
+<a class="nav-link" href="design-grafico.html">graphic design</a>
 <a class="nav-link" href="ux-ui.html">ux/ui</a>
-<a class="nav-link" href="ilustracao.html">ilustração</a>
+<a class="nav-link" href="ilustracao.html">illustration</a>
 <a class="nav-link" href="about.html">about</a>
 </div>
 <div class="site-nav-cta-group">
@@ -546,44 +385,38 @@
 </div>
 </nav>
 <main class="pt-32 pb-20 px-4 md:px-8 max-w-[110rem] mx-auto">
-<!-- Main Glass Container -->
-<section class="glass-card rounded-[2.5rem] p-8 md:p-16 shadow-2xl shadow-primary/5">
-<!-- Hero Content -->
-<div class="hero-row">
-<div class="hero-portrait" aria-label="Profile photo placeholder"></div>
-<h1 class="hero-copy font-headline text-3xl md:text-5xl lg:text-[2.85rem] font-normal leading-[1.18] text-on-surface mb-5 flex-1" data-liquid-text>
-                    <span class="hero-piece">Welcome to my portfolio!</span><br/><br/>
-                    <span class="hero-piece">My name is </span><span class="hero-hotspot text-primary inline-block" data-topic="milena" tabindex="0">Milena</span><span class="hero-piece">, a Brazilian Graphic Designer passionate about </span>
-                    <span class="hero-hotspot font-signature text-secondary inline-block px-2 -rotate-2" data-topic="storytelling" tabindex="0"><span class="story-icon story-book" aria-hidden="true"></span><span class="story-text">storytelling</span><span class="story-icon story-ship" aria-hidden="true"></span></span><span class="hero-piece">
-                    and crafting </span>
-                    <span class="hero-hotspot font-marker text-tertiary inline-block rotate-1 scale-110 mx-2" data-topic="creative-solutions" tabindex="0">creative solutions</span><span class="hero-piece">
-                    to real-world </span>
-                    <span class="hero-hotspot font-label text-on-surface-variant" data-topic="challenges" tabindex="0">challenges</span><span class="hero-piece">.</span>
+<!-- Hero Content (outside the glass container, centered) -->
+<div class="home-hero">
+<h1 class="hero-copy font-headline text-3xl md:text-4xl lg:text-[2.6rem] font-normal leading-[2.36] text-on-surface mb-5" data-repel>
+                    <span class="hero-piece font-bold">Welcome to my portfolio!</span><br/><br/>
+                    <span class="hero-piece">My name is </span><span class="hero-hotspot text-primary" data-topic="milena" tabindex="0">Milena</span><span class="hero-piece">, a Brazilian Graphic Designer passionate about </span><span class="hero-hotspot text-primary" data-topic="storytelling" tabindex="0">storytelling</span><span class="hero-piece"> and crafting </span><span class="hero-hotspot text-primary" data-topic="creative-solutions" tabindex="0">creative solutions</span><span class="hero-piece"> to real-world </span><span class="hero-hotspot text-primary" data-topic="challenges" tabindex="0">challenges</span><span class="hero-piece">.</span>
 </h1>
 </div>
+<!-- Main Glass Container -->
+<section class="glass-card rounded-[2.5rem] p-8 md:p-16 shadow-2xl shadow-primary/5">
 <!-- Project Sections -->
 <div class="space-y-24">
 <section class="portfolio-section space-y-12" id="design-grafico">
 <div class="flex items-center justify-between">
-<h2 class="font-headline text-3xl font-bold text-on-surface"><a class="section-title-link" href="design-grafico.html">Design Gráfico</a></h2>
+<h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="section-title-link" href="design-grafico.html">Graphic Design</a></h2>
 <div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
-<span class="font-label text-sm text-on-surface-variant">Selected Works</span>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="design-grafico.html">see more</a>
 </div>
 <div class="landing-project-grid" data-featured-projects="design-grafico"></div>
 </section>
 <section class="portfolio-section space-y-12" id="ux-ui">
 <div class="flex items-center justify-between">
-<h2 class="font-headline text-3xl font-bold text-on-surface"><a class="section-title-link" href="ux-ui.html">UX/UI</a></h2>
+<h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="section-title-link" href="ux-ui.html">UX/UI</a></h2>
 <div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
-<span class="font-label text-sm text-on-surface-variant">Selected Works</span>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="ux-ui.html">see more</a>
 </div>
 <div class="landing-project-grid" data-featured-projects="ux-ui"></div>
 </section>
 <section class="portfolio-section space-y-12" id="ilustracao">
 <div class="flex items-center justify-between">
-<h2 class="font-headline text-3xl font-bold text-on-surface"><a class="section-title-link" href="ilustracao.html">Ilustração</a></h2>
+<h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="section-title-link" href="ilustracao.html">Illustration</a></h2>
 <div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
-<span class="font-label text-sm text-on-surface-variant">Selected Works</span>
+<a class="text-sm text-on-surface-variant hover:text-primary transition-colors" href="ilustracao.html">see more</a>
 </div>
 <div class="landing-project-grid" data-featured-projects="ilustracao"></div>
 </section>
@@ -627,7 +460,6 @@
 </div>
 </div>
 </footer>
-<div class="hero-cursor-note" id="hero-cursor-note" role="status" aria-live="polite"></div>
 <script src="data/projects-data.js"></script>
 <script src="scripts/portfolio-render.js"></script>
 <script>
@@ -666,202 +498,7 @@
 
         window.addEventListener("scroll", queueParallax, { passive: true });
         renderParallax();
-
-        const liquidText = document.querySelector("[data-liquid-text]");
-        const liquidWords = [];
-        let liquidPointer = null;
-        let liquidVelocity = { x: 0, y: 0 };
-        let liquidLastPoint = null;
-        let liquidFrame = null;
-        let liquidResetTimer = null;
-
-        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-        const wrapLiquidWords = (root) => {
-            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-                acceptNode(node) {
-                    if (!node.nodeValue.trim()) {
-                        return NodeFilter.FILTER_REJECT;
-                    }
-
-                    if (node.parentElement?.classList.contains("story-icon")) {
-                        return NodeFilter.FILTER_REJECT;
-                    }
-
-                    return NodeFilter.FILTER_ACCEPT;
-                }
-            });
-
-            const textNodes = [];
-            while (walker.nextNode()) {
-                textNodes.push(walker.currentNode);
-            }
-
-            textNodes.forEach((node) => {
-                const fragment = document.createDocumentFragment();
-                node.nodeValue.split(/(\s+)/).forEach((part) => {
-                    if (!part) {
-                        return;
-                    }
-
-                    if (/\s+/.test(part)) {
-                        fragment.appendChild(document.createTextNode(part));
-                        return;
-                    }
-
-                    const word = document.createElement("span");
-                    word.className = "liquid-word";
-                    word.textContent = part;
-                    fragment.appendChild(word);
-                });
-                node.replaceWith(fragment);
-            });
-
-            liquidWords.push(...root.querySelectorAll(".liquid-word"));
-        };
-
-        const resetLiquidWords = () => {
-            liquidText?.classList.remove("is-liquid-active");
-            liquidWords.forEach((word) => {
-                word.style.transform = "";
-                word.style.filter = "";
-                word.style.textShadow = "";
-            });
-        };
-
-        const renderLiquidText = () => {
-            if (!liquidPointer || !liquidText) {
-                liquidFrame = null;
-                return;
-            }
-
-            const heroRect = liquidText.getBoundingClientRect();
-            const radius = clamp(heroRect.width * 0.18, 110, 220);
-            const speed = clamp(Math.hypot(liquidVelocity.x, liquidVelocity.y), 0, 70);
-
-            liquidText.style.setProperty("--liquid-glow-x", `${((liquidPointer.x - heroRect.left) / heroRect.width) * 100}%`);
-            liquidText.style.setProperty("--liquid-glow-y", `${((liquidPointer.y - heroRect.top) / heroRect.height) * 100}%`);
-
-            liquidWords.forEach((word) => {
-                const rect = word.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                const dx = centerX - liquidPointer.x;
-                const dy = centerY - liquidPointer.y;
-                const distance = Math.hypot(dx, dy);
-                const strength = Math.max(0, 1 - distance / radius);
-
-                if (strength <= 0.01) {
-                    word.style.transform = "";
-                    word.style.filter = "";
-                    word.style.textShadow = "";
-                    return;
-                }
-
-                const normalX = dx / (distance || 1);
-                const normalY = dy / (distance || 1);
-                const ripple = Math.sin(distance * 0.055 - performance.now() * 0.012) * strength;
-                const push = 5 + speed * 0.26;
-                const translateX = normalX * strength * push + liquidVelocity.x * strength * 0.035;
-                const translateY = normalY * strength * push * 0.7 + liquidVelocity.y * strength * 0.026 + ripple * 3.2;
-                const scaleX = 1 + strength * 0.07 + Math.abs(liquidVelocity.x) * strength * 0.002;
-                const scaleY = 1 - strength * 0.035 + Math.abs(liquidVelocity.y) * strength * 0.0012;
-                const skew = clamp(-normalX * strength * 7 + liquidVelocity.x * strength * 0.035, -9, 9);
-                const blur = clamp(strength * speed * 0.011, 0, 0.8);
-
-                word.style.transform = `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)}) skew(${skew.toFixed(2)}deg)`;
-                word.style.filter = `blur(${blur.toFixed(2)}px)`;
-                word.style.textShadow = `0 ${Math.max(1, strength * 8).toFixed(1)}px ${Math.max(8, strength * 22).toFixed(1)}px rgba(91, 80, 159, ${Math.min(0.24, strength * 0.22).toFixed(2)})`;
-            });
-
-            liquidFrame = null;
-        };
-
-        const queueLiquidText = () => {
-            if (!liquidFrame) {
-                liquidFrame = window.requestAnimationFrame(renderLiquidText);
-            }
-        };
-
-        if (liquidText && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            wrapLiquidWords(liquidText);
-
-            liquidText.addEventListener("pointermove", (event) => {
-                const point = { x: event.clientX, y: event.clientY };
-                if (liquidLastPoint) {
-                    liquidVelocity = {
-                        x: point.x - liquidLastPoint.x,
-                        y: point.y - liquidLastPoint.y
-                    };
-                }
-
-                liquidLastPoint = point;
-                liquidPointer = point;
-                liquidText.classList.add("is-liquid-active");
-                window.clearTimeout(liquidResetTimer);
-                liquidResetTimer = window.setTimeout(() => {
-                    liquidPointer = null;
-                    liquidLastPoint = null;
-                    liquidVelocity = { x: 0, y: 0 };
-                    resetLiquidWords();
-                }, 180);
-                queueLiquidText();
-            });
-
-            liquidText.addEventListener("pointerleave", () => {
-                liquidPointer = null;
-                liquidLastPoint = null;
-                liquidVelocity = { x: 0, y: 0 };
-                window.clearTimeout(liquidResetTimer);
-                resetLiquidWords();
-            });
-        }
-
-        const heroComments = {
-            milena: "Milena brings a warm Brazilian lens to systems, stories, and visuals that feel human.",
-            storytelling: "Storytelling is the thread: every choice should help the audience feel where to go next.",
-            "creative-solutions": "Creative solutions turn fuzzy briefs into design decisions that are useful, fresh, and clear.",
-            challenges: "Real-world challenges keep the work honest — every detail has to earn its place."
-        };
-
-        const tooltip = document.querySelector("#hero-cursor-note");
-        const hotspots = document.querySelectorAll(".hero-hotspot[data-topic]");
-
-        const moveTooltip = (clientX, clientY) => {
-            const spacing = 26;
-            const margin = 16;
-            const tooltipWidth = tooltip.offsetWidth || 288;
-            const tooltipHeight = tooltip.offsetHeight || 92;
-            const showLeft = clientX + tooltipWidth + spacing > window.innerWidth - margin;
-            const showAbove = clientY + tooltipHeight + spacing > window.innerHeight - margin;
-            const x = showLeft ? clientX - tooltipWidth - spacing : clientX + spacing;
-            const y = showAbove ? clientY - tooltipHeight - spacing : clientY + spacing;
-
-            tooltip.style.setProperty("--tooltip-x", `${Math.max(margin, x)}px`);
-            tooltip.style.setProperty("--tooltip-y", `${Math.max(margin, y)}px`);
-            tooltip.classList.toggle("is-left", showLeft);
-            tooltip.classList.toggle("is-above", showAbove);
-        };
-
-        const showTooltip = (target, clientX, clientY) => {
-            tooltip.textContent = heroComments[target.dataset.topic] || "";
-            moveTooltip(clientX, clientY);
-            tooltip.classList.add("is-visible");
-        };
-
-        const hideTooltip = () => {
-            tooltip.classList.remove("is-visible", "is-left", "is-above");
-        };
-
-        hotspots.forEach((hotspot) => {
-            hotspot.addEventListener("pointerenter", (event) => showTooltip(hotspot, event.clientX, event.clientY));
-            hotspot.addEventListener("pointermove", (event) => moveTooltip(event.clientX, event.clientY));
-            hotspot.addEventListener("pointerleave", hideTooltip);
-            hotspot.addEventListener("focus", () => {
-                const rect = hotspot.getBoundingClientRect();
-                showTooltip(hotspot, rect.left + rect.width / 2, rect.bottom);
-            });
-            hotspot.addEventListener("blur", hideTooltip);
-        });
     </script>
+<script src="scripts/repel-text.js"></script>
 </body></html>
+

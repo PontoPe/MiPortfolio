@@ -18,8 +18,8 @@ window.portfolioData = {
     categories: [
         {
             id: "design-grafico",
-            label: "Design Grafico",
-            displayLabel: "Design Gráfico",
+            label: "Graphic Design",
+            displayLabel: "Graphic Design",
             page: "design-grafico.html",
             projects: [
                 {
@@ -47,24 +47,24 @@ window.portfolioData = {
                                 type: "image",
                                 src: "imagesProjects/marea-identity/onix.webp",
                                 alt: "Marea Identity packaging mockup",
-                                caption: "Primeira imagem do carrossel."
+                                caption: "First image in the carousel."
                             },
                             {
                                 type: "video",
                                 src: "imagesProjects/marea-identity/girlboss.mp4",
                                 poster: "imagesProjects/marea-identity/video-poster.jpg",
-                                caption: "Teste de motion para o lançamento."
+                                caption: "Motion test for the launch."
                             }],
                         gallery: [
                             {
                                 type: "image",
                                 src: "imagesProjects/marea-identity/detail-01.jpg",
-                                alt: "Detalhe do sistema visual da Marea Identity"
+                                alt: "Detail of the Marea Identity visual system"
                             },
                             {
                                 type: "image",
                                 src: "imagesProjects/marea-identity/detail-02.jpg",
-                                alt: "Detalhe do sistema visual da Marea Identity 2"
+                                alt: "Detail of the Marea Identity visual system 2"
                             }]
                     },
                     sections: {
@@ -188,8 +188,8 @@ window.portfolioData = {
         },
         {
             id: "ilustracao",
-            label: "Ilustracao",
-            displayLabel: "Ilustração",
+            label: "Illustration",
+            displayLabel: "Illustration",
             page: "ilustracao.html",
             projects: [
                 {
