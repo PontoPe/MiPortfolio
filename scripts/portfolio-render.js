@@ -442,6 +442,12 @@
                 <div class="project-detail-grid">
                     ${sections}
                 </div>
+                <div class="portfolio-section mt-28 text-center p-12 bg-primary-container/10 rounded-[2rem] border border-primary/5" id="contact">
+                    <p class="text-primary font-bold mb-4">Wanna work together?</p>
+                    <h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary.</h2>
+                    <a class="cta-btn cta-btn-primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
+                    <a class="cta-btn cta-btn-ghost" href="${escapeHtml(data.cvUrl || "")}" target="_blank" rel="noopener noreferrer">View CV</a>
+                </div>
             </section>
         `;
 

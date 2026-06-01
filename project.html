@@ -4,32 +4,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Project | Mimizo</title>
-<script>
-    window.tailwind = {
-        config: {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#5b509f",
-                        "primary-container": "#afa3f9",
-                        "primary-dim": "#4f4493",
-                        "secondary-fixed": "#ffc3ba",
-                        "surface-container-highest": "#dcdce4",
-                        "on-surface": "#1A1B20",
-                        "on-surface-variant": "#5a5b60",
-                        "outline-variant": "#adadb2"
-                    },
-                    fontFamily: {
-                        headline: ["Poppins", "sans-serif"],
-                        body: ["Poppins", "sans-serif"],
-                        label: ["Pixelify Sans", "monospace"]
-                    }
-                }
-            }
-        }
-    };
-</script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="scripts/tailwind-theme.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Pixelify+Sans:wght@500;600&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="page-style.css" rel="stylesheet"/>
@@ -60,15 +36,6 @@
 </nav>
 <main class="pt-32 pb-20 px-4 md:px-8 max-w-[110rem] mx-auto" data-project-detail>
 </main>
-<!-- Call to Action -->
-<section class="max-w-[110rem] mx-auto px-4 md:px-8 mt-24" id="contact">
-<div class="text-center p-12 bg-primary-container/10 rounded-[2rem] border border-primary/5">
-<p class="font-marker text-primary font-bold mb-4">Wanna work together?</p>
-<h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary.</h2>
-<a class="inline-flex items-center bg-primary text-[#FAF9FF] px-10 py-4 rounded-full font-bold text-lg hover:bg-primary-dim transition-all shadow-xl shadow-primary/20" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
-<a class="ml-3 inline-flex items-center bg-[#FAF9FF]/35 text-[#1A1B20] px-10 py-4 rounded-full font-bold text-lg border border-[#FAF9FF]/40 shadow-xl shadow-primary/10" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
-</div>
-</section>
 <!-- Footer -->
 <footer class="bg-white/15 backdrop-blur-md full-width py-12 border-t border-white/25 mt-24">
 <div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-[110rem] mx-auto w-full">
@@ -89,4 +56,9 @@
 <script src="scripts/repel-text.js"></script>
 </body>
 </html>
+
+
+
+
+
 

@@ -515,10 +515,6 @@ body::before {
     .project-detail-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
-    .project-detail-section:first-child {
-        grid-column: 1 / -1;
-    }
 }
 
 .material-symbols-outlined {
@@ -534,14 +530,14 @@ body::before {
 
 /* Home hero (now outside the glass container, centered) */
 .home-hero {
-    margin: 0 auto 4.5rem;
+    margin: 2.5rem auto 6.5rem;
     max-width: 70rem;
     text-align: center;
 }
 
-/* 1.5x line spacing for the hero copy (overrides Tailwind text-size line-heights) */
+/* 1.2x line spacing for the hero copy (overrides Tailwind text-size line-heights) */
 .home-hero .hero-copy {
-    line-height: 1.7 !important;
+    line-height: 1.36 !important;
 }
 
 /* Carousel: on-image click zones replace the arrows below */
@@ -609,6 +605,45 @@ body::before {
     z-index: 2;
 }
 
+/* CTA buttons with an obvious lift+fill hover (matches the header nav-cta) */
+.cta-btn {
+    align-items: center;
+    border-radius: 9999px;
+    display: inline-flex;
+    font-size: 1.125rem;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    transition: background-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.cta-btn-primary {
+    background: #5b509f;
+    box-shadow: 0 1rem 2rem rgba(91, 80, 159, 0.2);
+    color: #FAF9FF;
+}
+
+.cta-btn-primary:hover {
+    background: #4f4493;
+    box-shadow: 0 1.25rem 2.5rem rgba(91, 80, 159, 0.32);
+    color: #FAF9FF;
+    transform: translateY(-3px);
+}
+
+.cta-btn-ghost {
+    background: rgba(250, 249, 255, 0.35);
+    border: 1px solid rgba(250, 249, 255, 0.4);
+    box-shadow: 0 1rem 2rem rgba(91, 80, 159, 0.1);
+    color: #1A1B20;
+    margin-left: 0.75rem;
+}
+
+.cta-btn-ghost:hover {
+    background: #5b509f;
+    box-shadow: 0 1.25rem 2.5rem rgba(91, 80, 159, 0.28);
+    color: #FAF9FF;
+    transform: translateY(-3px);
+}
+
 /* About page: round portrait above the heading */
 .about-portrait {
     aspect-ratio: 1;
@@ -618,7 +653,7 @@ body::before {
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.7),
         0 1.5rem 3rem rgba(65, 58, 120, 0.15);
-    height: clamp(8rem, 14vw, 11rem);
+    height: clamp(6.5rem, 11vw, 9rem);
     margin-bottom: 1.75rem;
-    width: clamp(8rem, 14vw, 11rem);
+    width: clamp(6.5rem, 11vw, 9rem);
 }
