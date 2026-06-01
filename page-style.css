@@ -646,16 +646,51 @@ body::before {
     transform: translateY(-3px);
 }
 
-/* About page: round portrait above the heading */
+/* About page: square portrait above the heading */
+.about-heading {
+    margin-left: 2rem;
+}
+
+.about-portrait-stack {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.about-portrait-actions {
+    justify-content: center;
+    max-width: 32rem;
+    width: min(100%, calc(100vw - 4rem), 32rem);
+}
+
+.about-portrait-actions .cta-btn {
+    justify-content: center;
+    white-space: nowrap;
+}
+
 .about-portrait {
     aspect-ratio: 1;
-    background: url("assets/ui/mi.jpeg") center / cover no-repeat;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    border-radius: 9999px;
+    background: url("assets/ui/misquare.jpeg") center 32% / cover no-repeat;
+    border: 0;
+    border-radius: 0;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.7),
         0 1.5rem 3rem rgba(65, 58, 120, 0.15);
-    height: clamp(6.5rem, 11vw, 9rem);
+    height: clamp(15rem, 28vw, 24rem);
     margin-bottom: 1.75rem;
-    width: clamp(6.5rem, 11vw, 9rem);
+    width: clamp(15rem, 28vw, 24rem);
+}
+
+@media (max-width: 480px) {
+    .about-portrait-actions .cta-btn {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .about-heading {
+        margin-left: 2.5rem;
+    }
 }

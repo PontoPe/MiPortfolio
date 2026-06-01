@@ -6,7 +6,7 @@
 <title>About | Mimizo</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="scripts/tailwind-theme.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Pixelify+Sans:wght@500;600&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="page-style.css" rel="stylesheet"/>
 </head>
@@ -36,34 +36,30 @@
 </nav>
 <main class="pt-32 pb-20 px-4 md:px-8 max-w-[110rem] mx-auto">
 <section class="glass-card rounded-[2.5rem] p-8 md:p-16">
-<div class="grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-12 items-center mb-16">
-<div>
-<div class="flex items-center gap-5 mb-6">
+<div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-center mb-16">
+<div class="about-portrait-stack lg:self-end">
+<!-- TODO(Pedro): If this intro layout changes later, keep the portrait CTA bottoms aligned with the bio card bottom and the heading aligned to the bio text inset. -->
 <div class="about-portrait !mb-0 shrink-0" role="img" aria-label="Photo of Milena"></div>
-<h1 class="font-headline text-3xl md:text-4xl lg:text-5xl font-bold leading-tight" data-repel>Hi! Get to know me a little.</h1>
-</div>
-<a class="inline-flex items-center gap-3 bg-[#1A1B20] text-[#FAF9FF] px-8 py-4 rounded-full font-semibold shadow-xl shadow-primary/20" href="mailto:milena.am.caldas@gmail.com">
+<div class="about-portrait-actions mt-4 flex flex-col xl:flex-row sm:items-center gap-3">
+<a class="cta-btn cta-btn-primary gap-3" href="mailto:milena.am.caldas@gmail.com">
                     Send a message
                     <span class="material-symbols-outlined">arrow_outward</span>
                 </a>
-<a class="ml-3 inline-flex items-center gap-3 bg-[#FAF9FF]/35 text-[#1A1B20] px-8 py-4 rounded-full font-semibold border border-[#FAF9FF]/40 shadow-xl shadow-primary/10" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+<a class="cta-btn cta-btn-ghost gap-3 !ml-0 xl:!ml-3" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">
                     View CV
                     <span class="material-symbols-outlined">description</span>
                 </a>
 </div>
+</div>
+<div>
+<h1 class="about-heading font-headline text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6" data-repel>Hi! Get to know me a little.</h1>
 <div class="rounded-[2rem] border border-white/35 bg-white/20 p-8 md:p-10 backdrop-blur-md shadow-xl shadow-primary/5">
 <p class="text-on-surface-variant text-lg leading-8 mb-6">
                     Designer with background in Graphic Design and 3 years of experience in User Experience, Design Thinking, and Interface Design. Strong proficiency in Figma, Adobe Creative Suite, and user-centered design methodologies. Experience working in collaborative marketing and technology environments, delivering results-oriented digital and visual solutions.
                 </p>
-<p class="text-on-surface-variant text-lg leading-8 mb-8">
+<p class="text-on-surface-variant text-lg leading-8">
                     Multidisciplinary work spanning research, prototyping, usability testing, and design systems, with international recognition through awards such as the Apple Swift Student Challenge.
                 </p>
-<p class="font-label text-primary text-sm mb-3">areas of focus</p>
-<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-<div class="rounded-2xl bg-white/28 border border-white/35 p-4 text-center"><p class="font-headline font-bold text-sm">User Experience</p></div>
-<div class="rounded-2xl bg-white/28 border border-white/35 p-4 text-center"><p class="font-headline font-bold text-sm">Storytelling</p></div>
-<div class="rounded-2xl bg-white/28 border border-white/35 p-4 text-center"><p class="font-headline font-bold text-sm">Illustration</p></div>
-<div class="rounded-2xl bg-white/28 border border-white/35 p-4 text-center"><p class="font-headline font-bold text-sm">Branding &amp; UX Research</p></div>
 </div>
 </div>
 </div>

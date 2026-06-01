@@ -67,7 +67,7 @@ tailwind.config = {
             fontFamily: {
                 "headline": ["Poppins", "sans-serif"],
                 "body": ["Poppins", "sans-serif"],
-                "label": ["Pixelify Sans", "monospace"],
+                "label": ["Poppins", "sans-serif"],
                 "signature": ["Caveat", "cursive"],
                 "marker": ["Kalam", "cursive"]
             }
