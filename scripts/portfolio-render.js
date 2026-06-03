@@ -78,14 +78,84 @@
         `;
     };
 
+    const renderFeaturedCarousel = (projects) => {
+        const slides = projects
+            .map((project) => `<div class="featured-carousel-slide">${renderProjectCard(project, "h3")}</div>`)
+            .join("");
+
+        return `
+            <div class="featured-carousel" data-featured-carousel>
+                <button class="featured-carousel-nav featured-carousel-nav-prev" type="button" data-featured-prev aria-label="Previous projects">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <div class="featured-carousel-track" data-featured-track>
+                    ${slides}
+                </div>
+                <button class="featured-carousel-nav featured-carousel-nav-next" type="button" data-featured-next aria-label="Next projects">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+        `;
+    };
+
     document.querySelectorAll("[data-featured-projects]").forEach((container) => {
         const category = findCategory(container.dataset.featuredProjects);
         const projects = category ? category.projects.filter((project) => project.featured) : [];
 
-        container.innerHTML = projects.length
-            ? projects.map((project) => renderProjectCard(project, "h3")).join("")
-            : `<p class="text-on-surface-variant">Featured projects are coming soon.</p>`;
+        if (!projects.length) {
+            container.innerHTML = `<p class="text-on-surface-variant">Featured projects are coming soon.</p>`;
+            return;
+        }
+
+        // More than 3 featured -> sliding carousel with arrows. Otherwise keep the static grid.
+        if (projects.length > 3) {
+            container.classList.remove("landing-project-grid");
+            container.innerHTML = renderFeaturedCarousel(projects);
+        } else {
+            container.innerHTML = projects.map((project) => renderProjectCard(project, "h3")).join("");
+        }
     });
+
+    const initializeFeaturedCarousels = () => {
+        document.querySelectorAll("[data-featured-carousel]").forEach((carousel) => {
+            const track = carousel.querySelector("[data-featured-track]");
+            const previous = carousel.querySelector("[data-featured-prev]");
+            const next = carousel.querySelector("[data-featured-next]");
+
+            if (!track) {
+                return;
+            }
+
+            let ticking = false;
+
+            const updateNav = () => {
+                const maxScroll = track.scrollWidth - track.clientWidth - 1;
+                if (previous) {
+                    previous.disabled = track.scrollLeft <= 0;
+                }
+                if (next) {
+                    next.disabled = track.scrollLeft >= maxScroll;
+                }
+                ticking = false;
+            };
+
+            const page = () => Math.max(track.clientWidth * 0.9, 1);
+
+            previous?.addEventListener("click", () => track.scrollBy({ left: -page(), behavior: "smooth" }));
+            next?.addEventListener("click", () => track.scrollBy({ left: page(), behavior: "smooth" }));
+            track.addEventListener("scroll", () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateNav);
+                    ticking = true;
+                }
+            }, { passive: true });
+            window.addEventListener("resize", updateNav);
+
+            updateNav();
+        });
+    };
+
+    initializeFeaturedCarousels();
 
     document.querySelectorAll("[data-category-projects]").forEach((container) => {
         const category = findCategory(container.dataset.categoryProjects);
