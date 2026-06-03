@@ -1,10 +1,19 @@
 #!/usr/bin/env node
 // Build-time generator: pulls "Ready" rows from the Notion "Portfolio Projects"
-// database and writes data/projects-data.js. Runs on Vercel build.
+// database, writes data/projects-data.js, AND downloads each row's
+// "Files & media" attachments into imagesProjects/<slug>/. Runs on Vercel build.
 //
-// Media files are NOT fetched from Notion (its file URLs expire). Images/videos
-// must live in the repo under imagesProjects/<slug>/. Notion holds text only,
-// and references media by filename (Thumbnail File, Carousel).
+// Notion file URLs expire (~1h), but that's irrelevant: this script requests
+// fresh signed URLs at build time and downloads them within the same build.
+// So the designer only attaches photos/videos to the Notion row — nothing is
+// committed to the repo by hand.
+//
+// Filename rules:
+//   - Each attachment is saved as imagesProjects/<slug>/<original-filename>.
+//   - "Thumbnail File" should match an attachment name. If blank, the first
+//     attachment is used as the cover.
+//   - "Carousel" lines ("filename | caption") reference attachment names.
+//     If blank, no carousel is shown (cover only).
 //
 // Env vars (set in Vercel project settings):
 //   NOTION_TOKEN  - internal integration secret (required to regenerate)
@@ -14,12 +23,13 @@
 // If NOTION_TOKEN is missing (e.g. local dev), the script exits without
 // touching the committed data file.
 
-import { writeFile } from "node:fs/promises";
+import { writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
+import { dirname, resolve, basename } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_PATH = resolve(__dirname, "../data/projects-data.js");
+const MEDIA_ROOT = resolve(__dirname, "../imagesProjects");
 
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const NOTION_DB_ID = process.env.NOTION_DB_ID || "7b03d1c73b1e4dd9a39b670ff086cbcc";
@@ -46,6 +56,16 @@ const sel = (prop) => prop?.select?.name || "";
 const multi = (prop) => (prop?.multi_select || []).map((o) => o.name);
 const bool = (prop) => Boolean(prop?.checkbox);
 const num = (prop) => (typeof prop?.number === "number" ? prop.number : null);
+
+// Find the first "files" property on a page, regardless of its name, and
+// return [{ name, url }] entries (signed file URLs or external URLs).
+const fileEntries = (properties) => {
+    const filesProp = Object.values(properties).find((prop) => prop?.type === "files");
+    return (filesProp?.files || []).map((f) => ({
+        name: basename(f.name || ""),
+        url: f.type === "external" ? f.external?.url : f.file?.url
+    })).filter((f) => f.name && f.url);
+};
 
 // Split a text field into paragraphs. Accepts real newlines or <br> tags.
 const paragraphs = (value) => String(value || "")
@@ -96,10 +116,27 @@ async function fetchReadyPages() {
     return pages;
 }
 
-function mapProject(page) {
+// Download a row's attachments into imagesProjects/<slug>/.
+async function downloadMedia(slug, files) {
+    if (!files.length) return;
+    const dir = resolve(MEDIA_ROOT, slug);
+    await mkdir(dir, { recursive: true });
+    await Promise.all(files.map(async (f) => {
+        const res = await fetch(f.url);
+        if (!res.ok) {
+            throw new Error(`Download failed for ${slug}/${f.name}: ${res.status}`);
+        }
+        const buf = Buffer.from(await res.arrayBuffer());
+        await writeFile(resolve(dir, f.name), buf);
+        console.log(`[build-projects]   ↓ imagesProjects/${slug}/${f.name} (${buf.length} bytes)`);
+    }));
+}
+
+function mapProject(page, files) {
     const p = page.properties;
     const slug = txt(p["Slug"]);
-    const thumbFile = txt(p["Thumbnail File"]);
+    // Thumbnail: explicit field, else first attachment.
+    const thumbFile = txt(p["Thumbnail File"]) || files[0]?.name || "";
     const project = {
         slug,
         title: titleTxt(p["Title"]),
@@ -124,7 +161,15 @@ function mapProject(page) {
 
 async function main() {
     const pages = await fetchReadyPages();
-    const mapped = pages.map(mapProject).filter((m) => m.project.slug);
+
+    const mapped = [];
+    for (const page of pages) {
+        const slug = txt(page.properties["Slug"]);
+        if (!slug) continue;
+        const files = fileEntries(page.properties);
+        await downloadMedia(slug, files);
+        mapped.push(mapProject(page, files));
+    }
 
     const categories = CATEGORIES.map((cat) => ({
         id: cat.id,
