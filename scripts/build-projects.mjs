@@ -87,42 +87,12 @@ const parseCarousel = (value, slug) => paragraphs(value).map((line) => {
     return { type: "image", src, alt: caption || filename, ...(caption ? { caption } : {}) };
 }).filter((item) => item.src && !item.src.endsWith("/"));
 
-// fetch with retry/backoff on transient errors (429 rate-limit, 5xx, network).
-// Honors Retry-After when present. Throws only after exhausting retries.
-async function fetchWithRetry(url, options = {}, { retries = 4, label = "request" } = {}) {
-    let lastErr;
-    for (let attempt = 0; attempt <= retries; attempt++) {
-        try {
-            const res = await fetch(url, options);
-            if (res.ok) return res;
-            if (res.status === 429 || res.status >= 500) {
-                const retryAfter = Number(res.headers.get("retry-after"));
-                const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
-                    ? retryAfter * 1000
-                    : Math.min(1000 * 2 ** attempt, 8000);
-                console.warn(`[build-projects] ${label}: ${res.status}, retrying in ${waitMs}ms (attempt ${attempt + 1}/${retries})`);
-                await new Promise((r) => setTimeout(r, waitMs));
-                continue;
-            }
-            // Non-retryable (4xx other than 429): surface body and stop.
-            throw new Error(`${label} failed: ${res.status} ${await res.text()}`);
-        } catch (err) {
-            lastErr = err;
-            if (attempt === retries) break;
-            const waitMs = Math.min(1000 * 2 ** attempt, 8000);
-            console.warn(`[build-projects] ${label}: ${err.message}, retrying in ${waitMs}ms (attempt ${attempt + 1}/${retries})`);
-            await new Promise((r) => setTimeout(r, waitMs));
-        }
-    }
-    throw lastErr || new Error(`${label} failed after ${retries} retries`);
-}
-
 // --- Fetch all Ready rows ----------------------------------------------------
 async function fetchReadyPages() {
     const pages = [];
     let cursor;
     do {
-        const res = await fetchWithRetry(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
+        const res = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${NOTION_TOKEN}`,
@@ -135,7 +105,10 @@ async function fetchReadyPages() {
                 page_size: 100,
                 ...(cursor ? { start_cursor: cursor } : {})
             })
-        }, { label: "Notion query" });
+        });
+        if (!res.ok) {
+            throw new Error(`Notion query failed: ${res.status} ${await res.text()}`);
+        }
         const data = await res.json();
         pages.push(...data.results);
         cursor = data.has_more ? data.next_cursor : undefined;
@@ -144,21 +117,18 @@ async function fetchReadyPages() {
 }
 
 // Download a row's attachments into imagesProjects/<slug>/.
-// A single failed download is logged and skipped — it never fails the build
-// (the project keeps whatever copy is already committed in the repo).
 async function downloadMedia(slug, files) {
     if (!files.length) return;
     const dir = resolve(MEDIA_ROOT, slug);
     await mkdir(dir, { recursive: true });
     await Promise.all(files.map(async (f) => {
-        try {
-            const res = await fetchWithRetry(f.url, {}, { label: `download ${slug}/${f.name}` });
-            const buf = Buffer.from(await res.arrayBuffer());
-            await writeFile(resolve(dir, f.name), buf);
-            console.log(`[build-projects]   ↓ imagesProjects/${slug}/${f.name} (${buf.length} bytes)`);
-        } catch (err) {
-            console.warn(`[build-projects]   ⚠ skipped imagesProjects/${slug}/${f.name}: ${err.message}`);
+        const res = await fetch(f.url);
+        if (!res.ok) {
+            throw new Error(`Download failed for ${slug}/${f.name}: ${res.status}`);
         }
+        const buf = Buffer.from(await res.arrayBuffer());
+        await writeFile(resolve(dir, f.name), buf);
+        console.log(`[build-projects]   ↓ imagesProjects/${slug}/${f.name} (${buf.length} bytes)`);
     }));
 }
 
