@@ -17,6 +17,9 @@ window.portfolioData = {
                     "shortTitle": "Hospital Pequeno Príncipe",
                     "cardMeta": "Social Media",
                     "featured": true,
+                    "subcategories": [
+                        "Social Media"
+                    ],
                     "summary": "This project showcases a selection of social media assets created during my time at Hospital Pequeno Príncipe, Brazil's largest pediatric hospital. As part of the in-house design team, I developed visual content across multiple communication channels, audiences, and campaigns. The challenge was to adapt the institution's communication to different formats and objectives while maintaining a consistent brand identity. From awareness initiatives to educational content and institutional campaigns, each piece was designed to balance clarity, accessibility, and visual impact while preserving the essence of the Hospital Pequeno Príncipe brand.",
                     "tools": [
                         "Illustrator",
@@ -49,6 +52,10 @@ window.portfolioData = {
                     "shortTitle": "Solar – DTC",
                     "cardMeta": "Social Media • Paid Media",
                     "featured": true,
+                    "subcategories": [
+                        "Social Media",
+                        "Paid Media"
+                    ],
                     "summary": "A collection of paid media creatives developed for Solar Cosméticos to support the promotion of imported Asian skincare products. The work focused on combining direct-response advertising principles with premium brand positioning, creating engaging assets designed to capture attention and drive conversions across digital channels.",
                     "tools": [
                         "Canva",
@@ -81,6 +88,12 @@ window.portfolioData = {
                     "shortTitle": "3% Campaign",
                     "cardMeta": "Social Media • Editorial • E-mail Marketing • Print",
                     "featured": true,
+                    "subcategories": [
+                        "Social Media",
+                        "Editorial",
+                        "E-mail Marketing",
+                        "Print"
+                    ],
                     "summary": "This project was developed during my time as an in-house designer at Hospital Pequeno Príncipe, the largest pediatric hospital in Brazil and one of the country's leading institutions dedicated to children's healthcare. The work was part of a nationwide fundraising campaign focused on encouraging taxpayers to allocate a portion of their income tax return to support the hospital's medical care, research, and social impact initiatives. As one of the hospital's most important annual campaigns, the initiative required a strong and consistent visual presence across a wide range of print and digital channels. My role involved adapting the campaign concept into multiple communication materials, ensuring that the message remained clear, accessible, and emotionally engaging while reaching audiences across the country. The pieces presented here represent a selection of the assets created to support this large-scale effort and help drive awareness and donations for an institution that serves thousands of children and families every year.",
                     "tools": [
                         "Illustrator",
@@ -113,6 +126,9 @@ window.portfolioData = {
                     "shortTitle": "DiA – Social Media",
                     "cardMeta": "Social Media",
                     "featured": true,
+                    "subcategories": [
+                        "Social Media"
+                    ],
                     "summary": "This project showcases a selection of social media content created for DiA of California, a bilingual preschool based in Los Angeles. As part of an ongoing remote partnership, I develop visual assets that support the school's communication goals, helping connect with young parents while highlighting its commitment to high-quality bilingual education. The work focuses on translating educational concepts, school activities, and community initiatives into engaging social media content that is both informative and approachable. Each piece is designed to reflect the school's welcoming environment, reinforce its brand identity, and communicate the value of bilingual learning to current and prospective families.",
                     "tools": [
                         "Canva",
@@ -146,6 +162,9 @@ window.portfolioData = {
                     "shortTitle": "Ludis Social Media",
                     "cardMeta": "Social Media",
                     "featured": false,
+                    "subcategories": [
+                        "Social Media"
+                    ],
                     "summary": "This project showcases a collection of social media content created for LUDIS, a sports-focused mobile application. The work centered on building a consistent and engaging digital presence through strategic content, promotional campaigns, and community-focused communication designed to increase brand visibility and encourage user engagement. As part of the broader brand ecosystem, the content also incorporated Goatie, LUDIS' custom mascot, helping create a recognizable and approachable personality across social platforms. The mascot's design and development are explored separately within the Illustration section of this portfolio.",
                     "tools": [
                         "Figma",
@@ -187,6 +206,9 @@ window.portfolioData = {
                     "shortTitle": "HPP Landing Pages",
                     "cardMeta": "Web design",
                     "featured": true,
+                    "subcategories": [
+                        "Web Design"
+                    ],
                     "summary": "This project showcases a selection of institutional landing pages developed during my time as an in-house designer at Hospital Pequeno Príncipe, Brazil's largest pediatric hospital. Each page was created to support a specific initiative, campaign, or communication objective, requiring tailored approaches to content structure, visual storytelling, and user experience. Working across both UX and UI design, I was responsible for transforming complex information into clear, accessible, and engaging digital experiences while maintaining the hospital's visual identity. From information architecture and content hierarchy to responsive design and implementation, each landing page was designed to effectively communicate its purpose and guide users toward key actions across both desktop and mobile environments.",
                     "tools": [
                         "Figma",

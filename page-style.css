@@ -324,9 +324,43 @@ body::before {
     transform: rotate(-45deg);
 }
 
-/* Featured projects carousel (home page, when >3 featured) */
+/* Featured projects carousel (home page) */
 .featured-carousel {
     position: relative;
+}
+
+/* Slight white fade at the scrollable edges — hints there's more to scroll.
+   Toggled by .has-fade-prev / .has-fade-next from the carousel scroll handler. */
+.featured-carousel::before,
+.featured-carousel::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: clamp(3rem, 7vw, 6rem);
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms ease;
+}
+
+/* Wider, multi-stop taper so the edge eases out instead of cutting off hard. */
+.featured-carousel::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.45) 32%, rgba(255, 255, 255, 0.12) 66%, rgba(255, 255, 255, 0) 100%);
+}
+
+.featured-carousel::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.45) 32%, rgba(255, 255, 255, 0.12) 66%, rgba(255, 255, 255, 0) 100%);
+}
+
+.featured-carousel.has-fade-prev::before {
+    opacity: 1;
+}
+
+.featured-carousel.has-fade-next::after {
+    opacity: 1;
 }
 
 .featured-carousel-track {
@@ -344,19 +378,22 @@ body::before {
 }
 
 .featured-carousel-slide {
-    flex: 0 0 100%;
+    /* Show ~1.2 cards so the next one peeks in, hinting the row is scrollable. */
+    flex: 0 0 calc((100% - clamp(1.25rem, 2.6vw, 2rem)) / 1.2);
     scroll-snap-align: start;
 }
 
 @media (min-width: 768px) {
     .featured-carousel-slide {
-        flex-basis: calc((100% - clamp(1.25rem, 2.6vw, 2rem)) / 2);
+        /* ~2.4 cards visible */
+        flex-basis: calc((100% - 2 * clamp(1.25rem, 2.6vw, 2rem)) / 2.4);
     }
 }
 
 @media (min-width: 1024px) {
     .featured-carousel-slide {
-        flex-basis: calc((100% - 2 * clamp(1.25rem, 2.6vw, 2rem)) / 3);
+        /* ~3.5 cards visible — peek of the 4th signals more to scroll */
+        flex-basis: calc((100% - 3 * clamp(1.25rem, 2.6vw, 2rem)) / 3.5);
     }
 }
 
@@ -409,6 +446,37 @@ body::before {
 
 .featured-carousel-nav:hover .material-symbols-outlined {
     background: #5b509f;
+    color: #FAF9FF;
+}
+
+/* Category page: subcategory filter pills */
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.75rem;
+}
+
+.category-filter {
+    background: rgba(250, 249, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 9999px;
+    color: #1A1B20;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.5rem 1.15rem;
+    transition: background-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.category-filter:hover {
+    box-shadow: 0 0.5rem 1rem rgba(91, 80, 159, 0.12);
+    transform: translateY(-2px);
+}
+
+.category-filter.is-active {
+    background: #5b509f;
+    border-color: transparent;
+    box-shadow: 0 0.5rem 1.25rem rgba(91, 80, 159, 0.22);
     color: #FAF9FF;
 }
 

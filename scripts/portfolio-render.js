@@ -57,9 +57,10 @@
     const renderProjectCard = (project, headingTag = "h3") => {
         const safeHeading = headingTag === "h2" ? "h2" : "h3";
         const href = projectHref(project);
+        const subcats = (project.subcategories || []).join("|");
 
         return `
-            <article class="project-card group cursor-pointer">
+            <article class="project-card group cursor-pointer" data-subcats="${escapeHtml(subcats)}">
                 <a class="block" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
                     <div class="project-frame relative aspect-square overflow-hidden rounded-[2rem] bg-white/25">
                         ${renderThumbnail(project)}
@@ -107,13 +108,11 @@
             return;
         }
 
-        // More than 3 featured -> sliding carousel with arrows. Otherwise keep the static grid.
-        if (projects.length > 3) {
-            container.classList.remove("landing-project-grid");
-            container.innerHTML = renderFeaturedCarousel(projects);
-        } else {
-            container.innerHTML = projects.map((project) => renderProjectCard(project, "h3")).join("");
-        }
+        // Always use the carousel so the card size stays uniform across the home
+        // page regardless of how many featured projects a category has. With <4 it
+        // simply doesn't overflow, so the nav arrows auto-hide (see updateNav).
+        container.classList.remove("landing-project-grid");
+        container.innerHTML = renderFeaturedCarousel(projects);
     });
 
     const initializeFeaturedCarousels = () => {
@@ -130,12 +129,16 @@
 
             const updateNav = () => {
                 const maxScroll = track.scrollWidth - track.clientWidth - 1;
+                const atStart = track.scrollLeft <= 0;
+                const atEnd = track.scrollLeft >= maxScroll;
                 if (previous) {
-                    previous.disabled = track.scrollLeft <= 0;
+                    previous.disabled = atStart;
                 }
                 if (next) {
-                    next.disabled = track.scrollLeft >= maxScroll;
+                    next.disabled = atEnd;
                 }
+                carousel.classList.toggle("has-fade-prev", !atStart);
+                carousel.classList.toggle("has-fade-next", !atEnd);
                 ticking = false;
             };
 
@@ -157,13 +160,50 @@
 
     initializeFeaturedCarousels();
 
+    const initCategoryFilters = (container, bar) => {
+        const cards = Array.from(container.querySelectorAll(".project-card"));
+        const buttons = Array.from(bar.querySelectorAll(".category-filter"));
+
+        const apply = (value) => {
+            cards.forEach((card) => {
+                const cardSubs = (card.dataset.subcats || "").split("|").filter(Boolean);
+                card.hidden = !(value === "*" || cardSubs.includes(value));
+            });
+            buttons.forEach((btn) => btn.classList.toggle("is-active", btn.dataset.filter === value));
+        };
+
+        buttons.forEach((btn) => btn.addEventListener("click", () => apply(btn.dataset.filter)));
+        apply("*");
+    };
+
     document.querySelectorAll("[data-category-projects]").forEach((container) => {
         const category = findCategory(container.dataset.categoryProjects);
         const projects = category ? category.projects : [];
 
-        container.innerHTML = projects.length
-            ? projects.map((project) => renderProjectCard(project, "h2")).join("")
-            : `<p class="text-on-surface-variant">Projects are coming soon.</p>`;
+        if (!projects.length) {
+            container.innerHTML = `<p class="text-on-surface-variant">Projects are coming soon.</p>`;
+            return;
+        }
+
+        container.innerHTML = projects.map((project) => renderProjectCard(project, "h2")).join("");
+
+        // Filter pills from the unique subcategories in this category (first-seen order).
+        const subcats = [];
+        projects.forEach((project) => (project.subcategories || []).forEach((s) => {
+            if (s && !subcats.includes(s)) subcats.push(s);
+        }));
+
+        if (subcats.length) {
+            const bar = document.createElement("div");
+            bar.className = "category-filters";
+            bar.setAttribute("data-category-filters", "");
+            bar.innerHTML = `
+                <button class="category-filter" type="button" data-filter="*">All</button>
+                ${subcats.map((s) => `<button class="category-filter" type="button" data-filter="${escapeHtml(s)}">${escapeHtml(s)}</button>`).join("")}
+            `;
+            container.parentNode.insertBefore(bar, container);
+            initCategoryFilters(container, bar);
+        }
     });
 
     const renderTextSection = (title, paragraphs, options = {}) => {
@@ -185,18 +225,15 @@
         `;
     };
 
-    const renderToolsSection = (tools) => {
+    const renderToolTags = (tools) => {
         if (!hasContent(tools)) {
             return "";
         }
 
         return `
-            <section class="project-detail-section">
-                <p class="font-label text-primary font-bold mb-3">Tools</p>
-                <div class="flex flex-wrap gap-3">
-                    ${tools.map((tool) => `<span class="rounded-full bg-[#FAF9FF]/40 border border-white/45 px-4 py-2 text-sm font-semibold text-on-surface">${escapeHtml(tool)}</span>`).join("")}
-                </div>
-            </section>
+            <div class="flex flex-wrap gap-2 mt-4">
+                ${tools.map((tool) => `<span class="rounded-full bg-[#FAF9FF]/40 border border-white/45 px-3 py-1.5 text-xs font-semibold text-on-surface">${escapeHtml(tool)}</span>`).join("")}
+            </div>
         `;
     };
 
@@ -482,10 +519,9 @@
             ...(projectSections.carousel || [])
         ];
 
-        // Fixed order: Brief -> Tools -> Process -> Carousel -> Outcome. (Gallery removed.)
+        // Fixed order: Brief -> Process -> Carousel -> Outcome. (Tools moved under the thumbnail; gallery removed.)
         const sections = [
             renderProjectSection("brief", projectSections.brief),
-            renderToolsSection(project.tools),
             renderProjectSection("process", projectSections.process),
             renderCarouselSection(carouselItems),
             renderProjectSection("outcome", projectSections.outcome),
@@ -498,15 +534,18 @@
                     <span class="material-symbols-outlined text-base">arrow_back</span>
                     ${escapeHtml(project.categoryLabel)}
                 </a>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-20">
-                    <div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start mb-20">
+                    <div class="lg:col-span-2">
                         <p class="font-label text-primary font-bold mb-4">${escapeHtml(project.cardMeta)}</p>
                         <h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6" data-repel>${escapeHtml(project.title)}</h1>
                         <p class="font-label text-primary font-bold mb-3">Overview</p>
                         <p class="text-on-surface-variant text-lg leading-8">${escapeHtml(project.summary)}</p>
                     </div>
-                    <div class="project-frame relative aspect-square overflow-hidden rounded-[2rem] bg-white/25 w-full">
-                        ${renderThumbnail(project)}
+                    <div>
+                        <div class="project-frame relative aspect-square overflow-hidden rounded-[2rem] bg-white/25 w-full">
+                            ${renderThumbnail(project)}
+                        </div>
+                        ${renderToolTags(project.tools)}
                     </div>
                 </div>
                 <div class="project-detail-grid">

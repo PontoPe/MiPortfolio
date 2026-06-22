@@ -54,6 +54,13 @@ const txt = (prop) => (prop?.rich_text || []).map((r) => r.plain_text).join("").
 const titleTxt = (prop) => (prop?.title || []).map((r) => r.plain_text).join("").trim();
 const sel = (prop) => prop?.select?.name || "";
 const multi = (prop) => (prop?.multi_select || []).map((o) => o.name);
+// Read the first matching multi-select property among several candidate names.
+const multiAny = (props, names) => {
+    for (const name of names) {
+        if (props[name]?.multi_select) return multi(props[name]);
+    }
+    return [];
+};
 const bool = (prop) => Boolean(prop?.checkbox);
 const num = (prop) => (typeof prop?.number === "number" ? prop.number : null);
 
@@ -143,6 +150,8 @@ function mapProject(page, files) {
         shortTitle: txt(p["Short Title"]) || titleTxt(p["Title"]),
         cardMeta: txt(p["Card Meta"]),
         featured: bool(p["Featured"]),
+        // Multi-select on the Notion row; drives the filter pills on the category page.
+        subcategories: multiAny(p, ["Sub-categories", "Subcategories", "Sub-Categories", "Subcategory"]),
         summary: txt(p["Summary"]).replace(/<br\s*\/?>/gi, " ").replace(/\s+/g, " ").trim(),
         tools: multi(p["Tools"]),
         thumbnail: thumbFile
