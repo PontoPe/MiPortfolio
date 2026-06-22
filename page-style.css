@@ -337,22 +337,25 @@ body::before {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: clamp(3rem, 7vw, 6rem);
+    width: clamp(7rem, 15vw, 12rem);
     z-index: 2;
     opacity: 0;
     pointer-events: none;
     transition: opacity 240ms ease;
 }
 
-/* Wider, multi-stop taper so the edge eases out instead of cutting off hard. */
+/* Soft white band centered on the carousel edge: peaks at the edge and fades to
+   transparent on BOTH sides — into the cards AND out into the surrounding
+   padding — so neither side has a hard line. The negative offset pushes the
+   band outward so the peak sits on the content edge. */
 .featured-carousel::before {
-    left: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.45) 32%, rgba(255, 255, 255, 0.12) 66%, rgba(255, 255, 255, 0) 100%);
+    left: -2rem;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 8%, rgba(255, 255, 255, 0.55) 18%, rgba(255, 255, 255, 0.28) 45%, rgba(255, 255, 255, 0.1) 72%, rgba(255, 255, 255, 0) 100%);
 }
 
 .featured-carousel::after {
-    right: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.45) 32%, rgba(255, 255, 255, 0.12) 66%, rgba(255, 255, 255, 0) 100%);
+    right: -2rem;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 8%, rgba(255, 255, 255, 0.55) 18%, rgba(255, 255, 255, 0.28) 45%, rgba(255, 255, 255, 0.1) 72%, rgba(255, 255, 255, 0) 100%);
 }
 
 .featured-carousel.has-fade-prev::before {
