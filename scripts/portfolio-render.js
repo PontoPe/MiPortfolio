@@ -66,14 +66,14 @@
                         ${renderThumbnail(project)}
                     </div>
                 </a>
-                <div class="mt-6 flex justify-between items-end gap-6">
-                    <div>
-                        <p class="text-primary text-xs font-bold mb-1">${escapeHtml(project.cardMeta)}</p>
+                <div class="mt-6">
+                    <p class="text-primary text-xs font-bold mb-1">${escapeHtml(project.cardMeta)}</p>
+                    <div class="project-card-row flex justify-between items-start gap-6">
                         <${safeHeading} class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(project.title)}</${safeHeading}>
+                        <a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-[#FAF9FF] group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
                     </div>
-                    <a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-[#FAF9FF] group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
-                        <span class="material-symbols-outlined">arrow_forward</span>
-                    </a>
                 </div>
             </article>
         `;
@@ -331,7 +331,7 @@
         `;
     };
 
-    const wideTextSectionKeys = new Set(["process", "outcome"]);
+    const wideTextSectionKeys = new Set(["brief", "process", "outcome"]);
 
     const renderProjectSection = (key, content) => {
         if (key === "gallery") {
