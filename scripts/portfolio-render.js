@@ -19,6 +19,14 @@
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 
+    // Cards show at most a few meta tags; the rest stay in `subcategories` for filtering only.
+    const limitCardMeta = (meta, max = 3) => String(meta ?? "")
+        .split("•")
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .slice(0, max)
+        .join(" • ");
+
     const allProjects = data.categories.flatMap((category) =>
         category.projects.map((project) => ({
             ...project,
@@ -67,7 +75,7 @@
                     </div>
                 </a>
                 <div class="mt-6">
-                    <p class="text-primary text-xs font-bold mb-1">${escapeHtml(project.cardMeta)}</p>
+                    <p class="text-primary text-xs font-bold mb-1">${escapeHtml(limitCardMeta(project.cardMeta))}</p>
                     <div class="project-card-row flex justify-between items-start gap-6">
                         <${safeHeading} class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(project.title)}</${safeHeading}>
                         <a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-[#FAF9FF] group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
