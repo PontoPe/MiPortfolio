@@ -503,7 +503,7 @@
         const project = allProjects.find((item) => item.slug === slug);
 
         if (!project) {
-            document.title = "Project not found | Mimizo";
+            document.title = "Project not found | Milena Caldas";
             root.innerHTML = `
                 <section class="glass-card rounded-[2.5rem] p-8 md:p-16">
                     <p class="font-label text-primary font-bold mb-4">project</p>
@@ -518,7 +518,7 @@
             return;
         }
 
-        document.title = `${project.title} | Mimizo`;
+        document.title = `${project.title} | Milena Caldas`;
 
         const media = project.media || {};
         const projectSections = project.sections || {};
@@ -559,13 +559,12 @@
                 <div class="project-detail-grid">
                     ${sections}
                 </div>
-                <div class="portfolio-section mt-28 text-center p-12 bg-primary-container/10 rounded-[2rem] border border-primary/5" id="contact">
-                    <p class="text-primary font-bold mb-4">Wanna work together?</p>
-                    <h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary.</h2>
-                    <a class="cta-btn cta-btn-primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
-                    <a class="cta-btn cta-btn-ghost" href="${escapeHtml(data.cvUrl || "")}" target="_blank" rel="noopener noreferrer">View CV</a>
-                </div>
             </section>
+            <div class="cta-block portfolio-section" id="contact">
+                <p class="cta-lead">Wanna work together?</p>
+                <h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary!</h2>
+                <a class="cta-btn cta-btn-primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
+            </div>
         `;
 
         initializeCarousels();

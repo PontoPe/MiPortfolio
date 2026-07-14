@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>About | Mimizo</title>
+<title>About | Milena Caldas</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="scripts/tailwind-theme.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
@@ -11,67 +11,62 @@
 <link href="page-style.css" rel="stylesheet"/>
 </head>
 <body class="font-body text-on-surface selection:bg-primary-container">
-<div class="parallax-bg" aria-hidden="true">
-<div class="parallax-layer" data-depth="16"></div>
-<div class="parallax-layer" data-depth="-12"></div>
-<div class="parallax-layer" data-depth="7"></div>
-</div>
 <nav class="site-nav">
 <div class="site-nav-inner">
-<a class="text-2xl font-semibold text-[#1A1B20]" href="index.html">Mimizo</a>
+<a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
 <div class="hidden md:flex items-center">
 <div class="site-nav-links" data-repel="soft">
-<a class="nav-link" href="index.html">home</a>
 <a class="nav-link" href="design-grafico.html">graphic design</a>
 <a class="nav-link" href="ux-ui.html">ux/ui</a>
 <a class="nav-link" href="ilustracao.html">illustration</a>
 <a class="nav-link is-active" href="about.html">about</a>
-</div>
-<div class="site-nav-cta-group">
-<a class="nav-cta" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
-<a class="nav-cta" href="index.html#contact">Contact</a>
+<a class="nav-link" href="index.html#contact">contact</a>
 </div>
 </div>
+<button class="md:hidden p-2">
+<span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
+</button>
 </div>
 </nav>
-<main class="pt-32 pb-20 px-4 md:px-8 max-w-[110rem] mx-auto">
-<section class="glass-card rounded-[2.5rem] p-8 md:p-16">
-<div class="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-center mb-16">
-<div class="about-portrait-stack lg:self-end">
-<!-- TODO(Pedro): If this intro layout changes later, keep the portrait CTA bottoms aligned with the bio card bottom and the heading aligned to the bio text inset. -->
-<div class="about-portrait !mb-0 shrink-0" role="img" aria-label="Photo of Milena"></div>
-<div class="about-portrait-actions mt-4 flex flex-col xl:flex-row sm:items-center gap-3">
+<main class="pt-32 pb-8 px-4 md:px-8 max-w-[110rem] mx-auto">
+<section class="section-panel">
+<div class="about-hero">
+<img alt="Photo of Milena" class="about-portrait" src="assets/ui/mi.jpeg"/>
+<div class="about-hero-copy">
+<h1 class="about-heading font-headline text-5xl md:text-6xl font-bold leading-tight" data-repel>Hello!</h1>
+<p class="text-on-surface-variant text-lg leading-8 max-w-2xl">
+                    Designer with a soft spot for thoughtful experiences, playful visuals, and solving messy problems. I work across UX, branding, and digital design to create things people genuinely enjoy using.
+                </p>
+<div class="about-hero-actions">
 <a class="cta-btn cta-btn-primary gap-3" href="mailto:milena.am.caldas@gmail.com">
                     Send a message
                     <span class="material-symbols-outlined">arrow_outward</span>
                 </a>
-<a class="cta-btn cta-btn-ghost gap-3 !ml-0 xl:!ml-3" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+<a class="cta-btn cta-btn-ghost gap-3" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">
                     View CV
                     <span class="material-symbols-outlined">description</span>
                 </a>
 </div>
 </div>
-<div>
-<h1 class="about-heading font-headline text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6" data-repel>Hi! Get to know me a little.</h1>
-<div class="rounded-[2rem] border border-white/35 bg-white/20 p-8 md:p-10 backdrop-blur-md shadow-xl shadow-primary/5">
-<p class="text-on-surface-variant text-lg leading-8 mb-6">
-                    Designer with background in Graphic Design and 3 years of experience in User Experience, Design Thinking, and Interface Design. Strong proficiency in Figma, Adobe Creative Suite, and user-centered design methodologies. Experience working in collaborative marketing and technology environments, delivering results-oriented digital and visual solutions.
-                </p>
-<p class="text-on-surface-variant text-lg leading-8">
-                    Multidisciplinary work spanning research, prototyping, usability testing, and design systems, with international recognition through awards such as the Apple Swift Student Challenge.
-                </p>
-</div>
-</div>
 </div>
 
-<div class="mb-16">
+<div class="info-card p-8 md:p-10 mb-14">
+<p class="text-on-surface-variant text-lg leading-8 mb-6">
+            Designer with background in Graphic Design and 3 years of experience in User Experience, Design Thinking, and Interface Design. Strong proficiency in Figma, Adobe Creative Suite, and user-centered design methodologies. Experience working in collaborative marketing and technology environments, delivering results-oriented digital and visual solutions.
+        </p>
+<p class="text-on-surface-variant text-lg leading-8">
+            Multidisciplinary work spanning research, prototyping, usability testing, and design systems, with international recognition through awards such as the Apple Swift Student Challenge.
+        </p>
+</div>
+
+<div class="mb-14">
 <div class="flex items-center justify-between mb-8">
 <h2 class="font-headline text-3xl font-bold text-on-surface">Work Experience</h2>
-<div class="h-[1px] flex-grow mx-8 bg-outline-variant/20 hidden md:block"></div>
+<div class="h-[1px] flex-grow mx-8 bg-outline-variant/30 hidden md:block"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<article class="rounded-[1.75rem] border border-white/35 bg-white/20 p-7 backdrop-blur-md shadow-lg shadow-primary/5">
-<p class="font-label text-primary text-xs mb-2">2025 — Present</p>
+<article class="info-card p-7">
+<p class="font-label text-primary-dim text-xs font-semibold mb-2">2025 — Present</p>
 <h3 class="font-headline text-xl font-bold mb-1">Graphic Designer</h3>
 <p class="text-on-surface-variant text-sm font-semibold mb-4">Hospital Pequeno Príncipe</p>
 <ul class="text-on-surface-variant text-sm leading-6 space-y-2 list-disc pl-5">
@@ -80,8 +75,8 @@
 <li>Collaborated within multidisciplinary teams supporting high-volume deliveries with focus on diverse audiences.</li>
 </ul>
 </article>
-<article class="rounded-[1.75rem] border border-white/35 bg-white/20 p-7 backdrop-blur-md shadow-lg shadow-primary/5">
-<p class="font-label text-primary text-xs mb-2">2019 — Present</p>
+<article class="info-card p-7">
+<p class="font-label text-primary-dim text-xs font-semibold mb-2">2019 — Present</p>
 <h3 class="font-headline text-xl font-bold mb-1">Product &amp; Graphic Designer</h3>
 <p class="text-on-surface-variant text-sm font-semibold mb-4">Freelancer</p>
 <ul class="text-on-surface-variant text-sm leading-6 space-y-2 list-disc pl-5">
@@ -91,8 +86,8 @@
 <li>Drove measurable results — including significant growth in video channel views.</li>
 </ul>
 </article>
-<article class="rounded-[1.75rem] border border-white/35 bg-white/20 p-7 backdrop-blur-md shadow-lg shadow-primary/5">
-<p class="font-label text-primary text-xs mb-2">2021 — 2022</p>
+<article class="info-card p-7">
+<p class="font-label text-primary-dim text-xs font-semibold mb-2">2021 — 2022</p>
 <h3 class="font-headline text-xl font-bold mb-1">UX/UI Designer</h3>
 <p class="text-on-surface-variant text-sm font-semibold mb-4">Apple Developer Academy</p>
 <ul class="text-on-surface-variant text-sm leading-6 space-y-2 list-disc pl-5">
@@ -102,8 +97,8 @@
 <li>Contributed to design system development and maintenance.</li>
 </ul>
 </article>
-<article class="rounded-[1.75rem] border border-white/35 bg-white/20 p-7 backdrop-blur-md shadow-lg shadow-primary/5">
-<p class="font-label text-primary text-xs mb-2">2023 — 2024</p>
+<article class="info-card p-7">
+<p class="font-label text-primary-dim text-xs font-semibold mb-2">2023 — 2024</p>
 <h3 class="font-headline text-xl font-bold mb-1">Designer</h3>
 <p class="text-on-surface-variant text-sm font-semibold mb-4">Sollemne Papelaria</p>
 <ul class="text-on-surface-variant text-sm leading-6 space-y-2 list-disc pl-5">
@@ -122,18 +117,18 @@
 <h2 class="font-headline text-3xl font-bold text-on-surface">Education</h2>
 </div>
 <div class="space-y-4">
-<div class="rounded-2xl border border-white/35 bg-white/20 p-6 backdrop-blur-md">
-<p class="font-label text-primary text-xs mb-1">2025 — 2026</p>
+<div class="info-card p-6">
+<p class="font-label text-primary-dim text-xs font-semibold mb-1">2025 — 2026</p>
 <p class="font-headline font-bold">Postgraduate, User Experience Design and Beyond</p>
 <p class="text-on-surface-variant text-sm">PUCRS</p>
 </div>
-<div class="rounded-2xl border border-white/35 bg-white/20 p-6 backdrop-blur-md">
-<p class="font-label text-primary text-xs mb-1">2019 — 2023</p>
+<div class="info-card p-6">
+<p class="font-label text-primary-dim text-xs font-semibold mb-1">2019 — 2023</p>
 <p class="font-headline font-bold">Bachelor's Degree in Graphic Design</p>
 <p class="text-on-surface-variant text-sm">UFPR — Federal University of Paraná</p>
 </div>
-<div class="rounded-2xl border border-white/35 bg-white/20 p-6 backdrop-blur-md">
-<p class="font-label text-primary text-xs mb-1">2021 — 2022</p>
+<div class="info-card p-6">
+<p class="font-label text-primary-dim text-xs font-semibold mb-1">2021 — 2022</p>
 <p class="font-headline font-bold">Apple Developer Academy</p>
 <p class="text-on-surface-variant text-sm">PUCPR — Pontifical Catholic University of Paraná</p>
 </div>
@@ -143,59 +138,48 @@
 <div class="flex items-center justify-between mb-6">
 <h2 class="font-headline text-3xl font-bold text-on-surface">Languages</h2>
 </div>
-<div class="rounded-[1.75rem] border border-white/35 bg-white/20 p-7 backdrop-blur-md shadow-lg shadow-primary/5 space-y-4">
-<div class="flex items-baseline justify-between border-b border-white/30 pb-3">
+<div class="info-card p-7 space-y-4">
+<div class="flex items-baseline justify-between border-b border-outline-variant/40 pb-3">
 <p class="font-headline font-bold">Portuguese</p>
-<p class="font-label text-primary text-xs">Native</p>
+<p class="font-label text-primary-dim text-xs font-semibold">Native</p>
 </div>
-<div class="flex items-baseline justify-between border-b border-white/30 pb-3">
+<div class="flex items-baseline justify-between border-b border-outline-variant/40 pb-3">
 <p class="font-headline font-bold">English</p>
-<p class="font-label text-primary text-xs">Fluent</p>
+<p class="font-label text-primary-dim text-xs font-semibold">Fluent</p>
 </div>
-<div class="flex items-baseline justify-between border-b border-white/30 pb-3">
+<div class="flex items-baseline justify-between border-b border-outline-variant/40 pb-3">
 <p class="font-headline font-bold">Spanish</p>
-<p class="font-label text-primary text-xs">Intermediate</p>
+<p class="font-label text-primary-dim text-xs font-semibold">Intermediate</p>
 </div>
 <div class="flex items-baseline justify-between">
 <p class="font-headline font-bold">Italian</p>
-<p class="font-label text-primary text-xs">Basic</p>
+<p class="font-label text-primary-dim text-xs font-semibold">Basic</p>
 </div>
 </div>
-<div class="mt-6 rounded-[1.75rem] border border-white/35 bg-white/20 p-7 backdrop-blur-md shadow-lg shadow-primary/5">
-<p class="font-label text-primary text-xs mb-2">contact</p>
+<div class="mt-6 info-card p-7">
+<p class="font-label text-primary-dim text-xs font-semibold mb-2">contact</p>
 <a class="font-headline text-lg font-bold underline decoration-primary/40 underline-offset-4" href="mailto:milena.am.caldas@gmail.com">milena.am.caldas@gmail.com</a>
 </div>
 </div>
 </div>
-<div class="portfolio-section mt-28 text-center p-12 bg-primary-container/10 rounded-[2rem] border border-primary/5" id="contact">
-<p class="text-primary font-bold mb-4">Wanna work together?</p>
-<h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary.</h2>
-<a class="cta-btn cta-btn-primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
-<a class="cta-btn cta-btn-ghost" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
-</div>
 </section>
+<div class="cta-block portfolio-section" id="contact">
+<p class="cta-lead">Wanna work together?</p>
+<h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary!</h2>
+<a class="cta-btn cta-btn-primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
+</div>
 </main>
 <!-- Footer -->
-<footer class="bg-white/15 backdrop-blur-md full-width py-12 border-t border-white/25 mt-24">
-<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-[110rem] mx-auto w-full">
-<div class="mb-6 md:mb-0">
-<span class="text-lg font-semibold text-[#1A1B20]">Mimizo is the best</span>
+<footer class="site-footer">
+<div class="site-footer-links">
+<a href="#">Instagram</a>
+<a href="#">LinkedIn</a>
+<a href="#">Behance</a>
+<a href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
 </div>
-<div class="flex space-x-8 text-sm">
-<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Instagram</a>
-<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">LinkedIn</a>
-<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Behance</a>
-</div>
-</div>
+<p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
 </footer>
-<script src="scripts/page-motion.js"></script>
+<script src="scripts/falling-emoji.js"></script>
 <script src="scripts/repel-text.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
