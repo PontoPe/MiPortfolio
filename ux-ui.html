@@ -3,60 +3,76 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>UX/UI | Milena Caldas</title>
+<title>UX/UI | Mimizo</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="scripts/tailwind-theme.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
-<link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
 <link href="page-style.css" rel="stylesheet"/>
 </head>
 <body class="font-body text-on-surface selection:bg-primary-container">
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+</div>
 <nav class="site-nav">
 <div class="site-nav-inner">
-<a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
+<a class="text-2xl font-semibold text-[#1A1B20]" href="index.html">Mimizo</a>
 <div class="hidden md:flex items-center">
 <div class="site-nav-links" data-repel="soft">
+<a class="nav-link" href="index.html">home</a>
 <a class="nav-link" href="design-grafico.html">graphic design</a>
 <a class="nav-link is-active" href="ux-ui.html">ux/ui</a>
 <a class="nav-link" href="ilustracao.html">illustration</a>
 <a class="nav-link" href="about.html">about</a>
-<a class="nav-link" href="index.html#contact">contact</a>
+</div>
+<div class="site-nav-cta-group">
+<a class="nav-cta" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+<a class="nav-cta" href="index.html#contact">Contact</a>
 </div>
 </div>
-<button class="md:hidden p-2">
-<span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
-</button>
 </div>
 </nav>
-<main class="pt-32 pb-8 px-4 md:px-8 max-w-[110rem] mx-auto">
-<section class="section-panel">
-<div class="max-w-3xl mb-12">
-<p class="section-eyebrow">ux/ui</p>
-<h1 class="font-headline text-4xl md:text-6xl font-bold leading-tight mb-6" data-repel>Made to be used, not just admired.</h1>
+<main class="pt-32 pb-20 px-4 md:px-8 max-w-[110rem] mx-auto">
+<section class="glass-card rounded-[2.5rem] p-8 md:p-16">
+<div class="max-w-3xl mb-16">
+<p class="font-label text-primary font-bold mb-4">ux/ui</p>
+<h1 class="font-headline text-5xl md:text-7xl font-bold leading-tight mb-6" data-repel>Interfaces that move cleanly from idea to hand.</h1>
 <p class="text-on-surface-variant text-lg leading-8">Flows, prototypes, and product screens designed to make complex decisions feel calm and readable.</p>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" data-category-projects="ux-ui"></div>
-</section>
-<div class="cta-block portfolio-section" id="contact">
-<p class="cta-lead">Wanna work together?</p>
-<h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary!</h2>
+<div class="portfolio-section mt-28 text-center p-12 bg-primary-container/10 rounded-[2rem] border border-primary/5" id="contact">
+<p class="text-primary font-bold mb-4">Wanna work together?</p>
+<h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary.</h2>
 <a class="cta-btn cta-btn-primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
+<a class="cta-btn cta-btn-ghost" href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
 </div>
+</section>
 </main>
 <!-- Footer -->
-<footer class="site-footer">
-<div class="site-footer-links">
-<a href="#">Instagram</a>
-<a href="#">LinkedIn</a>
-<a href="#">Behance</a>
-<a href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+<footer class="bg-white/15 backdrop-blur-md full-width py-12 border-t border-white/25 mt-24">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-[110rem] mx-auto w-full">
+<div class="mb-6 md:mb-0">
+<span class="text-lg font-semibold text-[#1A1B20]">Mimizo is the best</span>
 </div>
-<p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
+<div class="flex space-x-8 text-sm">
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Instagram</a>
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">LinkedIn</a>
+<a class="text-slate-500 hover:text-indigo-400 hover:underline decoration-indigo-500/30 underline-offset-4 transition-colors duration-200" href="#">Behance</a>
+</div>
+</div>
 </footer>
 <script src="data/projects-data.js"></script>
 <script src="scripts/portfolio-render.js"></script>
+<script src="scripts/page-motion.js"></script>
 <script src="scripts/repel-text.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
