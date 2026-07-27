@@ -10,7 +10,11 @@
     const isAtomic = (node, root) => {
         let parent = node.parentElement;
         while (parent && parent !== root) {
-            if (parent.classList.contains("hero-hotspot") || parent.classList.contains("story-icon")) {
+            if (
+                parent.classList.contains("hero-hotspot") ||
+                parent.classList.contains("story-icon") ||
+                parent.classList.contains("sticker-pill")
+            ) {
                 return true;
             }
             parent = parent.parentElement;
@@ -61,6 +65,13 @@
 
         // Decorative hotspots keep their own rotation/scale styling, so leave them static.
         root.querySelectorAll(".repel-word").forEach((el) => words.push({ el, strength }));
+
+        // Sticker pills repel as whole boxes: the words inside never move,
+        // but the box itself gets pushed hard. The translate is composed with
+        // the pill's CSS tilt (--tilt) so it keeps its rotation.
+        root.querySelectorAll(".sticker-pill").forEach((el) => {
+            words.push({ el, strength: 1, atomic: true, radius: 220, push: 55 });
+        });
     };
 
     document.querySelectorAll("[data-repel]").forEach((root) => {
@@ -77,12 +88,12 @@
 
     const render = () => {
         frame = null;
-        words.forEach(({ el, strength }) => {
+        words.forEach(({ el, strength, atomic, radius: ownRadius, push: ownPush }) => {
             const rect = el.getBoundingClientRect();
             const dx = rect.left + rect.width / 2 - pointerX;
             const dy = rect.top + rect.height / 2 - pointerY;
             const distance = Math.hypot(dx, dy);
-            const radius = 110 * strength + 40;
+            const radius = ownRadius ?? 110 * strength + 40;
 
             if (distance > radius || distance === 0) {
                 el.style.transform = "";
@@ -92,10 +103,11 @@
             const linear = 1 - distance / radius;
             // smoothstep easing so the push fades in/out gently (water-like, no hard edge)
             const eased = linear * linear * (3 - 2 * linear);
-            const push = 15 * strength * eased;
+            const push = (ownPush ?? 15 * strength) * eased;
             const nx = dx / distance;
             const ny = dy / distance;
-            el.style.transform = `translate(${(nx * push).toFixed(2)}px, ${(ny * push).toFixed(2)}px)`;
+            const translate = `translate(${(nx * push).toFixed(2)}px, ${(ny * push).toFixed(2)}px)`;
+            el.style.transform = atomic ? `${translate} rotate(var(--tilt, 0deg))` : translate;
         });
     };
 

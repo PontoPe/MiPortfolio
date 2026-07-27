@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LUDIS — Shipped to the App Store | Milena Caldas</title>
+<meta name="description" content="LUDIS: a sports management app taken from research to a live iOS product. 8 teams and 20 active users in the first week of launch."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="scripts/tailwind-theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
+<link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
+<link href="page-style.css" rel="stylesheet"/>
+<link href="case-ludis.css" rel="stylesheet"/>
+<!-- Reveal-on-scroll hides content until IntersectionObserver un-hides it.
+     Gate that behind a class only scripting can set, so a dead script (or a
+     blocked observer) leaves a readable page instead of a blank one. -->
+<script>document.documentElement.classList.add("case-js");</script>
+</head>
+<body class="font-body case-body selection:bg-primary-container">
+
+<div class="case-progress" aria-hidden="true"><span></span></div>
+<nav class="case-dots" aria-label="Case chapters"></nav>
+
+<nav class="site-nav">
+<div class="site-nav-inner">
+<a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
+<div class="hidden md:flex items-center">
+<div class="site-nav-links">
+<a class="nav-link" href="design-grafico.html">graphic design</a>
+<a class="nav-link" href="ux-ui.html">ux/ui</a>
+<a class="nav-link" href="ilustracao.html">illustration</a>
+<a class="nav-link" href="about.html">about</a>
+<a class="nav-link" href="index.html#contact">contact</a>
+</div>
+</div>
+<button class="md:hidden p-2">
+<span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
+</button>
+</div>
+</nav>
+
+<main class="case-main">
+
+<!-- ======================================================================
+     1 — HERO: the launch first
+     "Shipped" is the rarest word in a junior portfolio; it buys the 90
+     seconds the rest of the case needs.
+====================================================================== -->
+<section class="case-section case-section--dark case-hero" id="ship" data-chapter="Shipped">
+<div class="case-wrap">
+<div class="case-hero-grid">
+
+<div>
+<p class="case-eyebrow" data-reveal>iOS product · Sports management · <span class="todo">year</span></p>
+<h1 data-reveal style="--d:60ms">
+<img class="case-hero-logo" alt="LUDIS" src="assets/ui/ludis-logo.svg" onerror="this.insertAdjacentHTML('afterend','&lt;span class=&quot;case-display case-hero-title&quot;&gt;LUD&lt;em&gt;I&lt;/em&gt;S&lt;/span&gt;');this.remove()"/>
+</h1>
+<p data-reveal style="--d:120ms"><span class="case-shipped"><span class="material-symbols-outlined">rocket_launch</span>Shipped to the App Store</span></p>
+<p class="case-lead" data-reveal style="--d:180ms">
+A sports management app taking professional-grade tools — playbooks, calendars,
+training analytics — to teams of any size. We took it from research to a live iOS
+product: <span class="case-mark">8 teams created and 20 active users in the first week of launch.</span>
+</p>
+
+<div class="case-stats">
+<div class="case-stat" data-reveal><b data-count="8">8</b><span>teams created<br/>in week one</span></div>
+<div class="case-stat" data-reveal style="--d:80ms"><b data-count="20">20</b><span>active users<br/>at launch</span></div>
+<div class="case-stat" data-reveal style="--d:160ms"><b data-count="3">3</b><span>paid campaigns<br/>I planned and ran</span></div>
+<div class="case-stat" data-reveal style="--d:240ms"><b data-count="1">1</b><span>product live<br/>on the App Store</span></div>
+</div>
+</div>
+
+<div data-reveal style="--d:200ms">
+<div class="case-phone">
+<figure class="media-frame">
+<img alt="The LUDIS listing on the App Store" src="imagesProjects/ludis-case/appstore-listing.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">phone_iphone</span><code>imagesProjects/ludis-case/appstore-listing.png</code><em>Screenshot of the real App Store page — proof of life</em></span>
+</figure>
+</div>
+</div>
+
+</div>
+
+<p class="case-scroll-cue" data-reveal style="--d:320ms"><span class="material-symbols-outlined">south</span>How we got there</p>
+</div>
+</section>
+
+<!-- ======================================================================
+     2 — CONTEXT, TEAM AND ROLE
+====================================================================== -->
+<section class="case-section case-section--light" id="context" data-chapter="Context">
+<div class="case-wrap case-two-col">
+
+<div>
+<p class="case-eyebrow" data-reveal>The problem</p>
+<h2 class="case-display case-h2" data-reveal style="--d:60ms">Pro tools,<br/>amateur budgets</h2>
+<p class="case-body-text" data-reveal style="--d:120ms">
+Amateur and school teams run on the same needs as professional ones — playbooks,
+schedules, training analysis — but the tools for that live in expensive, fragmented
+professional software. <strong>LUDIS brings those artifacts into one accessible app.</strong>
+</p>
+</div>
+
+<aside class="case-card" data-reveal style="--d:180ms">
+<h3>Team of three · one developer, two designers</h3>
+<ul class="case-role-list">
+<li>
+<strong>UX research</strong>
+<span>Benchmarking, interview scripts, usability testing.</span>
+</li>
+<li>
+<strong>Design</strong>
+<span>Low-to-high fidelity wireframes and flows, in Figma, against Apple's HIG.</span>
+</li>
+<li class="is-key">
+<strong>Go-to-market</strong>
+<span>Launch strategy, three paid campaigns, promotional content — planned and produced by me.</span>
+</li>
+</ul>
+<p class="case-credit"><span class="material-symbols-outlined">handshake</span>The design system was led by Natalia Da Rosa.</p>
+</aside>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     3 — RESEARCH
+     The Notion version listed tools and never said what was found. The
+     finding block below is the gap to close — tools are not findings.
+====================================================================== -->
+<section class="case-section case-section--tint" id="research" data-chapter="Research">
+<div class="case-wrap case-sticky-grid">
+
+<div class="case-sticky-col">
+<div class="case-sticky">
+<p class="case-eyebrow" data-reveal>Investigate</p>
+<h2 class="case-display case-h2" data-reveal style="--d:60ms">We asked<br/>before we drew</h2>
+<p class="case-body-text" data-reveal style="--d:120ms">
+Using Challenge Based Learning — the same framework I later adapted for my thesis
+research — we ran semi-structured interviews with <span class="todo">N</span> athletes and team
+organizers, benchmarked <span class="todo">N</span> sports and communication apps, and mapped pains
+through empathy maps and a Value Proposition Canvas.
+</p>
+<div class="case-chips" data-reveal style="--d:180ms">
+<span class="case-chip">Challenge Based Learning</span>
+<span class="case-chip">Semi-structured interviews</span>
+<span class="case-chip">Benchmarking</span>
+<span class="case-chip">Empathy map</span>
+<span class="case-chip">Value Proposition Canvas</span>
+<span class="case-chip">Proto-persona</span>
+</div>
+</div>
+</div>
+
+<div>
+<figure class="case-figure" data-reveal>
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="Filled empathy map from the LUDIS research" src="imagesProjects/ludis-case/research-empathy-map.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">psychology</span><code>imagesProjects/ludis-case/research-empathy-map.png</code><em>A filled empathy map or the VPC — real material beats a list of method names</em></span>
+</div>
+<figcaption>One piece of real research material is worth more than the four tools it came from.</figcaption>
+</figure>
+
+<div class="case-finding" data-reveal style="--d:120ms">
+<h3>What the research told us</h3>
+<p>
+<span class="todo">the finding — where their team management lived before (WhatsApp? paper?), which professional tool they envied most, what benchmarking showed existing apps get wrong</span>
+</p>
+<p class="case-question">
+The question to answer before writing this: from the interviews, what was the one
+piece of information without which LUDIS would be a different app? If it exists,
+this screen is the heart of the case. If it doesn't, this screen shrinks and the
+weight moves to the decisions and the launch.
+</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     4 — DESIGN DECISIONS
+     Three, chosen. A case is curation, not a diary — no low-fi wireframes.
+====================================================================== -->
+<section class="case-section case-section--dark" id="decisions" data-chapter="Decisions">
+<div class="case-wrap">
+<p class="case-eyebrow" data-reveal>Design decisions</p>
+<h2 class="case-display case-h2" data-reveal style="--d:60ms">Three calls that<br/>shaped the product</h2>
+
+<div class="case-decision">
+<div data-reveal>
+<p class="case-display case-decision-num">01</p>
+<h3>The mascot earns its keep</h3>
+<p>
+Sports apps skew cold and utilitarian. From research and market observation we chose
+to build a mascot that accompanies interactions — borrowing engagement patterns from
+social products rather than enterprise tools, because our users live in social apps,
+not dashboards.
+</p>
+<p class="case-tradeoff">Goatie shows up at moments of friction — empty states and first runs — not at random. Delight has a job.</p>
+</div>
+<figure class="case-figure case-decision-media" data-reveal style="--d:100ms">
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="Goatie, the LUDIS mascot, inside the app UI" src="imagesProjects/ludis-case/mascot-in-context.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">emoji_nature</span><code>imagesProjects/ludis-case/mascot-in-context.png</code><em>Goatie inside a real screen — empty state or first run</em></span>
+</div>
+<figcaption><strong>Goatie</strong> — the mascot's own design process lives in the Illustration section.</figcaption>
+</figure>
+</div>
+
+<div class="case-decision">
+<div data-reveal>
+<p class="case-display case-decision-num">02</p>
+<h3>Accessibility as a spec, not a pass</h3>
+<p>
+Colour palette and components were checked for colourblind users from the design
+system up, rather than audited at the end.
+</p>
+<p class="case-tradeoff"><span class="todo">one concrete example — which colour or contrast choice changed because of this check</span></p>
+</div>
+<figure class="case-figure case-decision-media" data-reveal style="--d:100ms">
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="The LUDIS colour tokens: purple, pink, green, cyan and gray ramps with error and success states" src="imagesProjects/ludis-case/design-system-colors.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">contrast</span><code>imagesProjects/ludis-case/design-system-colors.jpg</code><em>Palette sheet</em></span>
+</div>
+<figcaption>The colour tokens, with full ramps and dedicated error/success states. Design system led by <strong>Natalia Da Rosa</strong>.</figcaption>
+</figure>
+</div>
+
+<div class="case-decision">
+<div data-reveal>
+<p class="case-display case-decision-num">03</p>
+<h3>HIG as a constraint we accepted</h3>
+<p>
+Building strictly inside Apple's Human Interface Guidelines cost us
+<span class="todo">the real trade-off — something the team wanted to do that the platform pattern wouldn't allow</span>
+and bought us consistency and App Store readiness.
+</p>
+</div>
+<figure class="case-figure case-decision-media" data-reveal style="--d:100ms">
+<div class="media-frame" style="--slot-ratio: 3 / 4">
+<img alt="The LUDIS component sheet: button states, dialogs, forms, spacing scale and the HIG type ramp" src="imagesProjects/ludis-case/design-system-components.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">devices</span><code>imagesProjects/ludis-case/design-system-components.jpg</code><em>Component sheet</em></span>
+</div>
+<figcaption>The type ramp is <strong>named for the HIG</strong> — LargeTitle, Title1–3, Headline, Body, Callout, Subheadline, Footnote, Caption1–2. The constraint is visible in the system itself, not just claimed.</figcaption>
+</figure>
+</div>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     5 — TESTING
+     Rule from the blueprint: if this screen can't name at least two concrete
+     changes, delete it and fold one paragraph into the decisions above.
+     Testing that changed nothing is not case content.
+====================================================================== -->
+<section class="case-section case-section--light" id="testing" data-chapter="Testing">
+<div class="case-wrap">
+<p class="case-eyebrow" data-reveal>Test &amp; iterate</p>
+<h2 class="case-display case-h2" data-reveal style="--d:60ms">What changed<br/>because of testing</h2>
+<p class="case-body-text" data-reveal style="--d:120ms">
+Usability tests on mid-to-high fidelity prototypes, then a TestFlight beta before
+launch. Three things moved:
+</p>
+
+<div class="case-changes">
+
+<div class="case-change" data-reveal>
+<p class="case-change-tag"><span class="material-symbols-outlined" style="font-size:1rem">science</span>Usability test</p>
+<div><p class="case-change-label">Observed</p><p class="case-change-value"><span class="todo">the behaviour testers showed</span></p></div>
+<p class="case-arrow material-symbols-outlined">south</p>
+<div><p class="case-change-label">Changed</p><p class="case-change-value"><span class="todo">the screen or flow that was adjusted</span></p></div>
+</div>
+
+<div class="case-change" data-reveal style="--d:90ms">
+<p class="case-change-tag"><span class="material-symbols-outlined" style="font-size:1rem">science</span>Usability test</p>
+<div><p class="case-change-label">Observed</p><p class="case-change-value"><span class="todo">the behaviour testers showed</span></p></div>
+<p class="case-arrow material-symbols-outlined">south</p>
+<div><p class="case-change-label">Changed</p><p class="case-change-value"><span class="todo">the screen or flow that was adjusted</span></p></div>
+</div>
+
+<div class="case-change" data-reveal style="--d:180ms">
+<p class="case-change-tag"><span class="material-symbols-outlined" style="font-size:1rem">flight_takeoff</span>TestFlight beta</p>
+<div><p class="case-change-label">Observed</p><p class="case-change-value"><span class="todo">what the beta caught that the prototype didn't</span></p></div>
+<p class="case-arrow material-symbols-outlined">south</p>
+<div><p class="case-change-label">Changed</p><p class="case-change-value"><span class="todo">the fix that shipped</span></p></div>
+</div>
+
+</div>
+
+<figure class="case-figure" data-reveal style="margin-top:3rem">
+<div class="media-frame" style="--slot-ratio: 16 / 9">
+<img alt="Before and after of a LUDIS screen adjusted from testing" src="imagesProjects/ludis-case/testing-before-after.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">compare</span><code>imagesProjects/ludis-case/testing-before-after.png</code><em>Before / after of one screen that changed — the single most convincing image in any case</em></span>
+</div>
+<figcaption>Before and after, same screen. If only one before/after exists, it still earns its place.</figcaption>
+</figure>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     6 — THE LAUNCH
+     The screen no other junior has: acquisition treated as design work.
+====================================================================== -->
+<section class="case-section case-section--dark" id="launch" data-chapter="Launch">
+<div class="case-wrap">
+<p class="case-eyebrow" data-reveal>Go-to-market</p>
+<h2 class="case-display case-h2 case-launch-statement" data-reveal style="--d:60ms">Shipping isn't the end of design</h2>
+<p class="case-lead" data-reveal style="--d:120ms">
+Acquisition is a design problem too. I planned the launch strategy and ran three paid
+campaigns on Meta Ads, producing the promotional content myself.
+</p>
+
+<div class="case-bigmetrics">
+<div class="case-bigmetric" data-reveal><b data-count="8">8</b><span>new teams created in week one</span></div>
+<div class="case-bigmetric" data-reveal style="--d:90ms"><b data-count="20">20</b><span>active users in week one</span></div>
+<div class="case-bigmetric" data-reveal style="--d:180ms"><b data-count="3">3</b><span>paid campaigns, content produced in-house</span></div>
+</div>
+
+<p class="case-body-text" data-reveal style="margin-top:2.5rem;color:rgba(243,246,234,0.72)">
+Real people, organizing real teams, in a product we took from interview scripts to the
+App Store. <span class="todo">one post-launch learning — what the first users did that you didn't predict, or which campaign metric surprised you</span>
+</p>
+
+<div class="case-rail-head" data-reveal>
+<div>
+<p class="case-eyebrow">The campaign</p>
+<h3 class="case-display" style="font-size:clamp(1.6rem,3vw,2.4rem);color:var(--lud-cream);margin-top:0.75rem">Pieces that ran</h3>
+</div>
+<div class="case-rail-nav">
+<button class="case-rail-btn" data-rail-btn="prev" type="button" aria-label="Previous campaign pieces"><span class="material-symbols-outlined">west</span></button>
+<button class="case-rail-btn" data-rail-btn="next" type="button" aria-label="Next campaign pieces"><span class="material-symbols-outlined">east</span></button>
+</div>
+</div>
+
+<div class="case-rail" data-rail>
+<figure class="case-figure">
+<div class="media-frame">
+<img alt="LUDIS social media pieces featuring Goatie" src="imagesProjects/ludis-social/8.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">image</span><code>imagesProjects/ludis-social/8.jpg</code><em>Social feed pieces</em></span>
+</div>
+<figcaption>Organic feed content — Goatie carries the brand voice across the grid.</figcaption>
+</figure>
+<figure class="case-figure">
+<div class="media-frame">
+<img alt="LUDIS paid campaign creative" src="imagesProjects/ludis-case/campaign-01.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">campaign</span><code>imagesProjects/ludis-case/campaign-01.png</code><em>Paid ad creative, campaign 1</em></span>
+</div>
+<figcaption>Paid creative — campaign one.</figcaption>
+</figure>
+<figure class="case-figure">
+<div class="media-frame">
+<img alt="LUDIS paid campaign creative" src="imagesProjects/ludis-case/campaign-02.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">campaign</span><code>imagesProjects/ludis-case/campaign-02.png</code><em>Paid ad creative, campaign 2</em></span>
+</div>
+<figcaption>Paid creative — campaign two.</figcaption>
+</figure>
+<figure class="case-figure">
+<div class="media-frame">
+<img alt="Meta Ads dashboard for the LUDIS launch campaigns" src="imagesProjects/ludis-case/meta-ads-dashboard.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">monitoring</span><code>imagesProjects/ludis-case/meta-ads-dashboard.png</code><em>Meta Ads dashboard — real numbers in a real interface</em></span>
+</div>
+<figcaption><strong>Meta Ads</strong> — real numbers in a real interface is what makes the rest credible.</figcaption>
+</figure>
+</div>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     7 — LOOKING BACK
+     The honest close. Bullet two needs a true answer about the app's current
+     state: an interviewer will open the App Store while reading this.
+====================================================================== -->
+<section class="case-section case-section--light" id="retro" data-chapter="Looking back">
+<div class="case-wrap">
+<p class="case-eyebrow" data-reveal>Looking back</p>
+<h2 class="case-display case-h2" data-reveal style="--d:60ms">What I'd argue<br/>with today</h2>
+
+<ul class="case-retro">
+<li data-reveal>
+<span class="material-symbols-outlined">warning</span>
+<span>Our research described the user well but <strong>never got contradicted</strong> — which now reads to me as a warning sign, not a success. In my next project, Mosaico, I designed the study so it <em>could</em> prove me wrong.</span>
+</li>
+<li data-reveal style="--d:90ms">
+<span class="material-symbols-outlined">timeline</span>
+<span><strong>20 users in week one was a start, not a validation.</strong> <span class="todo">what happened after — retention? is the app still live? one honest sentence about its current state</span></span>
+</li>
+<li data-reveal style="--d:180ms">
+<span class="material-symbols-outlined">lightbulb</span>
+<span><span class="todo">third retrospective — something you'd do differently, in your own words</span></span>
+</li>
+</ul>
+
+<div class="case-next">
+<a class="case-btn case-btn--ghost" href="ux-ui.html"><span class="material-symbols-outlined">west</span>All UX/UI work</a>
+<a class="case-btn" href="index.html#contact">Let's talk<span class="material-symbols-outlined">east</span></a>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+<div class="site-footer-links">
+<a href="#">Instagram</a>
+<a href="#">LinkedIn</a>
+<a href="#">Behance</a>
+<a href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+</div>
+<p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
+</footer>
+
+<script src="scripts/case-ludis.js"></script>
+</body>
+</html>

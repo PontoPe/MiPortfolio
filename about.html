@@ -13,6 +13,13 @@
 <link href="page-style.css" rel="stylesheet"/>
 </head>
 <body class="font-body text-on-surface selection:bg-primary-container">
+<!-- Parallax Background -->
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+<div class="parallax-layer" data-depth="-20"></div>
+</div>
 <nav class="site-nav">
 <div class="site-nav-inner">
 <a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
@@ -30,13 +37,13 @@
 </button>
 </div>
 </nav>
-<main class="pt-32 pb-8 px-4 md:px-8 max-w-[110rem] mx-auto">
+<main class="pt-32 pb-8 max-w-[110rem] mx-auto">
 <section class="section-panel">
 <div class="about-hero">
 <img alt="Photo of Milena" class="about-portrait" src="assets/ui/mi.jpeg"/>
 <div class="about-hero-copy">
 <h1 class="about-heading font-headline text-5xl md:text-6xl font-bold leading-tight" data-repel>Hello!</h1>
-<p class="text-on-surface-variant text-lg leading-8 max-w-2xl">
+<p class="text-on-surface-variant text-lg leading-8">
                     Designer with a soft spot for thoughtful experiences, playful visuals, and solving messy problems. I work across UX, branding, and digital design to create things people genuinely enjoy using.
                 </p>
 <div class="about-hero-actions">
@@ -182,5 +189,6 @@
 <p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
 </footer>
 <script src="scripts/repel-text.js"></script>
+<script src="scripts/page-motion.js"></script>
 </body>
 </html>

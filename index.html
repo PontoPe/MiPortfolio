@@ -13,6 +13,13 @@
 <link href="page-style.css" rel="stylesheet"/>
 </head>
 <body class="font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Parallax Background -->
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+<div class="parallax-layer" data-depth="-20"></div>
+</div>
 <!-- Navigation -->
 <nav class="site-nav">
 <div class="site-nav-inner">
@@ -31,7 +38,7 @@
 </button>
 </div>
 </nav>
-<main class="pt-32 pb-8 px-4 md:px-8 max-w-[110rem] mx-auto">
+<main class="pt-32 pb-8 max-w-[110rem] mx-auto">
 <!-- Hero -->
 <header class="home-hero">
 <div class="hero-meta">
@@ -62,30 +69,30 @@
 <span class="sticker-pill sticker-purple">Mess</span>
 </div>
 </header>
-<!-- Project Sections -->
-<div class="space-y-12">
-<section class="section-panel portfolio-section" id="design-grafico">
+<!-- Project Sections: one glass box, one subsection per category -->
+<section class="section-panel">
+<div class="panel-subsection portfolio-section" id="design-grafico">
 <div class="flex items-center justify-between mb-8">
 <h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="hover:text-primary-dim transition-colors" href="design-grafico.html">Graphic Design</a></h2>
 <a class="text-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-on-surface-variant/40" href="design-grafico.html">see all</a>
 </div>
 <div class="landing-project-grid" data-featured-projects="design-grafico"></div>
-</section>
-<section class="section-panel portfolio-section" id="ux-ui">
+</div>
+<div class="panel-subsection portfolio-section" id="ux-ui">
 <div class="flex items-center justify-between mb-8">
 <h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="hover:text-primary-dim transition-colors" href="ux-ui.html">UX/UI</a></h2>
 <a class="text-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-on-surface-variant/40" href="ux-ui.html">see all</a>
 </div>
 <div class="landing-project-grid" data-featured-projects="ux-ui"></div>
-</section>
-<section class="section-panel portfolio-section" id="ilustracao">
+</div>
+<div class="panel-subsection portfolio-section" id="ilustracao">
 <div class="flex items-center justify-between mb-8">
 <h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="hover:text-primary-dim transition-colors" href="ilustracao.html">Illustration</a></h2>
 <a class="text-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-on-surface-variant/40" href="ilustracao.html">see all</a>
 </div>
 <div class="landing-project-grid" data-featured-projects="ilustracao"></div>
-</section>
 </div>
+</section>
 <!-- Call to Action -->
 <div class="cta-block portfolio-section" id="contact">
 <p class="cta-lead">Wanna work together?</p>
@@ -106,5 +113,6 @@
 <script src="data/projects-data.js"></script>
 <script src="scripts/portfolio-render.js"></script>
 <script src="scripts/repel-text.js"></script>
+<script src="scripts/page-motion.js"></script>
 </body>
 </html>

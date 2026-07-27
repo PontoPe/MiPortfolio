@@ -1,12 +1,17 @@
 :root {
     --page-max: 110rem;
-    --ink: #43444d;
-    --ink-soft: #7c7e8a;
-    --periwinkle: #8290dc;
-    --periwinkle-deep: #6b7ace;
-    --panel: rgba(223, 228, 248, 0.55);
-    --panel-strong: rgba(223, 228, 248, 0.8);
-    --shadow-tint: rgba(130, 144, 220, 0.16);
+    /* Shared horizontal edge: hero text, nav logo and content boxes all align to it */
+    --page-gutter: clamp(1.5rem, 4vw, 4.5rem);
+    --ink: #777c95;
+    --ink-soft: #9ca0b2;
+    --periwinkle: #aab7ed;
+    --periwinkle-deep: #8b9ae3;
+    --pill-soft: #dae2ff;
+    /* Reference glass: #4964DB at ~11% alpha */
+    --glass-blue: rgba(73, 100, 219, 0.11);
+    --panel: rgba(73, 100, 219, 0.09);
+    --panel-strong: rgba(73, 100, 219, 0.16);
+    --shadow-tint: rgba(73, 100, 219, 0.14);
 }
 
 html {
@@ -38,6 +43,188 @@ body::before {
         radial-gradient(ellipse at 92% 85%, rgba(206, 197, 243, 0.45), transparent 55%),
         linear-gradient(180deg, #f6f7fd 0%, #eef0fa 100%);
     pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Ambient parallax background (ported from the non-future version, recolored
+   to the lavender palette). Layers drift with pointer + scroll via
+   scripts/page-motion.js; the ::before/::after bokeh circles float on their
+   own keyframes.
+--------------------------------------------------------------------------- */
+.parallax-bg {
+    --ambient-scroll-y: 0px;
+    position: fixed;
+    inset: -12vmax;
+    z-index: -3;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.parallax-bg::before,
+.parallax-bg::after {
+    animation: ambientCircleFloat 24s ease-in-out infinite alternate;
+    content: "";
+    inset: 0;
+    opacity: 0.56;
+    position: absolute;
+}
+
+.parallax-bg::before {
+    background:
+        radial-gradient(circle at 14% 28%, rgba(255, 255, 255, 0.62) 0 4.2rem, transparent 4.35rem),
+        radial-gradient(circle at 82% 18%, rgba(215, 199, 255, 0.46) 0 3.1rem, transparent 3.25rem),
+        radial-gradient(circle at 22% 80%, rgba(198, 204, 255, 0.42) 0 5.2rem, transparent 5.35rem),
+        radial-gradient(circle at 72% 76%, rgba(186, 228, 250, 0.44) 0 3.8rem, transparent 3.95rem);
+}
+
+.parallax-bg::after {
+    animation-duration: 31s;
+    animation-name: ambientCircleFloatReverse;
+    background:
+        radial-gradient(circle at 33% 12%, rgba(255, 255, 255, 0.52) 0 2.6rem, transparent 2.75rem),
+        radial-gradient(circle at 88% 56%, rgba(229, 220, 255, 0.48) 0 5.6rem, transparent 5.8rem),
+        radial-gradient(circle at 8% 62%, rgba(182, 208, 250, 0.34) 0 4.6rem, transparent 4.75rem);
+    opacity: 0.42;
+}
+
+.parallax-layer {
+    position: absolute;
+    will-change: transform;
+    transition: transform 500ms ease-out;
+}
+
+.parallax-layer:nth-child(1) {
+    width: 68vmax;
+    height: 32vmax;
+    left: -18vmax;
+    top: 2vmax;
+    border-radius: 45% 55% 62% 38%;
+    background: linear-gradient(135deg, rgba(170, 183, 237, 0.44), rgba(218, 226, 255, 0.16));
+    filter: blur(10px);
+}
+
+.parallax-layer:nth-child(2) {
+    width: 72vmax;
+    height: 36vmax;
+    right: -22vmax;
+    bottom: -2vmax;
+    border-radius: 56% 44% 42% 58%;
+    background: linear-gradient(145deg, rgba(195, 71, 255, 0.14), rgba(174, 181, 255, 0.28));
+    filter: blur(12px);
+}
+
+.parallax-layer:nth-child(3) {
+    width: 110vmax;
+    height: 22vmax;
+    left: 4vmax;
+    bottom: -8vmax;
+    border-radius: 55% 45% 0 0;
+    background: rgba(226, 224, 255, 0.38);
+}
+
+.parallax-layer:nth-child(4) {
+    width: 54vmax;
+    height: 16vmax;
+    left: 34vmax;
+    top: -6vmax;
+    border-radius: 0 0 52% 48%;
+    background: linear-gradient(165deg, rgba(0, 167, 218, 0.16), rgba(186, 228, 250, 0.06));
+    filter: blur(14px);
+}
+
+@keyframes ambientCircleFloat {
+    0% {
+        transform: translate3d(-1.2rem, calc(var(--ambient-scroll-y, 0px) + 0.8rem), 0) rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: translate3d(1.6rem, calc(var(--ambient-scroll-y, 0px) - 1.1rem), 0) rotate(4deg) scale(1.025);
+    }
+
+    100% {
+        transform: translate3d(0.4rem, calc(var(--ambient-scroll-y, 0px) + 1.5rem), 0) rotate(-3deg) scale(0.985);
+    }
+}
+
+@keyframes ambientCircleFloatReverse {
+    0% {
+        transform: translate3d(1.1rem, calc(var(--ambient-scroll-y, 0px) - 0.7rem), 0) rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: translate3d(-1.5rem, calc(var(--ambient-scroll-y, 0px) + 1rem), 0) rotate(-5deg) scale(0.98);
+    }
+
+    100% {
+        transform: translate3d(-0.3rem, calc(var(--ambient-scroll-y, 0px) - 1.4rem), 0) rotate(3deg) scale(1.02);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .parallax-bg::before,
+    .parallax-bg::after {
+        animation: none;
+    }
+
+    .parallax-layer {
+        transition: none;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Page-load fade-in. Sections stagger in as the site opens.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+    @keyframes pageFade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes pageFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(1rem);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    .site-nav {
+        animation: pageFade 600ms ease both;
+    }
+
+    main > * {
+        animation: pageFadeUp 700ms ease both;
+    }
+
+    main > *:nth-child(2) { animation-delay: 150ms; }
+    main > *:nth-child(3) { animation-delay: 300ms; }
+    main > *:nth-child(4) { animation-delay: 450ms; }
+    main > *:nth-child(n + 5) { animation-delay: 600ms; }
+
+    .home-hero .hero-meta {
+        animation: pageFadeUp 700ms ease both;
+    }
+
+    .home-hero .hero-welcome {
+        animation: pageFadeUp 700ms ease 150ms both;
+    }
+
+    .home-hero .hero-stickers {
+        animation: pageFadeUp 700ms ease 320ms both;
+    }
+
+    .site-footer {
+        animation: pageFade 900ms ease 250ms both;
+    }
 }
 
 /* ---------------------------------------------------------------------------
@@ -127,7 +314,7 @@ body::before {
     backdrop-filter: blur(22px) saturate(1.3);
     -webkit-backdrop-filter: blur(22px) saturate(1.3);
     border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 0.5rem 1.75rem rgba(130, 144, 220, 0.1);
+    box-shadow: 0 0.5rem 1.75rem rgba(73, 100, 219, 0.1);
 }
 
 .site-nav-inner {
@@ -136,7 +323,7 @@ body::before {
     justify-content: space-between;
     margin-inline: auto;
     max-width: var(--page-max, 110rem);
-    padding: 0.85rem 2rem;
+    padding: 0.85rem var(--page-gutter);
     width: 100%;
 }
 
@@ -179,7 +366,7 @@ body::before {
     background: var(--periwinkle);
     border: 1px solid transparent;
     border-radius: 9999px;
-    box-shadow: 0 0.5rem 1rem rgba(130, 144, 220, 0.25);
+    box-shadow: 0 0.5rem 1rem rgba(73, 100, 219, 0.25);
     color: #ffffff;
     font-size: 0.9rem;
     font-weight: 600;
@@ -193,8 +380,8 @@ body::before {
 }
 
 .nav-cta-soft {
-    background: rgba(223, 228, 248, 0.85);
-    box-shadow: 0 0.5rem 1rem rgba(130, 144, 220, 0.14);
+    background: var(--pill-soft);
+    box-shadow: 0 0.5rem 1rem rgba(73, 100, 219, 0.14);
     color: var(--ink);
 }
 
@@ -220,19 +407,18 @@ body::before {
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 0.45em;
-    text-decoration-color: rgba(130, 144, 220, 0.6);
+    text-decoration-color: rgba(73, 100, 219, 0.6);
 }
 
 /* ---------------------------------------------------------------------------
    Home hero
 --------------------------------------------------------------------------- */
-/* Full-bleed: escape the centered <main> so the hero spans the viewport. */
+/* Lives in the shared page shell so the hero text, nav logo and content
+   boxes all share the same left edge (--page-gutter). */
 .home-hero {
-    margin: 1.5rem calc(50% - 50vw) 5rem;
-    padding-inline: clamp(1.5rem, 4vw, 4.5rem);
+    margin: 1.5rem 0 5rem;
     position: relative;
     text-align: center;
-    width: 100vw;
 }
 
 .hero-meta {
@@ -247,6 +433,7 @@ body::before {
 }
 
 .hero-meta .hero-meta-right {
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
     max-width: 30rem;
     text-align: left;
 }
@@ -265,7 +452,7 @@ body::before {
 
 .hero-welcome img {
     display: block;
-    filter: drop-shadow(0 1.5rem 2.5rem rgba(130, 144, 220, 0.28));
+    filter: drop-shadow(0 1.5rem 2.5rem rgba(73, 100, 219, 0.28));
     height: auto;
     margin: 0 auto;
     position: relative;
@@ -308,7 +495,7 @@ body::before {
     font-weight: 700;
     line-height: 1;
     text-shadow: 0 2px 0 rgba(255, 255, 255, 0.4);
-    filter: drop-shadow(0 1.25rem 2rem rgba(130, 144, 220, 0.3));
+    filter: drop-shadow(0 1.25rem 2rem rgba(73, 100, 219, 0.3));
 }
 
 .hero-welcome.no-img img {
@@ -319,6 +506,7 @@ body::before {
     display: block;
 }
 
+/* Same width as the welcome lettering above */
 .hero-stickers {
     align-items: center;
     display: flex;
@@ -326,7 +514,7 @@ body::before {
     gap: 0.85rem 1rem;
     justify-content: center;
     margin: 1.75rem auto 0;
-    max-width: 46rem;
+    max-width: min(68rem, 94vw);
 }
 
 .hero-stickers .hero-stickers-lead {
@@ -336,11 +524,18 @@ body::before {
     margin-right: 0.25rem;
 }
 
+/* Glass pills, colors sampled from the design reference (semi-transparent
+   over the page like frosted glass). Tilt lives in --tilt so repel-text.js
+   can compose its translate() with the rotation. */
 .sticker-pill {
-    border-radius: 0.55rem;
+    --tilt: 0deg;
+    backdrop-filter: blur(10px) saturate(1.2);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 0.75rem;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.55),
-        0 0.55rem 1.1rem rgba(130, 144, 220, 0.28);
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        0 0.55rem 1.1rem rgba(73, 100, 219, 0.2);
     color: #ffffff;
     display: inline-block;
     font-size: 0.85rem;
@@ -348,6 +543,7 @@ body::before {
     letter-spacing: 0.08em;
     padding: 0.5rem 1.1rem;
     text-transform: uppercase;
+    transform: rotate(var(--tilt));
     transition: transform 220ms ease;
 }
 
@@ -355,11 +551,11 @@ body::before {
     transform: scale(1.08) rotate(0deg) !important;
 }
 
-.sticker-blue { background: linear-gradient(135deg, #8fa4f2, #7b8ee9); transform: rotate(-4deg); }
-.sticker-cyan { background: linear-gradient(135deg, #7ecdea, #63b9e6); transform: rotate(3deg); }
-.sticker-indigo { background: linear-gradient(135deg, #6f95ef, #5c7fe6); transform: rotate(-2deg); }
-.sticker-pink { background: linear-gradient(135deg, #eb9ad8, #e07fc9); transform: rotate(4deg); }
-.sticker-purple { background: linear-gradient(135deg, #b79df0, #a385ea); transform: rotate(-5deg); }
+.sticker-blue { background: rgba(73, 102, 217, 0.45); --tilt: -4deg; }
+.sticker-cyan { background: rgba(0, 167, 218, 0.43); --tilt: 3deg; }
+.sticker-indigo { background: rgba(88, 73, 217, 0.45); --tilt: -2deg; }
+.sticker-pink { background: rgba(195, 71, 255, 0.45); --tilt: 4deg; }
+.sticker-purple { background: rgba(151, 71, 255, 0.45); --tilt: -5deg; }
 
 /* On narrow screens the pills wrap naturally; once there's room for all five
    on one line, force a 3-top / 2-bottom split instead of an awkward 4-1. */
@@ -380,7 +576,7 @@ body::before {
 --------------------------------------------------------------------------- */
 .glass-card {
     position: relative;
-    background: linear-gradient(170deg, rgba(228, 232, 249, 0.72), rgba(219, 224, 246, 0.5));
+    background: var(--glass-blue);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 1px solid rgba(255, 255, 255, 0.75);
@@ -390,7 +586,7 @@ body::before {
 }
 
 .section-panel {
-    background: linear-gradient(170deg, rgba(228, 232, 249, 0.72), rgba(219, 224, 246, 0.5));
+    background: var(--glass-blue);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 1px solid rgba(255, 255, 255, 0.75);
@@ -411,15 +607,19 @@ body::before {
 .page-shell {
     margin-inline: auto;
     max-width: var(--page-max, 110rem);
-    padding: 8rem 1rem 5rem;
+    padding: 8rem var(--page-gutter) 5rem;
     width: 100%;
 }
 
-@media (min-width: 768px) {
-    .page-shell {
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
+/* All pages share the same gutter so content boxes line up with the hero
+   text and the nav logo. */
+main {
+    padding-inline: var(--page-gutter);
+}
+
+/* Landing page: one glass box, one subsection per category */
+.panel-subsection + .panel-subsection {
+    margin-top: 4.5rem;
 }
 
 /* ---------------------------------------------------------------------------
@@ -428,13 +628,13 @@ body::before {
 .project-frame {
     background: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 1rem 2.25rem rgba(130, 144, 220, 0.18);
+    box-shadow: 0 1rem 2.25rem rgba(73, 100, 219, 0.18);
     transition: box-shadow 520ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
     will-change: transform;
 }
 
 .project-card:hover .project-frame {
-    box-shadow: 0 1.5rem 3rem rgba(130, 144, 220, 0.28);
+    box-shadow: 0 1.5rem 3rem rgba(73, 100, 219, 0.28);
     transform: translateY(-4px);
 }
 
@@ -603,7 +803,7 @@ body::before {
     background: rgba(255, 255, 255, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 9999px;
-    box-shadow: 0 0.5rem 1.25rem rgba(130, 144, 220, 0.25);
+    box-shadow: 0 0.5rem 1.25rem rgba(73, 100, 219, 0.25);
     color: var(--ink);
     display: flex;
     height: 2.75rem;
@@ -626,26 +826,26 @@ body::before {
 }
 
 .category-filter {
-    background: rgba(255, 255, 255, 0.72);
+    background: var(--pill-soft);
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 9999px;
     color: var(--ink-soft);
     font-size: 0.85rem;
     font-weight: 600;
     padding: 0.5rem 1.3rem;
-    box-shadow: 0 0.4rem 0.9rem rgba(130, 144, 220, 0.12);
+    box-shadow: 0 0.4rem 0.9rem rgba(73, 100, 219, 0.12);
     transition: background-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
 }
 
 .category-filter:hover {
-    box-shadow: 0 0.5rem 1rem rgba(130, 144, 220, 0.18);
+    box-shadow: 0 0.5rem 1rem rgba(73, 100, 219, 0.18);
     transform: translateY(-2px);
 }
 
 .category-filter.is-active {
     background: var(--periwinkle);
     border-color: transparent;
-    box-shadow: 0 0.5rem 1.25rem rgba(130, 144, 220, 0.32);
+    box-shadow: 0 0.5rem 1.25rem rgba(73, 100, 219, 0.32);
     color: #ffffff;
 }
 
@@ -661,7 +861,7 @@ body::before {
     background: rgba(255, 255, 255, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 1.5rem;
-    box-shadow: 0 1rem 2.5rem rgba(130, 144, 220, 0.1);
+    box-shadow: 0 1rem 2.5rem rgba(73, 100, 219, 0.1);
     padding: clamp(1.35rem, 3vw, 2.5rem);
 }
 
@@ -742,7 +942,7 @@ body::before {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 1.5rem;
-    box-shadow: 0 1rem 2.25rem rgba(130, 144, 220, 0.12);
+    box-shadow: 0 1rem 2.25rem rgba(73, 100, 219, 0.12);
     overflow: hidden;
 }
 
@@ -882,7 +1082,7 @@ body::before {
     background: rgba(255, 255, 255, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 9999px;
-    box-shadow: 0 0.5rem 1.25rem rgba(130, 144, 220, 0.25);
+    box-shadow: 0 0.5rem 1.25rem rgba(73, 100, 219, 0.25);
     color: var(--ink);
     display: flex;
     height: 2.75rem;
@@ -931,27 +1131,27 @@ body::before {
 .cta-btn-primary {
     background: var(--periwinkle);
     border: 1px solid transparent;
-    box-shadow: 0 1rem 2rem rgba(130, 144, 220, 0.3);
+    box-shadow: 0 1rem 2rem rgba(73, 100, 219, 0.3);
     color: #ffffff;
 }
 
 .cta-btn-primary:hover {
     background: var(--periwinkle-deep);
-    box-shadow: 0 1.25rem 2.5rem rgba(130, 144, 220, 0.35);
+    box-shadow: 0 1.25rem 2.5rem rgba(73, 100, 219, 0.35);
     transform: translateY(-3px);
 }
 
 .cta-btn-ghost {
-    background: rgba(255, 255, 255, 0.75);
+    background: var(--pill-soft);
     border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 1rem 2rem rgba(130, 144, 220, 0.14);
+    box-shadow: 0 1rem 2rem rgba(73, 100, 219, 0.14);
     color: var(--ink);
     margin-left: 0.75rem;
 }
 
 .cta-btn-ghost:hover {
     background: var(--periwinkle);
-    box-shadow: 0 1.25rem 2.5rem rgba(130, 144, 220, 0.3);
+    box-shadow: 0 1.25rem 2.5rem rgba(73, 100, 219, 0.3);
     color: #ffffff;
     transform: translateY(-3px);
 }
@@ -976,7 +1176,7 @@ body::before {
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border-top: 1px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 -0.5rem 1.75rem rgba(130, 144, 220, 0.08);
+    box-shadow: 0 -0.5rem 1.75rem rgba(73, 100, 219, 0.08);
     color: var(--ink-soft);
     font-size: 0.85rem;
     line-height: 1.7;
@@ -1013,9 +1213,10 @@ body::before {
     margin-bottom: 4rem;
 }
 
-@media (min-width: 900px) {
+/* Photo is 2x the previous size; two-column only when there's room for it */
+@media (min-width: 1400px) {
     .about-hero {
-        grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 44rem) minmax(0, 1fr);
     }
 }
 
@@ -1024,9 +1225,9 @@ body::before {
     background: url("assets/ui/misquare.jpeg") center 32% / cover no-repeat;
     border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 1.75rem;
-    box-shadow: 0 1.5rem 3rem rgba(130, 144, 220, 0.22);
+    box-shadow: 0 1.5rem 3rem rgba(73, 100, 219, 0.22);
     width: 100%;
-    max-width: 22rem;
+    max-width: 44rem;
     margin-inline: auto;
 }
 
@@ -1049,7 +1250,7 @@ body::before {
     background: rgba(255, 255, 255, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 1.5rem;
-    box-shadow: 0 1rem 2.25rem rgba(130, 144, 220, 0.1);
+    box-shadow: 0 1rem 2.25rem rgba(73, 100, 219, 0.1);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 }

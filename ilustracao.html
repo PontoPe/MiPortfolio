@@ -13,6 +13,13 @@
 <link href="page-style.css" rel="stylesheet"/>
 </head>
 <body class="font-body text-on-surface selection:bg-primary-container">
+<!-- Parallax Background -->
+<div class="parallax-bg" aria-hidden="true">
+<div class="parallax-layer" data-depth="16"></div>
+<div class="parallax-layer" data-depth="-12"></div>
+<div class="parallax-layer" data-depth="7"></div>
+<div class="parallax-layer" data-depth="-20"></div>
+</div>
 <nav class="site-nav">
 <div class="site-nav-inner">
 <a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
@@ -30,7 +37,7 @@
 </button>
 </div>
 </nav>
-<main class="pt-32 pb-8 px-4 md:px-8 max-w-[110rem] mx-auto">
+<main class="pt-32 pb-8 max-w-[110rem] mx-auto">
 <section class="section-panel">
 <div class="max-w-3xl mb-12">
 <p class="section-eyebrow">illustration</p>
@@ -58,5 +65,6 @@
 <script src="data/projects-data.js"></script>
 <script src="scripts/portfolio-render.js"></script>
 <script src="scripts/repel-text.js"></script>
+<script src="scripts/page-motion.js"></script>
 </body>
 </html>

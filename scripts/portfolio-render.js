@@ -37,7 +37,18 @@
     );
 
     const findCategory = (categoryId) => data.categories.find((category) => category.id === categoryId);
-    const projectHref = (project) => `project.html?project=${encodeURIComponent(project.slug)}`;
+
+    // Projects with a bespoke, hand-built case page instead of the generic
+    // project.html template. Kept here rather than in data/projects-data.js
+    // because that file is regenerated from Notion on every build. If a
+    // `casePage` field ever arrives from Notion, it takes precedence.
+    const casePages = {
+        "ludis-social": "case-ludis.html"
+    };
+
+    const projectHref = (project) => project.casePage
+        || casePages[project.slug]
+        || `project.html?project=${encodeURIComponent(project.slug)}`;
 
     const hasContent = (content) => {
         if (Array.isArray(content)) {
