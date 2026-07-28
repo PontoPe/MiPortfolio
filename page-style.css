@@ -445,6 +445,9 @@ body::before {
 }
 
 .hero-welcome {
+    /* How far the WebGL canvas overflows the lettering's box on every side; see
+       .hero-welcome-canvas. */
+    --welcome-bleed: 6%;
     margin: 0 auto;
     max-width: min(68rem, 94vw);
     position: relative;
@@ -480,6 +483,27 @@ body::before {
             mask-repeat: no-repeat;
 }
 
+/* WebGL lettering (scripts/welcome-glass.js). It overflows the PNG's box by
+   --welcome-bleed on every side and the camera frames that same extra width, so
+   the word lands exactly where the PNG did while the pointer tilt still has
+   somewhere to swing without clipping at the canvas edge. <canvas> is a
+   replaced element, so an inset-only box would collapse to its intrinsic size —
+   width and height have to be stated. */
+.hero-welcome-canvas {
+    display: block;
+    filter: drop-shadow(0 1.5rem 2.5rem rgba(73, 100, 219, 0.28));
+    height: calc(100% + 2 * var(--welcome-bleed));
+    left: calc(-1 * var(--welcome-bleed));
+    position: absolute;
+    top: calc(-1 * var(--welcome-bleed));
+    width: calc(100% + 2 * var(--welcome-bleed));
+    z-index: 2;
+}
+
+.hero-welcome:not(.is-3d) .hero-welcome-canvas {
+    display: none;
+}
+
 .hero-welcome.no-img .hero-welcome-glass {
     display: none;
 }
@@ -504,6 +528,13 @@ body::before {
 
 .hero-welcome.no-img .hero-welcome-fallback {
     display: block;
+}
+
+/* The canvas has taken over, but the PNG (or the text fallback) has to stay in
+   the flow: the canvas is absolutely positioned and takes its size from it. */
+.hero-welcome.is-3d img,
+.hero-welcome.is-3d .hero-welcome-fallback {
+    visibility: hidden;
 }
 
 /* Same width as the welcome lettering above */

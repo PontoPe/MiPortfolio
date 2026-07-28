@@ -12,6 +12,7 @@
 <link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
 <link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
 <link href="page-style.css" rel="stylesheet"/>
+<link href="case-base.css" rel="stylesheet"/>
 <link href="case-ludis.css" rel="stylesheet"/>
 <!-- Reveal-on-scroll hides content until IntersectionObserver un-hides it.
      Gate that behind a class only scripting can set, so a dead script (or a
@@ -73,7 +74,7 @@ product: <span class="case-mark">8 teams created and 20 active users in the firs
 </div>
 
 <div data-reveal style="--d:200ms">
-<div class="case-phone">
+<div class="case-phone" data-drift="-0.06">
 <figure class="media-frame">
 <img alt="The LUDIS listing on the App Store" src="imagesProjects/ludis-case/appstore-listing.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
 <span class="media-slot"><span class="material-symbols-outlined">phone_iphone</span><code>imagesProjects/ludis-case/appstore-listing.png</code><em>Screenshot of the real App Store page — proof of life</em></span>
@@ -415,6 +416,6 @@ App Store. <span class="todo">one post-launch learning — what the first users 
 <p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
 </footer>
 
-<script src="scripts/case-ludis.js"></script>
+<script src="scripts/case-scroll.js"></script>
 </body>
 </html>

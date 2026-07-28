@@ -1,0 +1,1417 @@
+/* ===========================================================================
+   MOSAICO — case study landing page
+   ---------------------------------------------------------------------------
+   Per-project skin. Chrome (progress bar, chapter rail, reveal, media slots)
+   comes from case-base.css; the portfolio nav/footer/cursor from
+   page-style.css. Everything below is scoped to .case-body / .mos-* so this
+   page can look like its own object without leaking into the rest of the site.
+
+   The look is the project's own output: Mosaico is a paper method that ended
+   in a printed horror fanzine and eight handwritten diaries. So the page is
+   built as a zine spread — torn edges, taped photographs, typewriter labels,
+   margin notes in pen — rather than as a product UI. Cream paper, printer's
+   red, ochre tape.
+=========================================================================== */
+
+.case-body {
+    /* --- palette ---------------------------------------------------------- */
+    --mos-paper: #f2e8d8;
+    --mos-paper-2: #e8dbc5;
+    --mos-card: #fcf7ee;
+    --mos-ink: #2a201b;
+    --mos-ink-70: rgba(42, 32, 27, 0.72);
+    --mos-ink-45: rgba(42, 32, 27, 0.48);
+    --mos-ember: #b23a26;
+    --mos-ember-deep: #8a2a19;
+    --mos-ochre: #cf9430;
+    --mos-moss: #4f6350;
+    --mos-tape: rgba(207, 148, 48, 0.38);
+    --mos-line: rgba(42, 32, 27, 0.16);
+
+    /* --- type ------------------------------------------------------------- */
+    --mos-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --mos-type: "Courier Prime", "Courier New", ui-monospace, monospace;
+    --mos-hand: "Caveat", "Kalam", cursive;
+
+    /* --- case-base hooks --------------------------------------------------- */
+    --case-accent: var(--mos-ember);
+    --case-accent-2: var(--mos-ink);
+    --case-ink: var(--mos-ink);
+    --case-surface: var(--mos-paper);
+    --case-wrap: 78rem;
+    --case-radius: 0.35rem;
+
+    color: var(--mos-ink);
+}
+
+/* Paper grain. One turbulence tile, multiplied over everything, so flat CSS
+   colour reads as stock instead of screen. */
+.case-body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='4'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='180'%20height='180'%20filter='url(%23n)'%20opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* The nav is glass over lavender everywhere else; here it sits on paper. */
+.case-body .site-nav {
+    background: rgba(242, 232, 216, 0.82);
+    border-bottom: 1px solid var(--mos-line);
+    box-shadow: 0 0.5rem 1.5rem rgba(42, 32, 27, 0.06);
+}
+
+.case-body .nav-link {
+    color: var(--mos-ink-70);
+}
+
+.case-body .nav-link:hover {
+    color: var(--mos-ember);
+}
+
+.case-body .site-footer {
+    background: var(--mos-paper-2);
+    color: var(--mos-ink-70);
+    position: relative;
+    z-index: 2;
+}
+
+.case-body .site-footer a {
+    color: var(--mos-ink);
+}
+
+.case-body .site-footer a:hover {
+    color: var(--mos-ember);
+}
+
+/* =========================================================================
+   Section skins
+========================================================================= */
+.case-section {
+    z-index: 1;
+}
+
+.case-section--paper {
+    background: var(--mos-paper);
+}
+
+/* Graph paper — the surface a method gets drafted on. */
+.case-section--grid {
+    background-color: var(--mos-paper);
+    background-image:
+        linear-gradient(rgba(42, 32, 27, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42, 32, 27, 0.07) 1px, transparent 1px);
+    background-size: 1.5rem 1.5rem;
+}
+
+.case-section--ember {
+    background: var(--mos-ember);
+    color: rgba(252, 247, 238, 0.86);
+}
+
+.case-section--dark {
+    background: #1c1512;
+    color: rgba(242, 232, 216, 0.78);
+}
+
+.case-section--ember .mos-h2,
+.case-section--dark .mos-h2,
+.case-section--ember .mos-h3,
+.case-section--dark .mos-h3 {
+    color: var(--mos-card);
+}
+
+/* --- torn edges -----------------------------------------------------------
+   The section is pulled up over the one before it and its top edge clipped
+   along an irregular line, so the previous colour shows through the tear.
+   Depths are in px, not %, so the tear stays a tear on a tall section.
+-------------------------------------------------------------------------- */
+.case-section--torn {
+    clip-path: polygon(
+        0 15px, 4% 5px, 8% 16px, 12% 7px, 16% 17px, 20% 6px, 24% 13px,
+        28% 4px, 32% 15px, 36% 8px, 40% 18px, 44% 6px, 48% 12px,
+        52% 3px, 56% 16px, 60% 7px, 64% 17px, 68% 9px, 72% 13px,
+        76% 5px, 80% 17px, 84% 8px, 88% 15px, 92% 4px, 96% 16px, 100% 9px,
+        100% 100%, 0 100%
+    );
+    margin-top: -20px;
+    padding-top: calc(clamp(5rem, 11vw, 9.5rem) + 20px);
+}
+
+/* =========================================================================
+   Typography
+========================================================================= */
+.mos-display {
+    font-family: var(--mos-display);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+}
+
+/* Typewriter labels: the voice of a method document. */
+.mos-eyebrow {
+    align-items: center;
+    color: var(--mos-ember);
+    display: inline-flex;
+    flex-wrap: wrap;
+    font-family: var(--mos-type);
+    font-size: 0.76rem;
+    font-weight: 700;
+    gap: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.case-section--ember .mos-eyebrow,
+.case-section--dark .mos-eyebrow {
+    color: var(--mos-ochre);
+}
+
+.mos-eyebrow::before {
+    background: currentColor;
+    content: "";
+    height: 1px;
+    width: 2.25rem;
+}
+
+.mos-h2 {
+    color: var(--mos-ink);
+    font-family: var(--mos-display);
+    font-size: clamp(2.1rem, 5vw, 3.9rem);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    margin-block: 1.15rem 1.4rem;
+}
+
+.mos-h3 {
+    color: inherit;
+    font-family: var(--mos-display);
+    font-size: clamp(1.25rem, 2.3vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.mos-lead {
+    font-size: clamp(1.05rem, 1.8vw, 1.32rem);
+    line-height: 1.66;
+    max-width: 48ch;
+}
+
+.mos-text {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    max-width: 62ch;
+}
+
+.mos-text + .mos-text {
+    margin-top: 1.15rem;
+}
+
+.mos-text strong,
+.mos-lead strong {
+    color: inherit;
+    font-weight: 700;
+}
+
+/* Highlighter, drawn in ochre the way a marker sits over print. */
+.mos-mark {
+    background: linear-gradient(180deg, transparent 55%, rgba(207, 148, 48, 0.55) 55%);
+    font-weight: 600;
+    padding-inline: 0.1em;
+}
+
+.case-section--ember .mos-mark,
+.case-section--dark .mos-mark {
+    background: linear-gradient(180deg, transparent 55%, rgba(207, 148, 48, 0.42) 55%);
+    color: var(--mos-card);
+}
+
+/* Margin notes, in pen. */
+.mos-hand {
+    color: var(--mos-ember);
+    font-family: var(--mos-hand);
+    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    line-height: 1.35;
+}
+
+.case-section--dark .mos-hand,
+.case-section--ember .mos-hand {
+    color: var(--mos-ochre);
+}
+
+/* Unfilled slots have to stay loud on the red and the near-black too. */
+.case-section--ember .todo,
+.case-section--dark .todo {
+    background: rgba(246, 224, 94, 0.2);
+    border-color: rgba(246, 224, 94, 0.75);
+    color: #ffeaa5;
+}
+
+/* …but a slot sitting on a cream card inside one of those sections is back on
+   paper, so it goes back to the paper treatment. */
+.case-section--ember .mos-wt .todo,
+.case-section--ember .mos-tool .todo,
+.case-section--dark .mos-wt .todo,
+.case-section--dark .mos-tool .todo {
+    background: rgba(246, 224, 94, 0.22);
+    border-color: rgba(180, 150, 20, 0.7);
+    color: #7a6410;
+}
+
+/* =========================================================================
+   Paper objects
+========================================================================= */
+
+/* Tape strip — a torn rectangle of translucent ochre, always slightly off. */
+.mos-tape-strip {
+    background: var(--mos-tape);
+    box-shadow: 0 1px 3px rgba(42, 32, 27, 0.14);
+    clip-path: polygon(3% 0, 97% 4%, 100% 96%, 6% 100%, 0 55%);
+    height: 1.5rem;
+    left: 50%;
+    position: absolute;
+    top: -0.75rem;
+    transform: translateX(-50%) rotate(var(--tape-rot, -3deg));
+    width: 6.5rem;
+    z-index: 3;
+}
+
+.mos-tape-strip--left {
+    left: 1.5rem;
+    transform: rotate(var(--tape-rot, -8deg));
+}
+
+.mos-tape-strip--right {
+    left: auto;
+    right: 1.5rem;
+    transform: rotate(var(--tape-rot, 7deg));
+}
+
+/* Photograph, framed and taped to the page. */
+.mos-photo {
+    background: var(--mos-card);
+    box-shadow: 0 1rem 2.25rem rgba(42, 32, 27, 0.22);
+    padding: 0.7rem 0.7rem 0.9rem;
+    position: relative;
+    rotate: var(--rot, -1.5deg);
+    transition: rotate 400ms ease, transform 400ms ease;
+}
+
+.mos-photo:hover {
+    rotate: 0deg;
+}
+
+.mos-photo .media-frame {
+    background: rgba(42, 32, 27, 0.06);
+    border-radius: 0;
+}
+
+.mos-photo figcaption {
+    color: var(--mos-ink-70);
+    font-family: var(--mos-hand);
+    font-size: 1.1rem;
+    line-height: 1.3;
+    margin-top: 0.65rem;
+    opacity: 1;
+    text-align: center;
+}
+
+/* Polaroid: deep bottom lip, caption written in the white. */
+.mos-photo--polaroid {
+    padding-bottom: 0.5rem;
+}
+
+.mos-photo--polaroid figcaption {
+    margin-top: 0.85rem;
+    min-height: 2.6rem;
+}
+
+/* Sticky note. */
+.mos-note {
+    background: linear-gradient(160deg, #f7e6bd, #f0d79f);
+    box-shadow: 0 0.9rem 1.8rem rgba(42, 32, 27, 0.18);
+    color: var(--mos-ink);
+    font-family: var(--mos-hand);
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    line-height: 1.4;
+    padding: 1.6rem 1.5rem 1.4rem;
+    position: relative;
+    rotate: var(--rot, 1.4deg);
+}
+
+.mos-note b {
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+}
+
+/* Index card — the neutral container for text on paper. */
+.mos-card {
+    background: var(--mos-card);
+    border: 1px solid var(--mos-line);
+    box-shadow: 0 0.75rem 1.5rem rgba(42, 32, 27, 0.08);
+    padding: clamp(1.4rem, 2.6vw, 2rem);
+    position: relative;
+}
+
+/* Rubber stamp, for the one number that is a claim rather than a measurement. */
+.mos-stamp {
+    border: 2px solid var(--mos-ochre);
+    color: var(--mos-ochre);
+    display: inline-block;
+    font-family: var(--mos-type);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    opacity: 0.9;
+    padding: 0.4rem 0.8rem;
+    rotate: -6deg;
+    text-transform: uppercase;
+}
+
+/* =========================================================================
+   1 — Hero
+========================================================================= */
+.mos-hero {
+    padding-top: clamp(8rem, 14vw, 11.5rem);
+}
+
+.mos-hero-grid {
+    align-items: center;
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+
+.mos-title {
+    color: var(--mos-card);
+    font-size: clamp(3.6rem, 11vw, 8rem);
+    margin-block: 1.2rem 0.6rem;
+}
+
+/* The one place the display face gets to be a mosaic: alternating baseline
+   nudges, so the wordmark reads as tiles rather than a typeset word. */
+.mos-title span {
+    display: inline-block;
+    transform: translateY(var(--y, 0));
+}
+
+.mos-subtitle {
+    color: rgba(252, 247, 238, 0.92);
+    font-family: var(--mos-display);
+    font-size: clamp(1.35rem, 2.9vw, 2.1rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.22;
+    max-width: 22ch;
+}
+
+.mos-hero .mos-lead {
+    color: rgba(252, 247, 238, 0.82);
+    margin-top: 1.6rem;
+}
+
+.mos-hero-q {
+    color: var(--mos-card);
+    display: block;
+    font-family: var(--mos-display);
+    font-size: 1.12em;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Headline numbers ------------------------------------------------------- */
+.mos-stats {
+    border-top: 1px solid rgba(252, 247, 238, 0.28);
+    display: grid;
+    gap: 1.75rem 1.25rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 2.75rem;
+    padding-top: 2rem;
+}
+
+.mos-stat b {
+    color: var(--mos-card);
+    display: block;
+    font-family: var(--mos-display);
+    font-size: clamp(2.5rem, 5vw, 3.9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.mos-stat span {
+    color: rgba(252, 247, 238, 0.72);
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    margin-top: 0.6rem;
+    text-transform: uppercase;
+}
+
+.mos-hero-media {
+    translate: 0 var(--float, 0px);
+}
+
+.mos-scroll-cue {
+    align-items: center;
+    color: rgba(252, 247, 238, 0.6);
+    display: flex;
+    font-family: var(--mos-type);
+    font-size: 0.72rem;
+    gap: 0.6rem;
+    letter-spacing: 0.18em;
+    margin-top: 3.5rem;
+    text-transform: uppercase;
+}
+
+.mos-scroll-cue .material-symbols-outlined {
+    animation: mosBob 1.8s ease-in-out infinite;
+}
+
+@keyframes mosBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(0.35rem); }
+}
+
+@media (max-width: 900px) {
+    .mos-hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Three across on a phone turns every label into a four-line stack. One per
+   row, number beside label, keeps them readable at a glance. */
+@media (max-width: 600px) {
+    .mos-stats {
+        gap: 1.1rem;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .mos-stat {
+        align-items: baseline;
+        display: grid;
+        gap: 0 1.1rem;
+        grid-template-columns: 5.5rem minmax(0, 1fr);
+    }
+
+    .mos-stat span {
+        margin-top: 0;
+    }
+}
+
+/* =========================================================================
+   2 — Problem
+========================================================================= */
+.mos-two-col {
+    align-items: start;
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+@media (max-width: 900px) {
+    .mos-two-col {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* The question the whole case answers, torn from the page and taped back. */
+.mos-pull {
+    background: var(--mos-card);
+    box-shadow: 0 1.25rem 2.5rem rgba(42, 32, 27, 0.14);
+    margin-top: 3.5rem;
+    padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.75rem, 5vw, 4rem);
+    position: relative;
+    rotate: -0.6deg;
+    text-align: center;
+}
+
+.mos-pull q {
+    color: var(--mos-ink);
+    display: block;
+    font-family: var(--mos-display);
+    font-size: clamp(1.5rem, 3.6vw, 2.7rem);
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-inline: auto;
+    max-width: 26ch;
+    quotes: "\201C" "\201D";
+}
+
+.mos-pull q::before,
+.mos-pull q::after {
+    color: var(--mos-ember);
+    font-family: var(--mos-display);
+}
+
+/* =========================================================================
+   3 — Foundation
+========================================================================= */
+.mos-methods {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    margin-top: 2.5rem;
+}
+
+.mos-method {
+    background: var(--mos-card);
+    border: 1px solid var(--mos-line);
+    box-shadow: 0 0.4rem 0.9rem rgba(42, 32, 27, 0.07);
+    font-family: var(--mos-type);
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    padding: 0.85rem 1rem;
+    rotate: var(--rot, 0deg);
+    transition: rotate 300ms ease, box-shadow 300ms ease;
+}
+
+.mos-method:hover {
+    box-shadow: 0 0.75rem 1.5rem rgba(42, 32, 27, 0.14);
+    rotate: 0deg;
+}
+
+.mos-method b {
+    color: var(--mos-ink);
+    display: block;
+    font-weight: 700;
+}
+
+.mos-method span {
+    color: var(--mos-ink-45);
+    display: block;
+    font-size: 0.72rem;
+    margin-top: 0.2rem;
+}
+
+.mos-criteria {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 2rem;
+}
+
+.mos-criteria li {
+    align-items: baseline;
+    display: grid;
+    font-size: 0.98rem;
+    gap: 0.75rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    line-height: 1.6;
+}
+
+.mos-criteria li::before {
+    color: var(--mos-ember);
+    content: "✓";
+    font-weight: 700;
+}
+
+/* The six arcs ----------------------------------------------------------- */
+.mos-arcs {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+    margin-top: 1.75rem;
+}
+
+.mos-arc {
+    background: var(--mos-card);
+    border: 1px solid var(--mos-line);
+    padding: 0.9rem 0.9rem 0.75rem;
+    position: relative;
+}
+
+.mos-arc svg {
+    display: block;
+    height: auto;
+    width: 100%;
+}
+
+.mos-arc path {
+    fill: none;
+    stroke: var(--mos-ink-45);
+    stroke-linecap: round;
+    stroke-width: 2.5;
+}
+
+.mos-arc b {
+    color: var(--mos-ink);
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-top: 0.5rem;
+}
+
+.mos-arc span {
+    color: var(--mos-ink-45);
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+}
+
+/* The arc the study's controlled prompt used — the thread from foundation to
+   study design, made visible instead of claimed. */
+.mos-arc.is-used {
+    border-color: var(--mos-ember);
+    box-shadow: 0 0.6rem 1.4rem rgba(178, 58, 38, 0.16);
+}
+
+.mos-arc.is-used path {
+    stroke: var(--mos-ember);
+}
+
+.mos-arc-tag {
+    background: var(--mos-ember);
+    color: var(--mos-card);
+    font-family: var(--mos-type);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 0.15rem 0.45rem;
+    position: absolute;
+    right: -0.4rem;
+    rotate: 4deg;
+    text-transform: uppercase;
+    top: -0.55rem;
+}
+
+/* Draw the arcs on entry rather than fading them in — a line about narrative
+   movement should move. */
+.case-js .mos-arcs [data-reveal] path {
+    stroke-dasharray: 140;
+    stroke-dashoffset: 140;
+}
+
+.case-js .mos-arcs [data-reveal].is-in path {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-delay: var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .case-js .mos-arcs [data-reveal] path {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* =========================================================================
+   4 — The method
+========================================================================= */
+.mos-phases {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    margin-top: 3rem;
+}
+
+.mos-phase {
+    background: var(--mos-card);
+    border-top: 4px solid var(--mos-ember);
+    box-shadow: 0 0.9rem 1.8rem rgba(42, 32, 27, 0.09);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.4rem;
+    position: relative;
+}
+
+.mos-phase:nth-child(2) {
+    border-top-color: var(--mos-ochre);
+}
+
+.mos-phase:nth-child(3) {
+    border-top-color: var(--mos-moss);
+}
+
+.mos-phase-num {
+    color: var(--mos-ink-45);
+    font-family: var(--mos-type);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.mos-phase h3 {
+    font-family: var(--mos-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-block: 0.35rem 0.15rem;
+}
+
+/* The guide gives every phase a second name — "getting to know the reader" —
+   which says more about the step list than the phase title does. */
+.mos-phase-sub {
+    color: var(--mos-ink-45);
+    font-family: var(--mos-hand);
+    font-size: 1.1rem;
+    margin-bottom: 0.9rem;
+}
+
+/* Numbered, because the order is the product: the whole point of the method
+   is that a beginner knows what comes next.
+
+   ::marker rather than a grid column with a ::before counter — a grid item
+   promotes every inline child to a grid item of its own, so a <strong> or an
+   <em> inside a step would break onto its own line. */
+.mos-steps {
+    list-style: decimal;
+    padding-left: 1.45rem;
+}
+
+.mos-steps li {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding-left: 0.15rem;
+}
+
+.mos-steps li + li {
+    margin-top: 0.55rem;
+}
+
+.mos-steps li::marker {
+    color: var(--mos-ember);
+    font-family: var(--mos-type);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.mos-phase-tool {
+    border-top: 1px solid var(--mos-line);
+    color: var(--mos-ink-70);
+    font-family: var(--mos-hand);
+    font-size: 1.1rem;
+    line-height: 1.35;
+    margin-top: auto;
+    padding-top: 0.9rem;
+}
+
+.mos-phase-tool b {
+    color: var(--mos-ember);
+}
+
+.mos-annotated {
+    margin-top: 3.5rem;
+    position: relative;
+}
+
+/* =========================================================================
+   5 — The guide in use
+   Sits on the ember, so the cream cards read as pages of the guide laid out
+   on a coloured surface — the same staging as the guide's own cover.
+========================================================================= */
+.mos-meta {
+    color: rgba(252, 247, 238, 0.7);
+    font-family: var(--mos-type);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+}
+
+/* The toolkit ------------------------------------------------------------ */
+.mos-toolkit {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    margin-top: 2rem;
+}
+
+.mos-tool {
+    background: var(--mos-card);
+    box-shadow: 0 0.75rem 1.5rem rgba(42, 32, 27, 0.18);
+    color: var(--mos-ink);
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.3rem 1.1rem;
+    rotate: var(--rot, 0deg);
+    transition: rotate 300ms ease, translate 300ms ease;
+}
+
+.mos-tool:hover {
+    rotate: -0.8deg;
+    translate: 0 -3px;
+}
+
+.mos-tool-phase {
+    color: var(--mos-ember);
+    font-family: var(--mos-type);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.mos-tool b {
+    display: block;
+    font-family: var(--mos-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-block: 0.4rem 0.5rem;
+}
+
+.mos-tool p {
+    color: var(--mos-ink-70);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+/* The source line. "Documented" was one of the four criteria she screened
+   the methodologies against — the toolkit had to pass its own test. */
+.mos-tool cite {
+    border-top: 1px dashed var(--mos-line);
+    color: var(--mos-ink-45);
+    font-family: var(--mos-type);
+    font-size: 0.68rem;
+    font-style: normal;
+    letter-spacing: 0.04em;
+    margin-top: auto;
+    padding-top: 0.7rem;
+}
+
+/* The worked example ------------------------------------------------------ */
+.mos-walkthrough {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    margin-top: 2.25rem;
+}
+
+.mos-wt {
+    background: var(--mos-card);
+    box-shadow: 0 1rem 2rem rgba(42, 32, 27, 0.2);
+    color: var(--mos-ink);
+    padding: 1.6rem 1.5rem;
+    position: relative;
+    rotate: var(--rot, 0deg);
+}
+
+.mos-wt:nth-child(1) { --rot: -0.7deg; }
+.mos-wt:nth-child(2) { --rot: 0.5deg; }
+.mos-wt:nth-child(3) { --rot: -0.4deg; }
+
+.mos-wt-num {
+    color: var(--mos-paper-2);
+    font-family: var(--mos-display);
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 0.8;
+    position: absolute;
+    right: 1.1rem;
+    top: 1rem;
+}
+
+.mos-wt h4 {
+    font-family: var(--mos-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Same reasoning as .mos-steps: these entries are full of <strong> and <em>,
+   so the marker has to come from ::marker, not from a grid column. */
+.mos-wt ol {
+    list-style: decimal;
+    padding-left: 1.45rem;
+}
+
+.mos-wt li {
+    color: var(--mos-ink-70);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    padding-left: 0.15rem;
+}
+
+.mos-wt li + li {
+    margin-top: 0.7rem;
+}
+
+.mos-wt li::marker {
+    color: var(--mos-ember);
+    font-family: var(--mos-type);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.mos-wt li strong {
+    color: var(--mos-ink);
+}
+
+/* =========================================================================
+   7 — Study design
+========================================================================= */
+.mos-study {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 2.75rem;
+}
+
+.mos-group {
+    background: var(--mos-card);
+    border: 1px solid var(--mos-line);
+    box-shadow: 0 0.75rem 1.5rem rgba(42, 32, 27, 0.08);
+    padding: 1.5rem 1.4rem;
+    position: relative;
+}
+
+.mos-group-label {
+    color: var(--mos-ember);
+    font-family: var(--mos-type);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.mos-group h3 {
+    font-family: var(--mos-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-block: 0.4rem 0.6rem;
+}
+
+.mos-group p {
+    color: var(--mos-ink-70);
+    font-size: 0.93rem;
+    line-height: 1.6;
+}
+
+.mos-group-n {
+    color: var(--mos-ink);
+    display: block;
+    font-family: var(--mos-display);
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.mos-flow {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    margin-top: 1.25rem;
+}
+
+.mos-flow-step {
+    background: rgba(252, 247, 238, 0.7);
+    border: 1px dashed var(--mos-ink-45);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding: 1rem 1.1rem;
+    position: relative;
+}
+
+.mos-flow-step b {
+    color: var(--mos-ember);
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+}
+
+@media (max-width: 700px) {
+    .mos-study {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* =========================================================================
+   7 — Results
+========================================================================= */
+.mos-findings {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.mos-finding {
+    align-items: baseline;
+    background: var(--mos-card);
+    border: 1px solid var(--mos-line);
+    display: grid;
+    gap: 0.4rem 1.5rem;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    line-height: 1.65;
+    padding: 1.25rem 1.5rem;
+}
+
+.mos-finding b {
+    color: var(--mos-ember);
+    font-family: var(--mos-display);
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.mos-finding em {
+    font-style: italic;
+}
+
+/* The result that missed its target, sitting where it happened rather than
+   filed at the bottom. */
+.mos-finding--below {
+    background: var(--mos-ember);
+    border-color: var(--mos-ember);
+    color: rgba(252, 247, 238, 0.9);
+}
+
+.mos-finding--below b {
+    color: var(--mos-card);
+}
+
+.mos-finding--below strong {
+    color: var(--mos-card);
+}
+
+.mos-finding--below .mos-finding-tag {
+    color: rgba(252, 247, 238, 0.75);
+}
+
+.mos-finding-tag {
+    color: var(--mos-ochre);
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+    .mos-finding {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* =========================================================================
+   8 — The turn
+========================================================================= */
+.mos-turn {
+    padding-block: clamp(7rem, 16vw, 13rem);
+    text-align: center;
+}
+
+.mos-turn-quote {
+    color: var(--mos-card);
+    font-family: var(--mos-display);
+    font-size: clamp(1.6rem, 4.2vw, 3.1rem);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.25;
+    margin-block: 2.5rem;
+    margin-inline: auto;
+    max-width: 24ch;
+}
+
+.mos-turn p {
+    margin-inline: auto;
+    max-width: 58ch;
+}
+
+.mos-turn .mos-text {
+    margin-inline: auto;
+}
+
+/* =========================================================================
+   9 — The hard call
+========================================================================= */
+.mos-swap {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    margin-top: 2.5rem;
+}
+
+.mos-swap-side {
+    background: var(--mos-card);
+    border: 1px solid var(--mos-line);
+    padding: 1.4rem 1.5rem;
+}
+
+.mos-swap-side b {
+    color: var(--mos-ink-45);
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.7rem;
+    text-transform: uppercase;
+}
+
+.mos-swap-side p {
+    font-size: 0.98rem;
+    line-height: 1.6;
+}
+
+.mos-swap-side--out {
+    background: rgba(42, 32, 27, 0.04);
+    color: var(--mos-ink-45);
+}
+
+/* Struck through on the copy only — text-decoration on the box would drag the
+   "REMOVED" label through with it, and the label is not what was removed. */
+.mos-swap-side--out p {
+    text-decoration: line-through;
+    text-decoration-color: var(--mos-ember);
+    text-decoration-thickness: 1px;
+}
+
+.mos-swap-side--in {
+    border-color: var(--mos-moss);
+    box-shadow: 0 0.75rem 1.5rem rgba(79, 99, 80, 0.14);
+}
+
+.mos-swap-arrow {
+    color: var(--mos-ember);
+    font-size: 2rem;
+}
+
+@media (max-width: 760px) {
+    .mos-swap {
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+    }
+
+    .mos-swap-arrow {
+        rotate: 90deg;
+    }
+}
+
+.mos-tension {
+    border-left: 3px solid var(--mos-ember);
+    font-size: 1.02rem;
+    line-height: 1.75;
+    margin-top: 2.5rem;
+    max-width: 60ch;
+    padding-left: 1.4rem;
+}
+
+/* =========================================================================
+   10 — Iteration
+========================================================================= */
+.mos-changes {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    margin-top: 2.75rem;
+}
+
+.mos-change .media-frame {
+    border-radius: 0;
+}
+
+.mos-change-tag {
+    color: var(--mos-ember);
+    font-family: var(--mos-type);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.mos-change h3 {
+    font-family: var(--mos-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-block: 0.4rem 0.5rem;
+}
+
+.mos-change p {
+    color: var(--mos-ink-70);
+    font-size: 0.93rem;
+    line-height: 1.6;
+}
+
+/* =========================================================================
+   11 — Artefacts
+========================================================================= */
+/* Photographs pegged to a line, the way the fanzine pages were laid out. The
+   line is painted on the rail's background so it stays put while the photos
+   scroll past it — pegs sliding along a string, not a moving string. */
+.mos-clothesline {
+    background-image: linear-gradient(rgba(242, 232, 216, 0.32), rgba(242, 232, 216, 0.32));
+    background-position: 0 1.05rem;
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
+}
+
+.mos-clothesline .mos-photo {
+    margin-top: 1.5rem;
+}
+
+.mos-peg {
+    background: var(--mos-ochre);
+    border-radius: 0.1rem;
+    height: 1.1rem;
+    left: 50%;
+    position: absolute;
+    top: -0.55rem;
+    transform: translateX(-50%) rotate(var(--peg-rot, 6deg));
+    width: 0.42rem;
+    z-index: 4;
+}
+
+.case-section--dark .mos-photo figcaption {
+    color: var(--mos-ink-70);
+}
+
+/* =========================================================================
+   12 — Limitations
+========================================================================= */
+.mos-limits {
+    background: var(--mos-card);
+    box-shadow: 0 1.25rem 2.5rem rgba(42, 32, 27, 0.12);
+    margin-top: 2.5rem;
+    max-width: 58rem;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    position: relative;
+    rotate: 0.5deg;
+}
+
+.mos-limits ul {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.mos-limits li {
+    border-bottom: 1px dashed var(--mos-line);
+    font-size: 1rem;
+    line-height: 1.7;
+    padding-bottom: 1rem;
+}
+
+.mos-limits li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.mos-limits li b {
+    color: var(--mos-ember);
+    display: block;
+    font-family: var(--mos-type);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
+/* =========================================================================
+   13 — What comes next
+========================================================================= */
+.mos-next-lead {
+    color: var(--mos-card);
+    font-family: var(--mos-display);
+    font-size: clamp(1.7rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    max-width: 20ch;
+}
+
+.mos-live {
+    align-items: center;
+    background: var(--mos-card);
+    color: var(--mos-ember);
+    display: inline-flex;
+    font-family: var(--mos-type);
+    font-size: 0.74rem;
+    font-weight: 700;
+    gap: 0.5rem;
+    letter-spacing: 0.16em;
+    padding: 0.4rem 0.9rem;
+    text-transform: uppercase;
+}
+
+.mos-live i {
+    background: var(--mos-ember);
+    border-radius: 999px;
+    height: 0.5rem;
+    width: 0.5rem;
+    animation: mosPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes mosPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+}
+
+.mos-footnote {
+    border-top: 1px solid rgba(252, 247, 238, 0.24);
+    color: rgba(252, 247, 238, 0.6);
+    font-family: var(--mos-type);
+    font-size: 0.78rem;
+    line-height: 1.7;
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+}
+
+.mos-nav-out {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-top: 3rem;
+}
+
+.mos-btn {
+    align-items: center;
+    background: var(--mos-card);
+    color: var(--mos-ember);
+    display: inline-flex;
+    font-family: var(--mos-type);
+    font-size: 0.82rem;
+    font-weight: 700;
+    gap: 0.5rem;
+    letter-spacing: 0.08em;
+    padding: 0.85rem 1.5rem;
+    text-transform: uppercase;
+    transition: transform 200ms ease, background 200ms ease;
+}
+
+.mos-btn:hover {
+    transform: translateY(-2px);
+}
+
+.mos-btn--ghost {
+    background: transparent;
+    border: 1px solid rgba(252, 247, 238, 0.4);
+    color: rgba(252, 247, 238, 0.9);
+}
+
+.mos-btn--ghost:hover {
+    background: rgba(252, 247, 238, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mos-scroll-cue .material-symbols-outlined,
+    .mos-live i {
+        animation: none;
+    }
+
+    .mos-hero-media {
+        translate: none;
+    }
+}

@@ -43,7 +43,8 @@
     // because that file is regenerated from Notion on every build. If a
     // `casePage` field ever arrives from Notion, it takes precedence.
     const casePages = {
-        "ludis-social": "case-ludis.html"
+        "ludis-social": "case-ludis.html",
+        "mosaico": "case-mosaico.html"
     };
 
     const projectHref = (project) => project.casePage

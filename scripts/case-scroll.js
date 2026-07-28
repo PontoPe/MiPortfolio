@@ -1,11 +1,16 @@
 /* ===========================================================================
-   LUDIS case page — scroll behaviours
+   Case pages — shared scroll behaviours
    ---------------------------------------------------------------------------
-   Four small things, all opt-out under prefers-reduced-motion:
-     1. reading progress bar
-     2. chapter rail built from [data-chapter] sections (inverts over dark ones)
-     3. reveal-on-enter for [data-reveal]
-     4. count-up for [data-count] stats, fired once when the row enters
+   Generic across every case page; nothing here knows which project it is.
+   All of it is opt-out under prefers-reduced-motion.
+
+     1. reading progress bar          .case-progress span  (sets --p)
+     2. chapter rail                  built from [data-chapter] sections
+     3. reveal on enter               [data-reveal], delay via --d
+     4. count-up                      [data-count], [data-count-decimals],
+                                      [data-count-suffix]
+     5. horizontal rails              [data-rail] + [data-rail-btn]
+     6. scroll drift                  [data-drift] sets --float in px
 =========================================================================== */
 (function () {
     "use strict";
@@ -40,7 +45,8 @@
             var dot = document.createElement("a");
             dot.className = "case-dot";
             dot.href = "#" + section.id;
-            dot.innerHTML = "<b>" + section.dataset.chapter + "</b><i></i>";
+            dot.innerHTML = "<b></b><i></i>";
+            dot.querySelector("b").textContent = section.dataset.chapter;
             dot.setAttribute("aria-label", "Go to " + section.dataset.chapter);
             rail.appendChild(dot);
             dots.push(dot);
@@ -87,13 +93,20 @@
     }
 
     /* --- 4. count-up ------------------------------------------------------ */
+    // `data-count-decimals` matters for numbers like 4.7 — rounding to an
+    // integer would show a satisfaction score the study never produced.
+    function format(value, decimals) {
+        return decimals > 0 ? value.toFixed(decimals) : String(Math.round(value));
+    }
+
     function countUp(el) {
         var target = parseFloat(el.dataset.count);
         var suffix = el.dataset.countSuffix || "";
+        var decimals = parseInt(el.dataset.countDecimals, 10) || 0;
         if (isNaN(target)) return;
 
         if (reduced) {
-            el.textContent = target + suffix;
+            el.textContent = format(target, decimals) + suffix;
             return;
         }
 
@@ -105,7 +118,7 @@
             var t = Math.min(1, (now - start) / duration);
             // ease-out cubic: fast off the line, settles on the number
             var eased = 1 - Math.pow(1 - t, 3);
-            el.textContent = Math.round(target * eased) + suffix;
+            el.textContent = format(target * eased, decimals) + suffix;
             if (t < 1) window.requestAnimationFrame(step);
         }
 
@@ -126,17 +139,17 @@
         }, { threshold: 0.6 });
 
         Array.prototype.forEach.call(counters, function (el) {
-            el.textContent = "0" + (el.dataset.countSuffix || "");
+            var decimals = parseInt(el.dataset.countDecimals, 10) || 0;
+            el.textContent = format(0, decimals) + (el.dataset.countSuffix || "");
             countObserver.observe(el);
         });
     }
 
-    /* --- campaign rail arrows --------------------------------------------- */
-    var track = document.querySelector("[data-rail]");
-
-    if (track) {
-        var prev = document.querySelector('[data-rail-btn="prev"]');
-        var next = document.querySelector('[data-rail-btn="next"]');
+    /* --- 5. horizontal rails ---------------------------------------------- */
+    Array.prototype.forEach.call(document.querySelectorAll("[data-rail]"), function (track) {
+        var scope = track.closest("section") || document;
+        var prev = scope.querySelector('[data-rail-btn="prev"]');
+        var next = scope.querySelector('[data-rail-btn="next"]');
 
         var scrollRail = function (dir) {
             var card = track.firstElementChild;
@@ -156,15 +169,20 @@
         track.addEventListener("scroll", syncRailBtns, { passive: true });
         window.addEventListener("resize", syncRailBtns);
         syncRailBtns();
-    }
+    });
 
-    /* --- hero phone drift -------------------------------------------------- */
-    var phone = document.querySelector(".case-phone");
+    /* --- 6. scroll drift --------------------------------------------------- */
+    // Only while the element is still near the top of the document, so the
+    // handler stops doing work once the hero is long gone.
+    var drifters = document.querySelectorAll("[data-drift]");
 
-    if (phone && !reduced) {
+    if (drifters.length && !reduced) {
         window.addEventListener("scroll", function () {
-            if (window.scrollY > window.innerHeight * 1.2) return;
-            phone.style.setProperty("--float", (window.scrollY * -0.06).toFixed(2) + "px");
+            if (window.scrollY > window.innerHeight * 1.4) return;
+            Array.prototype.forEach.call(drifters, function (el) {
+                var rate = parseFloat(el.dataset.drift) || -0.06;
+                el.style.setProperty("--float", (window.scrollY * rate).toFixed(2) + "px");
+            });
         }, { passive: true });
     }
 })();

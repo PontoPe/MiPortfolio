@@ -4,3 +4,6 @@
 # when building a page skin; nothing here is served, and it is heavy (~9 MB).
 # Assets the site actually uses get copied into assets/ui/ or imagesProjects/.
 assets/reference/
+
+# Local venv for tools/welcome-trace (see its README)
+tools/welcome-trace/venv/

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mosaico — A writing method beginners could finish | Milena Caldas</title>
+<meta name="description" content="Mosaico: a step-by-step writing method adapted from design methodologies, designed and validated with two contrast groups. All 4 first-time writers finished complete stories, and a teacher adopted the method in her own classroom."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="scripts/tailwind-theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,600&amp;family=Courier+Prime:wght@400;700&amp;family=Caveat:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
+<link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
+<link href="page-style.css" rel="stylesheet"/>
+<link href="case-base.css" rel="stylesheet"/>
+<link href="case-mosaico.css" rel="stylesheet"/>
+<!-- Reveal-on-scroll hides content until IntersectionObserver un-hides it.
+     Gate that behind a class only scripting can set, so a dead script (or a
+     blocked observer) leaves a readable page instead of a blank one. -->
+<script>document.documentElement.classList.add("case-js");</script>
+</head>
+<body class="font-body case-body selection:bg-primary-container">
+
+<div class="case-progress" aria-hidden="true"><span></span></div>
+<nav class="case-dots" aria-label="Case chapters"></nav>
+
+<nav class="site-nav">
+<div class="site-nav-inner">
+<a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
+<div class="hidden md:flex items-center">
+<div class="site-nav-links">
+<a class="nav-link" href="design-grafico.html">graphic design</a>
+<a class="nav-link" href="ux-ui.html">ux/ui</a>
+<a class="nav-link" href="ilustracao.html">illustration</a>
+<a class="nav-link" href="about.html">about</a>
+<a class="nav-link" href="index.html#contact">contact</a>
+</div>
+</div>
+<button class="md:hidden p-2">
+<span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
+</button>
+</div>
+</nav>
+
+<main class="case-main">
+
+<!-- ======================================================================
+     1 — HERO: the result before any context
+     A recruiter spends ~90 seconds. The first screen has to deliver the
+     outcome; whoever wants the process scrolls for it.
+====================================================================== -->
+<section class="case-section case-section--ember mos-hero" id="result" data-chapter="Result">
+<div class="case-wrap">
+<div class="mos-hero-grid">
+
+<div>
+<p class="mos-eyebrow" data-reveal>UX Research · Learning Experience Design · 2023 → ongoing</p>
+<h1 class="mos-display mos-title" data-reveal style="--d:60ms"><span style="--y:-0.04em">M</span><span style="--y:0.05em">o</span><span style="--y:-0.03em">s</span><span style="--y:0.04em">a</span><span style="--y:-0.05em">i</span><span style="--y:0.03em">c</span><span style="--y:-0.02em">o</span></h1>
+<p class="mos-subtitle" data-reveal style="--d:120ms">Designing a writing method that beginners could actually finish</p>
+
+<p class="mos-lead" data-reveal style="--d:180ms">
+<span class="mos-hero-q">Can a design method teach people to write stories?</span>
+I designed and validated Mosaico, a step-by-step writing method adapted from design
+methodologies. In a two-group study, <span class="mos-mark">all 4 participants with zero writing
+experience completed full stories</span> — and a teacher spontaneously asked to adopt the method
+in her own classroom.
+</p>
+
+<div class="mos-stats">
+<div class="mos-stat" data-reveal><b data-count="4" data-count-suffix="/4">4/4</b><span>first-time writers<br/>finished complete stories</span></div>
+<div class="mos-stat" data-reveal style="--d:80ms"><b data-count="4.7" data-count-decimals="1" data-count-suffix="/5">4.7/5</b><span>satisfaction<br/>measured with QUIS</span></div>
+<div class="mos-stat" data-reveal style="--d:160ms"><b data-count="1">1</b><span>unsolicited<br/>classroom adoption</span></div>
+</div>
+</div>
+
+<div class="mos-hero-media" data-reveal data-drift="-0.05" style="--d:200ms">
+<figure class="mos-photo" style="--rot:2deg">
+<span class="mos-tape-strip" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="The final Mosaico diagram: three phases, their steps and the design tool adapted for each" src="imagesProjects/mosaico-case/diagram-final.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">account_tree</span><code>imagesProjects/mosaico-case/diagram-final.png</code><em>The finished Mosaico diagram — the coloured version, after the study's adjustments</em></span>
+</div>
+<figcaption>Mosaico, after the study changed it.</figcaption>
+</figure>
+</div>
+
+</div>
+
+<p class="mos-scroll-cue" data-reveal style="--d:320ms"><span class="material-symbols-outlined">south</span>What it was solving</p>
+</div>
+</section>
+
+<!-- ======================================================================
+     2 — CONTEXT AND PROBLEM
+     Short. The academic origin goes in a discreet footnote at the end of the
+     page: the case is about the problem, not about the degree.
+====================================================================== -->
+<section class="case-section case-section--paper case-section--torn" id="problem" data-chapter="Problem">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>The problem</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">A project with<br/>no process</h2>
+
+<div class="mos-two-col">
+<div>
+<p class="mos-text" data-reveal style="--d:120ms">
+Writing a story is a project — but unlike design projects, it comes with no process.
+Beginners face a blank page with no steps, no checkpoints, no way to know if they're
+"doing it right." Most give up before finishing anything.
+</p>
+</div>
+<div>
+<p class="mos-text" data-reveal style="--d:180ms">
+My hypothesis: design methodologies solve exactly this problem — they turn ambiguous
+creative work into navigable steps. Could they be adapted for narrative writing?
+</p>
+</div>
+</div>
+
+<blockquote class="mos-pull" data-reveal style="--d:240ms">
+<span class="mos-tape-strip mos-tape-strip--left" aria-hidden="true"></span>
+<span class="mos-tape-strip mos-tape-strip--right" aria-hidden="true"></span>
+<q>Can the scaffolding that helps designers ship products help writers finish stories?</q>
+</blockquote>
+</div>
+</section>
+
+<!-- ======================================================================
+     3 — THE FOUNDATION
+     Rigour without drowning the reader: what was analysed, against what, and
+     the one sourcing decision that says how she thinks.
+====================================================================== -->
+<section class="case-section case-section--grid case-section--torn" id="foundation" data-chapter="Foundation">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>The foundation</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">Nine methods,<br/>one shared skeleton</h2>
+<p class="mos-text" data-reveal style="--d:120ms">
+I analyzed 9 design methodologies against 4 criteria: documented, user-centered, iterative,
+and outcome-driven. Then I mapped their converging goals to extract the shared skeleton —
+<strong>the steps that appear in every method regardless of author.</strong>
+</p>
+
+<div class="mos-methods">
+<div class="mos-method" data-reveal style="--rot:-1.2deg"><b>Design Thinking</b><span>process model</span></div>
+<div class="mos-method" data-reveal style="--d:40ms;--rot:0.8deg"><b>Frascara</b><span>design for communication</span></div>
+<div class="mos-method" data-reveal style="--d:80ms;--rot:-0.6deg"><b>Challenge Based Learning</b><span>learning framework</span></div>
+<div class="mos-method" data-reveal style="--d:120ms;--rot:1.1deg"><b>Norman</b><span>user-centered design</span></div>
+<div class="mos-method" data-reveal style="--d:160ms;--rot:-0.9deg"><b>Tidwell</b><span>interaction patterns</span></div>
+<div class="mos-method" data-reveal style="--d:200ms;--rot:0.6deg"><b>Double Diamond</b><span>diverge / converge</span></div>
+<div class="mos-method" data-reveal style="--d:240ms;--rot:-1deg"><b>Lean UX</b><span>assumption-driven</span></div>
+<div class="mos-method" data-reveal style="--d:280ms;--rot:0.9deg"><b>Redish</b><span>content design</span></div>
+<div class="mos-method" data-reveal style="--d:320ms;--rot:-0.7deg"><b>Munari</b><span>problem-solving method</span></div>
+</div>
+
+<div class="mos-two-col" style="margin-top:3rem">
+<div>
+<h3 class="mos-h3" data-reveal>The four criteria</h3>
+<ul class="mos-criteria" data-reveal style="--d:80ms">
+<li><span><strong>Documented</strong> — published and citable, not folklore.</span></li>
+<li><span><strong>User-centered</strong> — someone other than the author is in the loop.</span></li>
+<li><span><strong>Iterative</strong> — the method expects to be run more than once.</span></li>
+<li><span><strong>Outcome-driven</strong> — it ends in a thing, not in a feeling.</span></li>
+</ul>
+</div>
+
+<aside class="mos-note" data-reveal style="--d:160ms;--rot:1.2deg">
+<b>Sourcing decision</b>
+For the narrative layer, I chose the six emotional arcs derived computationally from
+1,737 books (University of Vermont, 2016) over purely literary taxonomies — I wanted
+structure backed by data, not tradition.
+</aside>
+</div>
+
+<p class="mos-eyebrow" data-reveal style="margin-top:3.5rem">The six arcs</p>
+<div class="mos-arcs">
+
+<figure class="mos-arc" data-reveal>
+<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M3,33C25,29,60,14,97,7"/></svg>
+<b>Rags to riches</b><span>rise</span>
+</figure>
+
+<figure class="mos-arc" data-reveal style="--d:60ms">
+<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M3,7C25,11,60,26,97,33"/></svg>
+<b>Tragedy</b><span>fall</span>
+</figure>
+
+<figure class="mos-arc" data-reveal style="--d:120ms">
+<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M3,9C22,38,78,38,97,9"/></svg>
+<b>Man in a hole</b><span>fall–rise</span>
+</figure>
+
+<figure class="mos-arc" data-reveal style="--d:180ms">
+<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M3,31C22,3,78,3,97,31"/></svg>
+<b>Icarus</b><span>rise–fall</span>
+</figure>
+
+<figure class="mos-arc" data-reveal style="--d:240ms">
+<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M3,30C14,6,28,6,38,20C48,34,60,34,70,20C80,6,90,8,97,12"/></svg>
+<b>Cinderella</b><span>rise–fall–rise</span>
+</figure>
+
+<figure class="mos-arc is-used" data-reveal style="--d:300ms">
+<span class="mos-arc-tag">used in the study</span>
+<svg viewBox="0 0 100 40" aria-hidden="true"><path d="M3,10C14,34,28,34,38,20C48,6,60,6,70,20C80,34,90,32,97,28"/></svg>
+<b>Oedipus</b><span>fall–rise–fall</span>
+</figure>
+
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     4 — THE TOOL
+     What Mosaico actually is, before any evaluation of it.
+====================================================================== -->
+<section class="case-section case-section--paper case-section--torn" id="method" data-chapter="Method">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>The tool</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">Three phases, borrowed<br/>from the arc itself</h2>
+<p class="mos-text" data-reveal style="--d:120ms">
+Mosaico guides a writer through three phases taken from narrative arc structure itself.
+Each step suggests an adapted design tool: <strong>personas for imagining readers, empathy maps
+for characters, storyboards for timelines.</strong>
+</p>
+
+<div class="mos-phases">
+
+<div class="mos-phase" data-reveal>
+<p class="mos-phase-num">Phase 01 · Hypothesis</p>
+<h3>Exposition</h3>
+<p class="mos-phase-sub">Getting to know the project</p>
+<ol class="mos-steps">
+<li>Define the goal</li>
+<li>Define the arc and genre</li>
+<li>Analyse similar work</li>
+<li>Synthesize the findings</li>
+<li>Proto-persona</li>
+<li>Plot and time</li>
+</ol>
+<p class="mos-phase-tool"><b>Adapted tool:</b> personas — for imagining readers</p>
+</div>
+
+<div class="mos-phase" data-reveal style="--d:100ms">
+<p class="mos-phase-num">Phase 02 · Validation</p>
+<h3>Action</h3>
+<p class="mos-phase-sub">Getting to know the reader</p>
+<ol class="mos-steps">
+<li>Gather concepts</li>
+<li>Requirements and constraints</li>
+<li>Character and setting</li>
+<li>Internal validation</li>
+</ol>
+<p class="mos-phase-tool"><b>Adapted tool:</b> empathy maps — for characters</p>
+</div>
+
+<div class="mos-phase" data-reveal style="--d:200ms">
+<p class="mos-phase-num">Phase 03 · Development</p>
+<h3>Resolution</h3>
+<p class="mos-phase-sub">Practising</p>
+<ol class="mos-steps">
+<li>Generate argument alternatives</li>
+<li>Timeline</li>
+<li>Internal validation</li>
+<li>Writing</li>
+<li>Refinement</li>
+<li>Production</li>
+</ol>
+<p class="mos-phase-tool"><b>Adapted tool:</b> storyboards — for timelines</p>
+</div>
+
+</div>
+
+<div class="mos-annotated mos-two-col">
+<figure class="mos-photo" data-reveal style="--rot:-1.2deg">
+<span class="mos-tape-strip" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 16 / 10">
+<img alt="The full Mosaico diagram, with the three phases and the auxiliary tools attached to each step" src="imagesProjects/mosaico-case/method-diagram.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">schema</span><code>imagesProjects/mosaico-case/method-diagram.png</code><em>The diagram large and legible — three phases plus the auxiliary tools</em></span>
+</div>
+<figcaption>The whole method on one page — the point was that a beginner could hold it in view.</figcaption>
+</figure>
+
+<div>
+<p class="mos-hand" data-reveal style="--d:120ms">
+"The persona step reframes <em>who will read this?</em> — a question beginners never ask."
+</p>
+<p class="mos-text" data-reveal style="--d:180ms; margin-top:1.5rem">
+The adapted tools do the work the writing advice usually leaves implicit. A persona turns
+"write for your reader" into a filled-in sheet. An empathy map turns "make the character
+believable" into six questions with answers. The method never asks for talent it can't
+scaffold.
+</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     5 — THE GUIDE IN USE
+     Screen 4 says what Mosaico is; this one says what using it looks like.
+     Everything here is from the guide itself (references/Mosaico/
+     GuiaDigital_Mosaico.pdf): the ten documented auxiliary tools, the
+     flexibility clause, and the worked example the guide ships with.
+     The worked example is the strongest artefact in the whole document — it
+     is the method running end to end and arriving at a real story.
+====================================================================== -->
+<section class="case-section case-section--ember case-section--torn" id="in-use" data-chapter="In use">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>The guide</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">What using it<br/>actually looks like</h2>
+
+<div class="mos-two-col">
+<div>
+<p class="mos-lead" data-reveal style="--d:120ms">
+Mosaico ships as a guide, not a diagram. Sixteen steps across the three phases carry the
+spine of the process; <span class="mos-mark">ten auxiliary tools sit beside them as
+suggestions</span>, each one lifted from a specific stage of the methodologies analysed and
+documented with its source.
+</p>
+<p class="mos-meta" data-reveal style="--d:180ms">3 phases · 16 steps · 10 auxiliary tools</p>
+</div>
+
+<figure class="mos-photo" data-reveal style="--d:220ms;--rot:1.4deg">
+<span class="mos-tape-strip" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="A spread of the Mosaico guide, open on the phase and auxiliary-tool pages" src="imagesProjects/mosaico-case/guide-spread.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">auto_stories</span><code>imagesProjects/mosaico-case/guide-spread.jpg</code><em>The guide open on a spread — the object a writer actually holds</em></span>
+</div>
+<figcaption>The guide itself — every tool documented with its origin.</figcaption>
+</figure>
+</div>
+
+<!-- The ten tools. Each carries its source, because "documented" was one of
+     the four criteria she screened the methodologies against — the toolkit
+     had to pass its own test. -->
+<p class="mos-eyebrow" data-reveal style="margin-top:4rem">The toolkit</p>
+<h3 class="mos-h3" data-reveal style="--d:60ms;margin-top:0.75rem">Ten tools, each with a source</h3>
+
+<div class="mos-toolkit">
+
+<div class="mos-tool" data-reveal>
+<span class="mos-tool-phase">Exposition</span>
+<b>Narrative arcs</b>
+<p>Six emotional shapes derived from 1,737 books. Pick the one the story should trace.</p>
+<cite>Reagan et al., 2016</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:50ms">
+<span class="mos-tool-phase">Exposition</span>
+<b>Brainstorming</b>
+<p>Generate before you judge — quantity first, selection after, in an environment free of criticism.</p>
+<cite>Osborn, 1953</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:100ms">
+<span class="mos-tool-phase">Exposition</span>
+<b>Personas</b>
+<p>A fictional reader built from real data, so "who will read this?" has an answer on paper.</p>
+<cite>Nielsen, 2019 · Tomlin, 2018</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:150ms">
+<span class="mos-tool-phase">Exposition · Action</span>
+<b>Semantic panel</b>
+<p>A collage of images, textures and type that fixes the tone before a word is written.</p>
+<cite>Reis &amp; Merino, 2020</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:200ms">
+<span class="mos-tool-phase">Exposition · Resolution</span>
+<b>Mind map</b>
+<p>Non-linear notes. Makes the connections between isolated ideas visible instead of remembered.</p>
+<cite>Buzan, 2006 · Michalko, 2001</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:250ms">
+<span class="mos-tool-phase">Action · Resolution</span>
+<b>Value Proposition Canvas</b>
+<p>Jobs, pains and gains on one side; what the story offers on the other.</p>
+<cite>Osterwalder et al., 2015</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:300ms">
+<span class="mos-tool-phase">Action</span>
+<b>Empathy map</b>
+<p>What the character thinks, sees, hears, says and does — plus pains and gains.</p>
+<cite>Gray, 2010</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:350ms">
+<span class="mos-tool-phase">Action</span>
+<b>Focus groups</b>
+<p>Six to eight readers, one moderator, open discussion. Suggested — never required.</p>
+<cite>Wilkinson, 1999 · Hennink, 2007</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:400ms">
+<span class="mos-tool-phase">Action</span>
+<b>User journey</b>
+<p>The sequence of experiences from the first need to the moment it is met — or isn't.</p>
+<cite>Zemke &amp; Bell, 1985</cite>
+</div>
+
+<div class="mos-tool" data-reveal style="--d:450ms">
+<span class="mos-tool-phase">Resolution</span>
+<b>Storyboard</b>
+<p>The story as a limited number of frames: where it starts, where it peaks, where it ends.</p>
+<cite>Disney, 1930s · Lupton, 2017</cite>
+</div>
+
+</div>
+
+<aside class="mos-note" data-reveal style="--d:120ms;--rot:-1.1deg;margin-top:2.5rem;max-width:46rem">
+<b>The guide's own escape clause</b>
+"The steps listed work as a guide to make writing easier. For each particular case it is
+possible to adjust or simplify the process according to the specific needs of your project."
+</aside>
+
+<p class="mos-text" data-reveal style="--d:180ms;margin-top:1.5rem;color:rgba(252,247,238,0.82)">
+That sentence is why <strong>2 of 8 participants reordering the steps counted as a success and
+not a failure</strong> — the tool was written to be bent. It is also the difference between the
+spine and the suggestions: the four steps of Action end in <em>internal</em> validation, while
+focus groups stay in the optional column. A solo writer can run the whole method alone.
+</p>
+
+<!-- The walkthrough the guide ships with. It is the method's own proof: the
+     same horror brief and Oedipus arc that later became the study's
+     controlled prompt. -->
+<p class="mos-eyebrow" data-reveal style="margin-top:4.5rem">Worked example</p>
+<h3 class="mos-h3" data-reveal style="--d:60ms;margin-top:0.75rem">The guide runs itself, once, in full</h3>
+<p class="mos-text" data-reveal style="--d:120ms;margin-top:0.9rem;color:rgba(252,247,238,0.82)">
+Rather than explain the method abstractly, the guide walks one story through all sixteen steps
+— a horror narrative on the Oedipus arc. The same brief later became the controlled prompt
+every participant in the study started from.
+</p>
+
+<div class="mos-walkthrough">
+
+<div class="mos-wt" data-reveal>
+<p class="mos-wt-num">01</p>
+<h4>Exposition</h4>
+<ol>
+<li>Goal: to entertain.</li>
+<li>Horror, on the <strong>Oedipus</strong> arc.</li>
+<li>Desk research on the reference horror titles.</li>
+<li>Synthesis of the closest ones — <em>Evil Dead</em>, <em>Battle Royale</em>, <em>Asylum</em>.</li>
+<li>Proto-persona: young adult, 23, drawn from people who watch horror on video platforms.</li>
+<li>Plot and time: young people finding supernatural powers through social media.</li>
+</ol>
+</div>
+
+<div class="mos-wt" data-reveal style="--d:100ms">
+<p class="mos-wt-num">02</p>
+<h4>Action</h4>
+<ol>
+<li>Focus group of <span class="todo">18</span>–25-year-olds who consume horror — film and short-form video.</li>
+<li>Finding: they expect a male teenage lead, everyday digital slang, a family-curse thread, and exactly one survivor.</li>
+<li>Requirement — <strong>break the expectation</strong>: a female lead, a child, genuinely afraid of what she finds. No predictable ending, no happy ending, everything goes wrong.</li>
+<li>Character and setting: a small girl on her phone, at school.</li>
+<li>Validation: readers were surprised but interested — and suggested moving the story out of the school and into a house.</li>
+</ol>
+</div>
+
+<div class="mos-wt" data-reveal style="--d:200ms">
+<p class="mos-wt-num">03</p>
+<h4>Resolution</h4>
+<ol>
+<li>Two argument alternatives: she finds a strange message on her sister's forgotten phone, or she gets a strange DM while home alone.</li>
+<li>Two storyboards, one per alternative, marking the key beats.</li>
+<li>Readers preferred the first.</li>
+<li>Writing.</li>
+<li>Evaluation: people struggled to relate to the protagonist's choices.</li>
+<li>The character was adjusted.</li>
+<li>Validation beat expectations — nobody saw the ending coming.</li>
+<li>Revision, and the narrative closed.</li>
+</ol>
+</div>
+
+</div>
+
+<p class="mos-hand" data-reveal style="--d:120ms;margin-top:2.5rem;max-width:52ch">
+"Step 5 of Action is the whole argument of this project: a reader told her to move the story,
+and the story moved."
+</p>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     7 — STUDY DESIGN
+     The screen that separates a designed study from a bootcamp brief: two
+     contrast groups, a controlled prompt, and success defined before the run.
+====================================================================== -->
+<section class="case-section case-section--grid case-section--torn" id="study" data-chapter="Study">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>Study design</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">Does the method reduce<br/>the experience gap?</h2>
+<p class="mos-text" data-reveal style="--d:120ms">
+I designed the study around that single question — which meant the study had to be able to
+answer <em>no</em>. Two contrast groups, one controlled prompt, and data collected where I
+couldn't interfere with it.
+</p>
+
+<div class="mos-study">
+<div class="mos-group" data-reveal>
+<p class="mos-group-label">Group A</p>
+<span class="mos-group-n">4</span>
+<h3>Gen-Z, no writing experience</h3>
+<p>The people the method is for. If scaffolding works, it shows here first.</p>
+</div>
+<div class="mos-group" data-reveal style="--d:100ms">
+<p class="mos-group-label">Group B</p>
+<span class="mos-group-n">4</span>
+<h3>Educators experienced in professional writing</h3>
+<p>The contrast group. Their friction with the method is a different signal from a beginner's.</p>
+</div>
+</div>
+
+<div class="mos-flow">
+<div class="mos-flow-step" data-reveal><b>Controlled prompt</b>Everyone started from the same brief — horror genre, Oedipus arc — to isolate variation to the method, not the assignment.</div>
+<div class="mos-flow-step" data-reveal style="--d:80ms"><b>One week, async</b>Individual diary studies over one week, minimizing researcher interference.</div>
+<div class="mos-flow-step" data-reveal style="--d:160ms"><b>Then interviews</b>Semi-structured interviews after the writing was done, not during it.</div>
+</div>
+
+<aside class="mos-note" data-reveal style="--d:220ms;--rot:-1deg;margin-top:2.5rem;max-width:44rem">
+<b>Defining success first</b>
+To make results measurable, I operationalized each dimension using Goals-Signals-Metrics
+(Rodden et al., Google) — defining what success would look like <em>before</em> running the
+study, not after.
+</aside>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     7 — RESULTS
+     The finding that missed its target sits in the middle of the list, where
+     it happened. Filed at the bottom it would read as a confession; here it
+     reads as rigour — and it is the hook for the v2.
+====================================================================== -->
+<section class="case-section case-section--paper case-section--torn" id="results" data-chapter="Findings">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>Results</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">What the data showed</h2>
+
+<div class="mos-findings">
+
+<div class="mos-finding" data-reveal>
+<b>4/4</b>
+<p>All four first-time writers completed full stories — and reported <em>more</em> enthusiasm at the end than the experienced group.</p>
+</div>
+
+<div class="mos-finding" data-reveal style="--d:60ms">
+<b>7/8</b>
+<p>Recalled the method's steps by name after one week.</p>
+</div>
+
+<div class="mos-finding" data-reveal style="--d:120ms">
+<b>5/8</b>
+<p>Needed to read the guide only once to use it.</p>
+</div>
+
+<div class="mos-finding" data-reveal style="--d:180ms">
+<b>2/8</b>
+<p>Reordered the steps to fit their own process — which I counted as a success: the tool was designed to flex.</p>
+</div>
+
+<div class="mos-finding mos-finding--below" data-reveal style="--d:240ms">
+<b>4/8</b>
+<p><span class="mos-finding-tag">Below target</span><strong>Only half could recall <em>why</em> each step existed.</strong> People followed the process without internalizing it — a limitation that shaped everything I did next.</p>
+</div>
+
+<div class="mos-finding" data-reveal style="--d:300ms">
+<b>4.7</b>
+<p>Satisfaction out of 5, measured with QUIS.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     8 — THE TURN
+     Near-empty on purpose. One quote, one paragraph. The last sentence is the
+     point of the screen: naming the signal she missed at the time.
+====================================================================== -->
+<section class="case-section case-section--dark case-section--torn mos-turn" id="turn" data-chapter="The turn">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal style="justify-content:center">The moment that changed the project</p>
+<p class="mos-text" data-reveal style="--d:60ms;margin-top:2rem">During the evaluation interviews, something happened that I didn't design for:</p>
+
+<p class="mos-turn-quote" data-reveal style="--d:120ms">One of the teachers in the study asked permission to use Mosaico with her own students.</p>
+
+<p class="mos-text" data-reveal style="--d:180ms">
+Nobody recruited her. Nobody asked. The method was useful enough that a professional educator
+pulled it into her classroom on her own. In product terms: <span class="mos-mark">unsolicited adoption</span> —
+the rarest signal an early-stage product can get. At the time, I noted it in a subsection of my
+thesis. It took me two years to understand it was the most important result in the study.
+</p>
+</div>
+</section>
+
+<!-- ======================================================================
+     9 — THE HARD CALL
+     The decision an interviewer would pull on anyway. Better to pull on it
+     first, and point the resolution at the v2.
+====================================================================== -->
+<section class="case-section case-section--paper case-section--torn" id="decision" data-chapter="The call">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>The hardest call</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">Removing the users from<br/>a user-centered tool</h2>
+
+<p class="mos-text" data-reveal style="--d:120ms">
+<strong>6 of 8 participants questioned the external validation steps</strong> — recruiting focus
+groups of potential readers mid-process. The friction was real: a solo writer will never
+assemble a focus group, and steps that don't get used aren't steps, they're decoration.
+</p>
+
+<div class="mos-swap">
+<div class="mos-swap-side mos-swap-side--out" data-reveal>
+<b>Removed</b>
+<p>External validation — recruit a focus group of potential readers and test the story mid-process.</p>
+</div>
+<p class="mos-swap-arrow material-symbols-outlined" data-reveal style="--d:80ms" aria-hidden="true">east</p>
+<div class="mos-swap-side mos-swap-side--in" data-reveal style="--d:160ms">
+<b>Replaced with</b>
+<p>Internal checkpoints — the writer reviews their own earlier decisions against the goal and audience they defined in phase one.</p>
+</div>
+</div>
+
+<p class="mos-tension" data-reveal style="--d:220ms">
+I still think about this trade-off. Listening to users meant removing the users. The tension
+never fully resolved — until the next version of the tool put real readers back in the loop
+by design <em>(see: Mosaico v2)</em>.
+</p>
+
+<figure class="mos-photo" data-reveal style="--d:120ms;--rot:1deg;margin-top:3rem;max-width:52rem">
+<span class="mos-tape-strip mos-tape-strip--left" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 16 / 9">
+<img alt="The step sequence before and after the external validation stage was removed" src="imagesProjects/mosaico-case/steps-before-after.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">compare_arrows</span><code>imagesProjects/mosaico-case/steps-before-after.png</code><em>The step sequence before and after — Figure 31 of the thesis, redrawn clean</em></span>
+</div>
+<figcaption>Same method, one stage lighter.</figcaption>
+</figure>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     10 — APPLIED ITERATION
+     Three changes that shipped. Every caption explains the decision, not the
+     object in the picture.
+====================================================================== -->
+<section class="case-section case-section--grid case-section--torn" id="iteration" data-chapter="Iteration">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>Applied iteration</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">Three changes<br/>that shipped</h2>
+
+<div class="mos-changes">
+
+<div class="mos-change" data-reveal>
+<figure class="mos-photo" style="--rot:-1.5deg">
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="The Mosaico onboarding text, before and after the rewrite" src="imagesProjects/mosaico-case/iteration-onboarding.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">edit_note</span><code>imagesProjects/mosaico-case/iteration-onboarding.png</code><em>Intro text before / after</em></span>
+</div>
+<figcaption>Beginners feared the tool before using it, then finished with the highest enthusiasm — so the fix wasn't simplifying the method, it was softening the door.</figcaption>
+</figure>
+<p class="mos-change-tag" style="margin-top:1.25rem">Change 01</p>
+<h3>A friendlier way in</h3>
+<p>Beginners reported the tool "looked too complicated" before even starting — a first-impression problem, not a usability one.</p>
+</div>
+
+<div class="mos-change" data-reveal style="--d:100ms">
+<figure class="mos-photo" style="--rot:1.2deg">
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="The Mosaico visual language, before and after the warmer treatment" src="imagesProjects/mosaico-case/iteration-visual-language.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">palette</span><code>imagesProjects/mosaico-case/iteration-visual-language.png</code><em>Visual language before / after — Figure 32</em></span>
+</div>
+<figcaption>The diagram was reading as a technical document; the audience was people who had never finished a story.</figcaption>
+</figure>
+<p class="mos-change-tag" style="margin-top:1.25rem">Change 02</p>
+<h3>Warmer visual language</h3>
+<p>Colour and type were doing the opposite of the method's promise — signalling expertise required.</p>
+</div>
+
+<div class="mos-change" data-reveal style="--d:200ms">
+<figure class="mos-photo" style="--rot:-0.8deg">
+<div class="media-frame" style="--slot-ratio: 4 / 3">
+<img alt="The restructured step sequence after external validation was replaced" src="imagesProjects/mosaico-case/iteration-steps.png" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">low_priority</span><code>imagesProjects/mosaico-case/iteration-steps.png</code><em>The restructured stages</em></span>
+</div>
+<figcaption>The stage six of eight people skipped came out; the checkpoint that replaced it costs the writer nothing to run.</figcaption>
+</figure>
+<p class="mos-change-tag" style="margin-top:1.25rem">Change 03</p>
+<h3>The validation restructure</h3>
+<p>The decision above, applied to the artefact — external validation out, internal checkpoints in.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     11 — THE ARTEFACTS
+     A method study should end in the thing the method makes.
+====================================================================== -->
+<section class="case-section case-section--dark case-section--torn" id="artifacts" data-chapter="Artefacts">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>What came out</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">Six stories.<br/>One printed fanzine.</h2>
+<p class="mos-text" data-reveal style="--d:120ms">
+The study didn't produce opinions about writing. It produced writing: six complete horror
+stories, five published anonymously in a printed fanzine. The output of a method study should
+be the thing the method makes.
+</p>
+
+<div class="case-rail-head" data-reveal>
+<div>
+<p class="mos-eyebrow">Evidence</p>
+<h3 class="mos-h3" style="margin-top:0.75rem">The fanzine and the diaries</h3>
+</div>
+<div class="case-rail-nav">
+<button class="case-rail-btn" data-rail-btn="prev" type="button" aria-label="Previous artefact"><span class="material-symbols-outlined">west</span></button>
+<button class="case-rail-btn" data-rail-btn="next" type="button" aria-label="Next artefact"><span class="material-symbols-outlined">east</span></button>
+</div>
+</div>
+
+<div class="case-rail mos-clothesline" data-rail>
+
+<figure class="mos-photo mos-photo--polaroid" style="--rot:-2deg">
+<span class="mos-peg" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 4 / 5">
+<img alt="The cover of the printed fanzine of horror stories written with Mosaico" src="imagesProjects/mosaico-case/fanzine-cover.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">menu_book</span><code>imagesProjects/mosaico-case/fanzine-cover.jpg</code><em>The printed fanzine cover</em></span>
+</div>
+<figcaption>The fanzine — five stories, published anonymously.</figcaption>
+</figure>
+
+<figure class="mos-photo mos-photo--polaroid" style="--rot:1.6deg">
+<span class="mos-peg" style="--peg-rot:-8deg" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 4 / 5">
+<img alt="An interior spread of the fanzine" src="imagesProjects/mosaico-case/fanzine-spread.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">import_contacts</span><code>imagesProjects/mosaico-case/fanzine-spread.jpg</code><em>An interior spread</em></span>
+</div>
+<figcaption>A spread — the method's output is a finished story, not a plan for one.</figcaption>
+</figure>
+
+<figure class="mos-photo mos-photo--polaroid" style="--rot:-1.2deg">
+<span class="mos-peg" style="--peg-rot:10deg" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 4 / 5">
+<img alt="A page from a participant's diary study, anonymized and used with permission" src="imagesProjects/mosaico-case/diary-01.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">draw</span><code>imagesProjects/mosaico-case/diary-01.jpg</code><em>Diary page — anonymized, used with permission</em></span>
+</div>
+<figcaption>A participant's diary — where the friction with the validation steps first showed up.</figcaption>
+</figure>
+
+<figure class="mos-photo mos-photo--polaroid" style="--rot:2.2deg">
+<span class="mos-peg" style="--peg-rot:-5deg" aria-hidden="true"></span>
+<div class="media-frame" style="--slot-ratio: 4 / 5">
+<img alt="A second page from a participant's diary study, anonymized and used with permission" src="imagesProjects/mosaico-case/diary-02.jpg" onerror="this.closest('.media-frame').classList.add('is-empty')"/>
+<span class="media-slot"><span class="material-symbols-outlined">draw</span><code>imagesProjects/mosaico-case/diary-02.jpg</code><em>Diary page — anonymized, used with permission</em></span>
+</div>
+<figcaption>Another diary — the thin entries here became a design requirement for the next study.</figcaption>
+</figure>
+
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     12 — LIMITATIONS
+     One honest limitation per case, always. It's what separates a real case
+     from a bootcamp one — written in the voice of someone who learned, not
+     someone apologising.
+====================================================================== -->
+<section class="case-section case-section--paper case-section--torn" id="limits" data-chapter="Limits">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>Limitations</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">What this study<br/>couldn't claim</h2>
+
+<div class="mos-limits" data-reveal style="--d:120ms">
+<span class="mos-tape-strip" style="--tape-rot:4deg" aria-hidden="true"></span>
+<ul>
+<li><b>Sample</b>n=8 is a qualitative signal, not statistical validation.</li>
+<li><b>What was measured</b>I measured completion and satisfaction — not whether the stories were <em>better</em> than they would have been without the tool. No control group, no quality rubric.</li>
+<li><b>Instrument</b>The diary format produced thinner data than I hoped; several participants wrote minimal entries.</li>
+</ul>
+<p class="mos-text" style="margin-top:1.5rem"><strong>Every one of these gaps became a design requirement for what came next.</strong></p>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     13 — THE BRIDGE
+     The project is alive. Update this screen as the pilot advances; when it
+     finishes, this becomes the link to the v2 case.
+====================================================================== -->
+<section class="case-section case-section--ember case-section--torn" id="next" data-chapter="Next">
+<div class="case-wrap">
+<p class="mos-eyebrow" data-reveal>What comes next</p>
+<h2 class="mos-h2" data-reveal style="--d:60ms">Mosaico didn't<br/>end in 2023</h2>
+
+<div class="mos-two-col">
+<div>
+<p class="mos-lead" data-reveal style="--d:120ms">
+In 2026, the problem it solved — <span class="mos-mark">scaffolding thinking instead of replacing it</span> —
+became the central problem in education: students now have AI that writes <em>for</em> them.
+</p>
+</div>
+<div>
+<p class="mos-text" data-reveal style="--d:180ms">
+I'm rebuilding Mosaico as an AI writing companion that refuses to write, piloting with a real
+classroom, measured against Brazil's national essay rubric (ENEM).
+</p>
+<p data-reveal style="--d:240ms;margin-top:1.5rem"><span class="mos-live"><i></i>Study running now</span></p>
+<p class="mos-text" data-reveal style="--d:300ms;margin-top:1rem">
+Follow it here → <span class="todo">link to the Mosaico v2 case, or to the build-log posts while the pilot runs</span>
+</p>
+</div>
+</div>
+
+<div class="mos-nav-out">
+<a class="mos-btn mos-btn--ghost" href="ux-ui.html"><span class="material-symbols-outlined">west</span>All UX/UI work</a>
+<a class="mos-btn" href="index.html#contact">Let's talk<span class="material-symbols-outlined">east</span></a>
+</div>
+
+<p class="mos-footnote" data-reveal>
+Mosaico began as my undergraduate thesis in Design at <span class="todo">institution</span>, 2023.
+Research, method design, study design, facilitation and the printed artefacts are mine.
+</p>
+</div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+<div class="site-footer-links">
+<a href="#">Instagram</a>
+<a href="#">LinkedIn</a>
+<a href="#">Behance</a>
+<a href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+</div>
+<p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
+</footer>
+
+<script src="scripts/case-scroll.js"></script>
+</body>
+</html>
