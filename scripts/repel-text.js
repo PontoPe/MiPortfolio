@@ -66,11 +66,13 @@
         // Decorative hotspots keep their own rotation/scale styling, so leave them static.
         root.querySelectorAll(".repel-word").forEach((el) => words.push({ el, strength }));
 
-        // Sticker pills repel as whole boxes: the words inside never move,
-        // but the box itself gets pushed hard. The translate is composed with
-        // the pill's CSS tilt (--tilt) so it keeps its rotation.
+        // Sticker pills repel as whole boxes: the words inside never move, the
+        // box drifts. Deliberately a short reach and a small push — they sit
+        // right under the hero lettering, and anything more reads as the row
+        // scattering every time the cursor crosses it. The translate is
+        // composed with the pill's CSS tilt (--tilt) so it keeps its rotation.
         root.querySelectorAll(".sticker-pill").forEach((el) => {
-            words.push({ el, strength: 1, atomic: true, radius: 220, push: 55 });
+            words.push({ el, strength: 1, atomic: true, radius: 130, push: 16 });
         });
     };
 

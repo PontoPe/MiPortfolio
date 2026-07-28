@@ -46,6 +46,9 @@
 <p class="hero-meta-right">My name is Milena, I am creative designer based in Brazil</p>
 </div>
 <div class="hero-welcome">
+<!-- Host for the WebGL hero (scripts/hero/). Stays empty and hidden unless
+     the 3D lettering actually loads; everything below is the fallback. -->
+<div aria-hidden="true" class="hero-stage"></div>
 <!-- Refraction filter for the glass lettering: displaces the backdrop with
      soft noise so whatever scrolls behind the letters bends like real glass. -->
 <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
@@ -114,12 +117,16 @@
 <script src="scripts/portfolio-render.js"></script>
 <script src="scripts/repel-text.js"></script>
 <script src="scripts/page-motion.js"></script>
+<!-- three r180: `dispersion` on MeshPhysicalMaterial needs r167+, and
+     renderer.transmissionResolutionScale (which the hero relies on to afford
+     that dispersion) needs r171+. The map only names the modules; nothing is
+     fetched unless scripts/hero/index.js decides the device can run it. -->
 <script type="importmap">
 {"imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
 }}
 </script>
-<script src="scripts/welcome-glass.js" type="module"></script>
+<script src="scripts/hero/index.js" type="module"></script>
 </body>
 </html>
