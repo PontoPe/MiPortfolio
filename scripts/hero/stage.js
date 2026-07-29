@@ -21,6 +21,18 @@ const RESIZE_DEBOUNCE = 150;
    rewritten below with whatever is left of it, and the glass lands with the
    copy around it instead of a beat behind. */
 const REVEAL_AT = 650;
+const NAV_SELECTOR = ".site-nav";
+const LOWER_BOUND_SELECTOR = ".section-panel";
+
+const getDocumentTop = (element) => {
+    let top = 0;
+    let current = element;
+    while (current) {
+        top += current.offsetTop;
+        current = current.offsetParent;
+    }
+    return top;
+};
 
 export const mountHero = async ({ host, wordBox }) => {
     /* Loaded before anything is shown: if the file is missing or the GPU
@@ -47,8 +59,18 @@ export const mountHero = async ({ host, wordBox }) => {
     wordBox.classList.add("is-3d");
 
     let fitWidth = 1;
+    let glassBaseY = 0;
 
     const resize = () => {
+        const nav = document.querySelector(NAV_SELECTOR);
+        const lowerBound = document.querySelector(LOWER_BOUND_SELECTOR);
+        const wordTop = getDocumentTop(wordBox);
+        const wordBottom = wordTop + wordBox.offsetHeight;
+        const stageTop = nav?.offsetHeight || 0;
+        const stageBottom = lowerBound ? getDocumentTop(lowerBound) : wordBottom;
+        host.style.setProperty("--hero-stage-top-bleed", `${Math.max(0, wordTop - stageTop)}px`);
+        host.style.setProperty("--hero-stage-bottom-bleed", `${Math.max(0, stageBottom - wordBottom)}px`);
+
         const width = host.clientWidth;
         const height = host.clientHeight;
         if (!width || !height) {
@@ -57,6 +79,10 @@ export const mountHero = async ({ host, wordBox }) => {
         stage.setSize(width, height, Math.min(window.devicePixelRatio, RENDERER.maxPixelRatio));
         background.setSize(width, height);
         stickers.setSize(width, height);
+        const hostRect = host.getBoundingClientRect();
+        const wordRect = wordBox.getBoundingClientRect();
+        glassBaseY = hostRect.top + hostRect.height / 2
+            - (wordRect.top + wordRect.height / 2);
         /* The word keeps the width the PNG had, so the 3D lettering lands
            where the flat one did — except on a narrow viewport, where the
            canvas is barely wider than the word and the ceiling pulls it in
@@ -80,7 +106,8 @@ export const mountHero = async ({ host, wordBox }) => {
         glass.pivot.rotation.x = y * POINTER.tilt.x;
         /* Idle float. Sideways as well as up and down, on a longer period, so
            a hero nobody is touching drifts rather than bobs on the spot. */
-        glass.pivot.position.y = Math.sin(time * ((Math.PI * 2) / POINTER.float.period))
+        glass.pivot.position.y = glassBaseY
+            + Math.sin(time * ((Math.PI * 2) / POINTER.float.period))
             * POINTER.float.amplitude;
         glass.pivot.position.x = Math.sin(time * ((Math.PI * 2) / POINTER.float.swayPeriod))
             * POINTER.float.sway;

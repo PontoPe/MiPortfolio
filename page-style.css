@@ -31,6 +31,115 @@ body {
     overflow-x: hidden;
 }
 
+/* ---------------------------------------------------------------------------
+   Initial loading cover. The page-loader script removes .is-loading only
+   after the normal load event and the optional 3D hero have both settled.
+--------------------------------------------------------------------------- */
+html.is-loading,
+html.is-loading body {
+    overflow: hidden;
+}
+
+html.is-loading body > :not(.site-loader) {
+    visibility: hidden !important;
+}
+
+.site-loader {
+    align-items: center;
+    background:
+        radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.98), rgba(241, 242, 250, 0.98) 70%),
+        #f1f2fa;
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    opacity: 1;
+    position: fixed;
+    transition: opacity 450ms ease, visibility 450ms ease;
+    visibility: visible;
+    z-index: 1000;
+}
+
+.site-loader-inner {
+    align-items: center;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.site-loader-mark {
+    color: var(--periwinkle-deep);
+    font-family: "Caveat", cursive;
+    font-size: clamp(3rem, 8vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: -0.12em;
+    line-height: 0.9;
+    padding-right: 0.12em;
+}
+
+.site-loader-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.site-loader-dots {
+    display: flex;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+}
+
+.site-loader-dots i {
+    animation: loaderPulse 900ms ease-in-out infinite;
+    background: var(--periwinkle-deep);
+    border-radius: 50%;
+    display: block;
+    height: 0.35rem;
+    opacity: 0.25;
+    width: 0.35rem;
+}
+
+.site-loader-dots i:nth-child(2) {
+    animation-delay: 150ms;
+}
+
+.site-loader-dots i:nth-child(3) {
+    animation-delay: 300ms;
+}
+
+html.is-ready .site-loader {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+/* The hidden scene can finish its own reveal immediately behind the cover. */
+html.is-loading .hero-stage {
+    transition: none;
+}
+
+@keyframes loaderPulse {
+    0%,
+    100% {
+        opacity: 0.25;
+        transform: scale(0.75);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-loader,
+    .site-loader-dots i {
+        animation: none;
+        transition: none;
+    }
+}
+
 /* Soft white bloom in the middle, faint lavender at the edges */
 body::before {
     content: "";
@@ -423,7 +532,7 @@ body::before {
 /* Lives in the shared page shell so the hero text, nav logo and content
    boxes all share the same left edge (--page-gutter). */
 .home-hero {
-    margin: 1.5rem 0 5rem;
+    margin: 0.35rem 0 clamp(2.15rem, 4.75vh, 3.5rem);
     position: relative;
     text-align: center;
 }
@@ -432,27 +541,30 @@ body::before {
    the hero copy stays in the DOM, selectable and indexable, and is not one of
    the things the glass refracts. */
 .hero-meta {
+    align-items: flex-start;
     color: var(--ink-soft);
     display: flex;
     position: relative;
     z-index: 2;
-    font-size: clamp(1.1rem, 2vw, 1.9rem);
+    font-size: clamp(1rem, 1.65vw, 1.55rem);
     justify-content: space-between;
     gap: 2rem;
-    line-height: 1.55;
-    margin-bottom: clamp(2rem, 5vw, 4rem);
+    line-height: 1.3;
+    margin-bottom: clamp(0.75rem, 1.4vw, 1.15rem);
     text-align: left;
 }
 
 .hero-meta .hero-meta-right {
-    font-size: clamp(1rem, 1.5vw, 1.5rem);
-    max-width: 30rem;
+    font-size: clamp(0.9rem, 1.15vw, 1.15rem);
+    line-height: 1.4;
+    max-width: 42rem;
     text-align: left;
 }
 
 .hero-meta .hero-meta-left {
     font-weight: 600;
     color: var(--ink);
+    max-width: 25rem;
     opacity: 0.75;
 }
 
@@ -460,6 +572,7 @@ body::before {
     margin: 0 auto;
     max-width: min(68rem, 94vw);
     position: relative;
+    width: min(68rem, 94vw);
 }
 
 .hero-welcome img {
@@ -503,9 +616,10 @@ body::before {
    actually loaded — until then, and on every device that does not get it, the
    PNG below is what shows. */
 .hero-stage {
-    --hero-stage-bleed: 52%;
+    --hero-stage-top-bleed: 52%;
+    --hero-stage-bottom-bleed: 52%;
     display: none;
-    height: calc(100% + 2 * var(--hero-stage-bleed));
+    height: calc(100% + var(--hero-stage-top-bleed) + var(--hero-stage-bottom-bleed));
     left: 50%;
     /* Matches the page-load curve on .home-hero .hero-welcome above, so the
        glass lettering arrives with the flat copy around it instead of popping
@@ -514,7 +628,7 @@ body::before {
     opacity: 0;
     pointer-events: none;
     position: absolute;
-    top: calc(-1 * var(--hero-stage-bleed));
+    top: calc(-1 * var(--hero-stage-top-bleed));
     transform: translateX(-50%);
     transition: opacity 850ms ease 650ms;
     width: 100vw;
@@ -580,17 +694,18 @@ body::before {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.85rem 1rem;
+    gap: 0.9rem 1rem;
     justify-content: center;
-    margin: 1.75rem auto 0;
+    margin: 0.85rem auto 0;
     max-width: min(68rem, 94vw);
     position: relative;
+    width: min(68rem, 94vw);
     z-index: 2;
 }
 
 .hero-stickers .hero-stickers-lead {
     color: var(--ink-soft);
-    font-size: clamp(1.4rem, 2vw, 1.9rem);
+    font-size: clamp(1.55rem, 2.2vw, 2.1rem);
     font-weight: 500;
     margin-right: 0.25rem;
 }
@@ -621,10 +736,10 @@ body::before {
         0 0.7rem 1.6rem var(--pill-glow);
     color: #ffffff;
     display: inline-block;
-    font-size: clamp(0.95rem, 1.15vw, 1.2rem);
+    font-size: clamp(1rem, 1.2vw, 1.25rem);
     font-weight: 700;
     letter-spacing: 0.07em;
-    padding: 0.7rem 1.5rem;
+    padding: 0.62rem 1.25rem;
     position: relative;
     text-shadow: 0 1px 2px rgba(52, 62, 120, 0.35);
     text-transform: uppercase;
@@ -659,8 +774,8 @@ body::before {
 .sticker-pink { --pill-tint: rgba(195, 71, 255, 0.4); --pill-glow: rgba(160, 60, 220, 0.26); --tilt: 4deg; }
 .sticker-purple { --pill-tint: rgba(151, 71, 255, 0.4); --pill-glow: rgba(130, 60, 220, 0.26); --tilt: -5deg; }
 
-/* On narrow screens the pills wrap naturally; once there's room for all five
-   on one line, force a 3-top / 2-bottom split instead of an awkward 4-1. */
+/* Keep the more relaxed original rhythm: lead + three tags on the first row,
+   then the final two tags centered underneath. */
 .sticker-break {
     display: none;
 }
@@ -670,6 +785,12 @@ body::before {
         display: block;
         flex-basis: 100%;
         height: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .hero-meta {
+        gap: 1rem;
     }
 }
 

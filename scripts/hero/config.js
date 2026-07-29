@@ -119,15 +119,23 @@ export const STICKERS = {
        The renderer reads each PNG's natural dimensions so wide badges and
        portrait stickers keep their proportions. */
     images: [
-        "assets/ui/stickers/blue-spark.png",
-        "assets/ui/stickers/pink-spark.png",
-        "assets/ui/stickers/green-heart.png",
-        "assets/ui/stickers/graphic-design-badge.png",
-        "assets/ui/stickers/illustrator-file.png",
-        "assets/ui/stickers/figma-badge.png",
-        "assets/ui/stickers/happy-accidents-bandage.png",
-        "assets/ui/stickers/doing-my-best-badge.png",
-        "assets/ui/stickers/claudinho-badge.png",
+        { src: "assets/ui/stickers/claude.png", family: "scalloped" },
+        { src: "assets/ui/stickers/accidents.png", family: "wide" },
+        { src: "assets/ui/stickers/ai.png", family: "vertical" },
+        { src: "assets/ui/stickers/human.png", family: "scalloped" },
+        { src: "assets/ui/stickers/figma.png", family: "wide" },
+        { src: "assets/ui/stickers/star_pink.png", family: "star" },
+        { src: "assets/ui/stickers/fine.png", family: "vertical" },
+        { src: "assets/ui/stickers/star_blue.png", family: "star" },
+        { src: "assets/ui/stickers/cmd_z.png", family: "wide" },
+        { src: "assets/ui/stickers/passion.png", family: "round" },
+        { src: "assets/ui/stickers/pixel.png", family: "round" },
+        { src: "assets/ui/stickers/nerd.png", family: "vertical" },
+        { src: "assets/ui/stickers/pen.png", family: "round" },
+        { src: "assets/ui/stickers/heart.png", family: "heart" },
+        { src: "assets/ui/stickers/buddy.png", family: "wide" },
+        { src: "assets/ui/stickers/nilsen.png", family: "wide" },
+        { src: "assets/ui/stickers/best.png", family: "scalloped" },
     ],
     /* Fallbacks for a future image-free version of the scene. */
     emoji: [
@@ -142,8 +150,8 @@ export const STICKERS = {
         ["🖌️", "rgba(201, 162, 239, 0.85)"],
         ["💌", "rgba(243, 176, 192, 0.9)"],
     ],
-    // TODO: Add future transparent sticker PNGs to assets/ui/stickers and list
-    // them above; no renderer changes should be needed.
+    // TODO: Add future transparent PNGs here with a visual family; the family
+    // lets the spawner keep similar silhouettes out of the same local cluster.
     /* They fall, slowly and forever: one leaves the bottom of the canvas and
        comes back in at the top as a different sticker, at a new size, speed
        and lane. Kept sparse — the point is to give the glass something to
@@ -152,7 +160,10 @@ export const STICKERS = {
     /* Size as a fraction of the canvas width. The top of the range matters:
        a small sticker passing behind the tube is magnified into an unreadable
        smear, so some of them have to be big enough to survive it. */
-    size: { min: 0.055, max: 0.16 },
+    size: { min: 0.055, max: 0.096 },
+    /* Similar silhouettes stay out of the same local cluster. Values are
+       normalised against the canvas, like the spawn coordinates themselves. */
+    variety: { nearbyX: 0.28, nearbyY: 0.3, recentTextures: 3 },
     /* Fall speed in canvas heights per second — normalised so the rain reads
        at the same pace on any viewport. At these values a sticker takes
        roughly 16 to 36 seconds to cross. */

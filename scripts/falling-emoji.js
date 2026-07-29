@@ -15,15 +15,23 @@
 
     // [image URL, dominant glow colour]
     const STICKERS = [
-        ["assets/ui/stickers/blue-spark.png", "rgba(143, 195, 240, 0.8)"],
-        ["assets/ui/stickers/pink-spark.png", "rgba(244, 168, 224, 0.8)"],
-        ["assets/ui/stickers/green-heart.png", "rgba(143, 205, 153, 0.8)"],
-        ["assets/ui/stickers/illustrator-file.png", "rgba(210, 143, 239, 0.75)"],
-        ["assets/ui/stickers/graphic-design-badge.png", "rgba(159, 180, 240, 0.8)"],
-        ["assets/ui/stickers/figma-badge.png", "rgba(218, 154, 240, 0.75)"],
-        ["assets/ui/stickers/happy-accidents-bandage.png", "rgba(143, 211, 244, 0.8)"],
-        ["assets/ui/stickers/doing-my-best-badge.png", "rgba(247, 215, 116, 0.8)"],
-        ["assets/ui/stickers/claudinho-badge.png", "rgba(183, 157, 240, 0.8)"]
+        ["assets/ui/stickers/claude.png", "rgba(183, 157, 240, 0.8)"],
+        ["assets/ui/stickers/accidents.png", "rgba(143, 211, 244, 0.8)"],
+        ["assets/ui/stickers/ai.png", "rgba(210, 143, 239, 0.75)"],
+        ["assets/ui/stickers/human.png", "rgba(183, 157, 240, 0.8)"],
+        ["assets/ui/stickers/figma.png", "rgba(218, 154, 240, 0.75)"],
+        ["assets/ui/stickers/star_pink.png", "rgba(244, 168, 224, 0.8)"],
+        ["assets/ui/stickers/fine.png", "rgba(247, 215, 116, 0.8)"],
+        ["assets/ui/stickers/star_blue.png", "rgba(143, 195, 240, 0.8)"],
+        ["assets/ui/stickers/cmd_z.png", "rgba(210, 143, 239, 0.75)"],
+        ["assets/ui/stickers/passion.png", "rgba(159, 180, 240, 0.8)"],
+        ["assets/ui/stickers/pixel.png", "rgba(143, 195, 240, 0.8)"],
+        ["assets/ui/stickers/nerd.png", "rgba(247, 215, 116, 0.8)"],
+        ["assets/ui/stickers/pen.png", "rgba(183, 157, 240, 0.8)"],
+        ["assets/ui/stickers/heart.png", "rgba(143, 205, 153, 0.8)"],
+        ["assets/ui/stickers/buddy.png", "rgba(159, 180, 240, 0.8)"],
+        ["assets/ui/stickers/nilsen.png", "rgba(143, 205, 153, 0.8)"],
+        ["assets/ui/stickers/best.png", "rgba(247, 215, 116, 0.8)"]
     ];
 
     const DROP_COUNT = 14;
@@ -42,7 +50,7 @@
         drop.style.animation = "none";
 
         drop.style.left = `${random(-2, 98)}vw`;
-        drop.style.fontSize = `${random(1.7, 3.2)}rem`;
+        drop.style.fontSize = `${random(1.7, 1.92)}rem`;
         drop.style.setProperty("--glow", glow);
         drop.style.setProperty("--tilt-from", `${random(-14, 6)}deg`);
         drop.style.setProperty("--tilt-to", `${random(-6, 14)}deg`);

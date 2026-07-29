@@ -10,6 +10,12 @@
  */
 const HOST = ".hero-stage";
 const WORD_BOX = ".hero-welcome";
+const READY_EVENT = "portfolio:hero-ready";
+
+const signalReady = () => {
+    window.__portfolioHeroReady = true;
+    window.dispatchEvent(new CustomEvent(READY_EVENT));
+};
 
 const supportsWebGL2 = () => {
     try {
@@ -28,18 +34,18 @@ const canAffordIt = () => window.matchMedia("(pointer: fine)").matches
     && !(navigator.deviceMemory && navigator.deviceMemory < 4);
 
 const boot = async () => {
-    const host = document.querySelector(HOST);
-    const wordBox = document.querySelector(WORD_BOX);
-    if (!host || !wordBox) {
-        return;
-    }
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        || !supportsWebGL2()
-        || !canAffordIt()) {
-        return;
-    }
-
     try {
+        const host = document.querySelector(HOST);
+        const wordBox = document.querySelector(WORD_BOX);
+        if (!host || !wordBox) {
+            return;
+        }
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            || !supportsWebGL2()
+            || !canAffordIt()) {
+            return;
+        }
+
         const { mountHero } = await import("./stage.js");
         const hero = await mountHero({ host, wordBox });
         /* ?glass on the URL brings up a lil-gui bound to config.js. The
@@ -54,6 +60,8 @@ const boot = async () => {
         }
     } catch (error) {
         console.warn("Welcome hero: 3D lettering unavailable, keeping the still.", error);
+    } finally {
+        signalReady();
     }
 };
 

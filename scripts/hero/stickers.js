@@ -79,18 +79,49 @@ export const createStickers = () => {
     /* One texture per sticker in the set, shared by whichever planes happen to
        be showing it — a respawn swaps the map, it does not build artwork. */
     const loader = STICKERS.images.length ? new THREE.TextureLoader() : null;
-    const textures = (loader ? STICKERS.images : STICKERS.emoji).map((entry) => {
+    const textures = (loader ? STICKERS.images : STICKERS.emoji).map((entry, index) => {
         if (loader) {
-            const texture = loader.load(entry);
+            const texture = loader.load(entry.src);
             texture.colorSpace = THREE.SRGBColorSpace;
-            return texture;
+            return { texture, family: entry.family, index };
         }
-        return createTexture(entry[0], entry[1]);
+        return {
+            texture: createTexture(entry[0], entry[1]),
+            family: `emoji-${index}`,
+            index,
+        };
     });
 
     const geometry = new THREE.PlaneGeometry(1, 1);
     const size = new THREE.Vector2(1, 1);
     const pointer = new THREE.Vector2();
+    const items = [];
+    const recentTextureIndexes = [];
+
+    const pickTexture = (item) => {
+        const nearbyFamilies = new Set(items
+            .filter((other) => other !== item
+                && Math.abs(other.x - item.x) < STICKERS.variety.nearbyX
+                && Math.abs(other.y - item.y) < STICKERS.variety.nearbyY)
+            .map((other) => other.family));
+        const recent = new Set(recentTextureIndexes);
+
+        let candidates = textures.filter((entry) => !nearbyFamilies.has(entry.family)
+            && !recent.has(entry.index));
+        if (!candidates.length) {
+            candidates = textures.filter((entry) => !nearbyFamilies.has(entry.family));
+        }
+        if (!candidates.length) {
+            candidates = textures;
+        }
+
+        const selected = candidates[Math.floor(Math.random() * candidates.length)];
+        recentTextureIndexes.push(selected.index);
+        if (recentTextureIndexes.length > STICKERS.variety.recentTextures) {
+            recentTextureIndexes.shift();
+        }
+        return selected;
+    };
 
     /**
      * Give a sticker a new identity and put it back above the top edge —
@@ -98,9 +129,13 @@ export const createStickers = () => {
      * the fall instead, so the hero fades in already raining.
      */
     const respawn = (item, scattered) => {
-        item.material.map = textures[Math.floor(Math.random() * textures.length)];
         item.size = random(STICKERS.size.min, STICKERS.size.max);
         item.x = random(-0.44, 0.44);
+        item.y = scattered ? random(-0.42, 0.42) : 0.5 + item.size * 0.5;
+        const selected = pickTexture(item);
+        item.material.map = selected.texture;
+        item.family = selected.family;
+        item.textureIndex = selected.index;
         item.speed = random(STICKERS.speed.min, STICKERS.speed.max);
         item.sway = random(0.4, 1) * STICKERS.sway.amplitude;
         item.swayPeriod = random(STICKERS.sway.period.min, STICKERS.sway.period.max);
@@ -110,10 +145,8 @@ export const createStickers = () => {
         /* Just clear of the top edge. Any further out and a large sticker
            spends seconds off screen before it even starts to fade in; the fade
            is what hides the entry, not the distance. */
-        item.y = scattered ? random(-0.42, 0.42) : 0.5 + item.size * 0.5;
     };
 
-    const items = [];
     for (let index = 0; index < STICKERS.count; index += 1) {
         const material = new THREE.MeshBasicMaterial({
             /* See the note at the top of the file: opaque to three, blended to
@@ -184,7 +217,7 @@ export const createStickers = () => {
     const dispose = () => {
         geometry.dispose();
         items.forEach(({ material }) => material.dispose());
-        textures.forEach((texture) => texture.dispose());
+        textures.forEach(({ texture }) => texture.dispose());
     };
 
     return { group, setSize, setPointer, update, dispose };
