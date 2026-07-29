@@ -5,7 +5,9 @@
  * the backdrop and the word. They drift down the hero continuously — one
  * leaves the bottom and returns at the top as a different sticker, at a new
  * size, lane and speed — so what is behind the strokes, and therefore what is
- * magnified and bent inside them, is never the same twice.
+ * magnified and bent inside them, is never the same twice. The first set is
+ * scattered along the fall rather than queued above the top edge, so the hero
+ * fades in already raining, at the same moment as the lettering and the tags.
  *
  * Everything about a sticker is stored normalised (x and y in fractions of the
  * canvas, speed in canvas heights per second), so a resize is a matter of
@@ -91,9 +93,9 @@ export const createStickers = () => {
     const pointer = new THREE.Vector2();
 
     /**
-     * Give a sticker a new identity and put it back at the top. `scattered`
-     * drops it anywhere along the fall instead, which is how the hero starts
-     * out already populated rather than raining in from an empty sky.
+     * Give a sticker a new identity and put it back above the top edge —
+     * except on the very first pass, where `scattered` drops it anywhere along
+     * the fall instead, so the hero fades in already raining.
      */
     const respawn = (item, scattered) => {
         item.material.map = textures[Math.floor(Math.random() * textures.length)];
@@ -105,9 +107,10 @@ export const createStickers = () => {
         item.phase = random(0, TAU);
         item.spin = random(-STICKERS.spin, STICKERS.spin);
         item.mesh.rotation.z = random(-STICKERS.tilt, STICKERS.tilt);
-        /* Half a tile past the edge, so it is fully outside before it turns
-           around — the fade covers the rest. */
-        item.y = scattered ? random(-0.5, 0.5) : 0.5 + item.size;
+        /* Just clear of the top edge. Any further out and a large sticker
+           spends seconds off screen before it even starts to fade in; the fade
+           is what hides the entry, not the distance. */
+        item.y = scattered ? random(-0.42, 0.42) : 0.5 + item.size * 0.5;
     };
 
     const items = [];
@@ -152,8 +155,8 @@ export const createStickers = () => {
     const update = (dt, time) => {
         items.forEach((item) => {
             item.y -= item.speed * dt;
-            if (item.y < -0.5 - item.size) {
-                respawn(item, false);
+            if (item.y < -0.5 - item.size * 0.5) {
+                respawn(item);
             }
 
             const tile = item.size * size.x;

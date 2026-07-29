@@ -214,12 +214,15 @@ body::before {
         animation: pageFadeUp 700ms ease both;
     }
 
+    /* Both land at the one-and-a-half-second mark: the lettering and the row
+       of tags under it arrive together, and the WebGL hero fades in on the
+       same curve (see .hero-stage). */
     .home-hero .hero-welcome {
-        animation: pageFadeUp 700ms ease 150ms both;
+        animation: pageFadeUp 850ms ease 650ms both;
     }
 
     .home-hero .hero-stickers {
-        animation: pageFadeUp 700ms ease 320ms both;
+        animation: pageFadeUp 700ms ease 800ms both;
     }
 
     .site-footer {
@@ -500,16 +503,26 @@ body::before {
     display: none;
     height: calc(100% + 2 * var(--hero-stage-bleed));
     left: 50%;
+    /* Matches the page-load curve on .home-hero .hero-welcome above, so the
+       glass lettering arrives with the flat copy around it instead of popping
+       in whenever the model happens to finish loading. The class is added a
+       frame after the first render — see stage.js. */
+    opacity: 0;
     pointer-events: none;
     position: absolute;
     top: calc(-1 * var(--hero-stage-bleed));
     transform: translateX(-50%);
+    transition: opacity 850ms ease 650ms;
     width: 100vw;
     z-index: 1;
 }
 
 .hero-welcome.is-3d .hero-stage {
     display: block;
+}
+
+.hero-stage.is-lit {
+    opacity: 1;
 }
 
 /* <canvas> is a replaced element: an inset-only box would collapse to its

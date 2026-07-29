@@ -15,6 +15,12 @@ import { loadGlass } from "./glass.js";
 import { createPointer } from "./pointer.js";
 
 const RESIZE_DEBOUNCE = 150;
+/* Milliseconds. Mirrors the transition-delay on .hero-stage, which mirrors the
+   page-load animation on .home-hero .hero-welcome. Both are measured from load,
+   but this scene only exists once a 3MB model has arrived — so the delay is
+   rewritten below with whatever is left of it, and the glass lands with the
+   copy around it instead of a beat behind. */
+const REVEAL_AT = 650;
 
 export const mountHero = async ({ host, wordBox }) => {
     /* Loaded before anything is shown: if the file is missing or the GPU
@@ -111,6 +117,14 @@ export const mountHero = async ({ host, wordBox }) => {
     /* One frame up front so the lettering is there even if the loop never
        starts — a hero that loads already scrolled past, or a background tab. */
     render();
+    /* The stage went from display:none to block a moment ago, and a transition
+       only runs if the browser has already resolved the element at opacity 0.
+       Reading a layout property forces exactly that, and unlike waiting for a
+       frame it works in a tab that is not being painted — otherwise a hero
+       loaded in the background would still be invisible when it came forward. */
+    host.style.transitionDelay = `${Math.max(0, REVEAL_AT - performance.now())}ms`;
+    void host.offsetWidth;
+    host.classList.add("is-lit");
 
     const relayout = () => {
         resize();
