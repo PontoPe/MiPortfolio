@@ -273,7 +273,11 @@ body::before {
     filter: blur(6px);
 }
 
-.emoji-drop-inner > span {
+.emoji-drop-inner > img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
     position: relative;
     filter: saturate(1.05);
 }

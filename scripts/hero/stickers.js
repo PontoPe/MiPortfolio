@@ -160,7 +160,13 @@ export const createStickers = () => {
             }
 
             const tile = item.size * size.x;
-            item.mesh.scale.set(tile, tile, 1);
+            const image = item.material.map?.image;
+            const imageWidth = image?.naturalWidth || image?.width || 1;
+            const imageHeight = image?.naturalHeight || image?.height || 1;
+            const aspect = imageWidth / imageHeight;
+            const width = aspect >= 1 ? tile : tile * aspect;
+            const height = aspect >= 1 ? tile / aspect : tile;
+            item.mesh.scale.set(width, height, 1);
             item.mesh.position.x = item.x * size.x
                 + Math.sin(time * (TAU / item.swayPeriod) + item.phase) * item.sway
                 - pointer.x * STICKERS.parallax;

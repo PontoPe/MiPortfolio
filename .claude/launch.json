@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "5599"],
       "port": 5599
+    },
+    {
+      "name": "mifuture",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5601", "--directory", "../MiFuture"],
+      "port": 5601
     }
   ]
 }

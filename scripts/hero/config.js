@@ -115,13 +115,21 @@ export const BACKGROUND = {
 };
 
 export const STICKERS = {
-    /* Drop PNGs (with alpha) in here to use artwork instead of the generated
-       emoji tiles — same coordinate list applies, first URL to first slot. */
-    images: [],
-    /* Emoji and the tint of the ground it sits on, matching the palette of the
-       falling stickers in scripts/falling-emoji.js. Order matters: the first
-       four go to the large slots behind the lettering, so they are the ones
-       with a single strong shape that survives being magnified. */
+    /* Transparent artwork used by the falling planes behind the lettering.
+       The renderer reads each PNG's natural dimensions so wide badges and
+       portrait stickers keep their proportions. */
+    images: [
+        "assets/ui/stickers/blue-spark.png",
+        "assets/ui/stickers/pink-spark.png",
+        "assets/ui/stickers/green-heart.png",
+        "assets/ui/stickers/graphic-design-badge.png",
+        "assets/ui/stickers/illustrator-file.png",
+        "assets/ui/stickers/figma-badge.png",
+        "assets/ui/stickers/happy-accidents-bandage.png",
+        "assets/ui/stickers/doing-my-best-badge.png",
+        "assets/ui/stickers/claudinho-badge.png",
+    ],
+    /* Fallbacks for a future image-free version of the scene. */
     emoji: [
         ["💜", "rgba(183, 157, 240, 0.9)"],
         ["🌸", "rgba(244, 168, 208, 0.9)"],
@@ -134,6 +142,8 @@ export const STICKERS = {
         ["🖌️", "rgba(201, 162, 239, 0.85)"],
         ["💌", "rgba(243, 176, 192, 0.9)"],
     ],
+    // TODO: Add future transparent sticker PNGs to assets/ui/stickers and list
+    // them above; no renderer changes should be needed.
     /* They fall, slowly and forever: one leaves the bottom of the canvas and
        comes back in at the top as a different sticker, at a new size, speed
        and lane. Kept sparse — the point is to give the glass something to
