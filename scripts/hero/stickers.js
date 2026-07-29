@@ -5,9 +5,8 @@
  * the backdrop and the word. They drift down the hero continuously — one
  * leaves the bottom and returns at the top as a different sticker, at a new
  * size, lane and speed — so what is behind the strokes, and therefore what is
- * magnified and bent inside them, is never the same twice. The first set is
- * scattered along the fall rather than queued above the top edge, so the hero
- * fades in already raining, at the same moment as the lettering and the tags.
+ * magnified and bent inside them, is never the same twice. Every drop begins
+ * above the canvas after a short pause, including the first set.
  *
  * Everything about a sticker is stored normalised (x and y in fractions of the
  * canvas, speed in canvas heights per second), so a resize is a matter of
@@ -124,14 +123,15 @@ export const createStickers = () => {
     };
 
     /**
-     * Give a sticker a new identity and put it back above the top edge —
-     * except on the very first pass, where `scattered` drops it anywhere along
-     * the fall instead, so the hero fades in already raining.
+     * Give a sticker a new identity, park it fully above the top edge and wait
+     * before letting it enter. Initial and recycled drops follow the same path,
+     * so nothing materializes halfway through the hero.
      */
-    const respawn = (item, scattered) => {
+    const respawn = (item) => {
         item.size = random(STICKERS.size.min, STICKERS.size.max);
         item.x = random(-0.44, 0.44);
-        item.y = scattered ? random(-0.42, 0.42) : 0.5 + item.size * 0.5;
+        item.y = 0.5 + item.size * 0.5;
+        item.spawnDelay = STICKERS.spawnDelay;
         const selected = pickTexture(item);
         item.material.map = selected.texture;
         item.family = selected.family;
@@ -172,7 +172,7 @@ export const createStickers = () => {
         mesh.position.z = (index % 3) * -14;
 
         const item = { mesh, material };
-        respawn(item, true);
+        respawn(item);
         group.add(mesh);
         items.push(item);
     }
@@ -187,9 +187,17 @@ export const createStickers = () => {
 
     const update = (dt, time) => {
         items.forEach((item) => {
+            if (item.spawnDelay > 0) {
+                item.spawnDelay = Math.max(0, item.spawnDelay - dt);
+                item.material.opacity = 0;
+                return;
+            }
+
             item.y -= item.speed * dt;
             if (item.y < -0.5 - item.size * 0.5) {
                 respawn(item);
+                item.material.opacity = 0;
+                return;
             }
 
             const tile = item.size * size.x;

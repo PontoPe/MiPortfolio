@@ -41,7 +41,7 @@
     container.className = "emoji-rain";
     container.setAttribute("aria-hidden", "true");
 
-    const launch = (drop, inner, initial) => {
+    const launch = (drop, inner) => {
         const [imageUrl, glow] = STICKERS[Math.floor(Math.random() * STICKERS.length)];
         const duration = random(14, 26);
 
@@ -62,10 +62,9 @@
 
         drop.style.animation = "";
         drop.style.animationDuration = `${duration}s`;
-        // Negative delay on the first pass scatters drops through the whole
-        // fall path so the screen starts populated instead of raining in a
-        // clump. Later passes always start from the top.
-        drop.style.animationDelay = initial ? `${-random(0, duration)}s` : "0s";
+        // Keep every new drop above the viewport for one second before it
+        // begins falling; nothing should materialize halfway down the page.
+        drop.style.animationDelay = "1s";
     };
 
     for (let i = 0; i < DROP_COUNT; i += 1) {
@@ -80,8 +79,8 @@
         inner.appendChild(image);
         drop.appendChild(inner);
 
-        drop.addEventListener("animationend", () => launch(drop, inner, false));
-        launch(drop, inner, true);
+        drop.addEventListener("animationend", () => launch(drop, inner));
+        launch(drop, inner);
         container.appendChild(drop);
     }
 

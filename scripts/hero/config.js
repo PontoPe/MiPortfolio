@@ -164,6 +164,8 @@ export const STICKERS = {
     /* Similar silhouettes stay out of the same local cluster. Values are
        normalised against the canvas, like the spawn coordinates themselves. */
     variety: { nearbyX: 0.28, nearbyY: 0.3, recentTextures: 3 },
+    /* Every new drop waits out of view before entering from above the canvas. */
+    spawnDelay: 1,
     /* Fall speed in canvas heights per second — normalised so the rain reads
        at the same pace on any viewport. At these values a sticker takes
        roughly 16 to 36 seconds to cross. */
@@ -177,10 +179,6 @@ export const STICKERS = {
     /* Fraction of the canvas height each sticker fades across as it enters at
        the top and leaves at the bottom, so nothing pops in or out. */
     fade: 0.12,
-    /* No entry delay: the rain is already mid-fall when the hero fades in, so
-       the stickers arrive with the lettering and the tags rather than raining
-       into an empty sky afterwards. The fade that brings them in is the one on
-       .hero-stage, which they are inside. */
     /* How much of the pointer's offset they follow, against the background. */
     parallax: 26,
 };
