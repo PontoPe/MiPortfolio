@@ -179,8 +179,6 @@ export const STICKERS = {
     /* Fraction of the canvas height each sticker fades across as it enters at
        the top and leaves at the bottom, so nothing pops in or out. */
     fade: 0.12,
-    /* How much of the pointer's offset they follow, against the background. */
-    parallax: 26,
 };
 
 export const POINTER = {
@@ -192,7 +190,7 @@ export const POINTER = {
        reaction to how fast the cursor is moving, nothing that triggers when it
        crosses the lettering: the word leans towards the cursor and that is the
        whole interaction. */
-    tilt: { x: 0.09, y: 0.15 },
+    tilt: { x: 0.13, y: 0.25 },
     /* Fraction of the remaining distance left after one second. The per-frame
        factor is derived from this, so the easing is identical at 60 and 144Hz. */
     smoothing: 0.001,

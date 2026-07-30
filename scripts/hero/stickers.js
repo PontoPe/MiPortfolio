@@ -93,7 +93,6 @@ export const createStickers = () => {
 
     const geometry = new THREE.PlaneGeometry(1, 1);
     const size = new THREE.Vector2(1, 1);
-    const pointer = new THREE.Vector2();
     const items = [];
     const recentTextureIndexes = [];
 
@@ -181,10 +180,6 @@ export const createStickers = () => {
         size.set(width, height);
     };
 
-    const setPointer = (x, y) => {
-        pointer.set(x, y);
-    };
-
     const update = (dt, time) => {
         items.forEach((item) => {
             if (item.spawnDelay > 0) {
@@ -209,9 +204,8 @@ export const createStickers = () => {
             const height = aspect >= 1 ? tile / aspect : tile;
             item.mesh.scale.set(width, height, 1);
             item.mesh.position.x = item.x * size.x
-                + Math.sin(time * (TAU / item.swayPeriod) + item.phase) * item.sway
-                - pointer.x * STICKERS.parallax;
-            item.mesh.position.y = item.y * size.y + pointer.y * STICKERS.parallax;
+                + Math.sin(time * (TAU / item.swayPeriod) + item.phase) * item.sway;
+            item.mesh.position.y = item.y * size.y;
             item.mesh.rotation.z += item.spin * dt;
 
             /* Fades over the first and last stretch of the fall, so a sticker
@@ -228,5 +222,5 @@ export const createStickers = () => {
         textures.forEach(({ texture }) => texture.dispose());
     };
 
-    return { group, setSize, setPointer, update, dispose };
+    return { group, setSize, update, dispose };
 };

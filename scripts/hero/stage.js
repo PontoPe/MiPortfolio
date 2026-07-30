@@ -113,7 +113,6 @@ export const mountHero = async ({ host, wordBox }) => {
             * POINTER.float.sway;
 
         background.setMotion(x, y, time);
-        stickers.setPointer(x, y);
         stickers.update(dt, time);
 
         stage.renderer.render(stage.scene, stage.camera);
