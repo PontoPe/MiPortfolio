@@ -23,7 +23,6 @@
             revealed = true;
             document.documentElement.classList.remove("is-loading");
             document.documentElement.classList.add("is-ready");
-
             window.setTimeout(() => {
                 document.querySelector(".site-loader")?.remove();
             }, 600);

@@ -312,7 +312,7 @@ body::before {
     @keyframes heroWelcomeApproach {
         from {
             opacity: 0;
-            transform: scale(0.3);
+            transform: scale(0.02);
         }
 
         to {
@@ -352,8 +352,10 @@ body::before {
 
     /* The loader only adds .is-ready after both the document and optional 3D
        hero have settled, so these entrance animations cannot run behind it. */
-    html.is-ready .home-hero .hero-welcome {
-        animation: heroWelcomeApproach 800ms cubic-bezier(0.16, 1, 0.3, 1) 600ms both;
+    html.is-ready .home-hero .hero-welcome > img,
+    html.is-ready .home-hero .hero-welcome-glass,
+    html.is-ready .home-hero .hero-welcome-fallback {
+        animation: heroWelcomeApproach 800ms cubic-bezier(0.16, 1, 0.3, 1) 900ms both;
     }
 
     html.is-ready .home-hero .hero-sticker-row > * {
@@ -361,27 +363,27 @@ body::before {
     }
 
     html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(1) {
-        animation-delay: 1420ms;
+        animation-delay: 1720ms;
     }
 
     html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(2) {
-        animation-delay: 1540ms;
+        animation-delay: 1840ms;
     }
 
     html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(3) {
-        animation-delay: 1660ms;
+        animation-delay: 1960ms;
     }
 
     html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(4) {
-        animation-delay: 1780ms;
+        animation-delay: 2080ms;
     }
 
     html.is-ready .home-hero .hero-sticker-row-secondary > :nth-child(1) {
-        animation-delay: 1900ms;
+        animation-delay: 2200ms;
     }
 
     html.is-ready .home-hero .hero-sticker-row-secondary > :nth-child(2) {
-        animation-delay: 2020ms;
+        animation-delay: 2320ms;
     }
 
     .site-footer {
@@ -675,24 +677,17 @@ body::before {
     display: none;
     height: calc(100% + var(--hero-stage-top-bleed) + var(--hero-stage-bottom-bleed));
     left: 50%;
-    /* The class is added after the first render (see stage.js), but opacity is
-       held at zero until the loading screen has completed. */
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
     position: absolute;
     top: calc(-1 * var(--hero-stage-top-bleed));
     transform: translateX(-50%);
-    transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1);
     width: 100vw;
     z-index: 1;
 }
 
 .hero-welcome.is-3d .hero-stage {
     display: block;
-}
-
-html.is-ready .hero-stage.is-lit {
-    opacity: 1;
 }
 
 /* <canvas> is a replaced element: an inset-only box would collapse to its

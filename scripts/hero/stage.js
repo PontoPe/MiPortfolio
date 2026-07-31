@@ -15,6 +15,10 @@ import { loadGlass } from "./glass.js";
 import { createPointer } from "./pointer.js";
 
 const RESIZE_DEBOUNCE = 150;
+const WORD_REVEAL_DELAY_MS = 900;
+const WORD_VISIBILITY_LEAD_MS = 300;
+const WORD_REVEAL_DURATION_MS = 800;
+const WORD_REVEAL_START_SCALE = 0.02;
 const NAV_SELECTOR = ".site-nav";
 const LOWER_BOUND_SELECTOR = ".section-panel";
 
@@ -96,11 +100,54 @@ export const mountHero = async ({ host, wordBox }) => {
 
     const clock = new THREE.Clock();
     let frame = 0;
+    let wordRevealStartedAt = null;
+    let wordRevealScheduled = false;
+    /* Render the word at its distant scale before the loader lifts. Starting
+       from an already-rendered mesh prevents a late visibility toggle from
+       making it pop into the middle of the zoom. */
+    glass.pivot.scale.setScalar(WORD_REVEAL_START_SCALE);
+    glass.pivot.visible = false;
+
+    const revealWord = () => {
+        if (wordRevealStartedAt !== null) {
+            return;
+        }
+
+        wordRevealStartedAt = performance.now();
+        glass.pivot.visible = true;
+    };
+
+    const scheduleWordReveal = () => {
+        if (wordRevealScheduled) {
+            return;
+        }
+
+        wordRevealScheduled = true;
+        window.setTimeout(() => {
+            glass.pivot.visible = true;
+            window.setTimeout(revealWord, WORD_VISIBILITY_LEAD_MS);
+        }, WORD_REVEAL_DELAY_MS - WORD_VISIBILITY_LEAD_MS);
+    };
+
+    /* mountHero resolves immediately before index.js tells the loader that the
+       hero is ready; this delay keeps the word hidden through its exit. */
+    scheduleWordReveal();
 
     const render = () => {
         const dt = Math.min(clock.getDelta(), 0.1);
         const time = clock.getElapsedTime();
         const { x, y } = pointer.update(dt);
+
+        if (wordRevealStartedAt !== null) {
+            const progress = Math.min(
+                1,
+                (performance.now() - wordRevealStartedAt) / WORD_REVEAL_DURATION_MS
+            );
+            const easedProgress = 1 - (1 - progress) ** 3;
+            const scale = WORD_REVEAL_START_SCALE
+                + (1 - WORD_REVEAL_START_SCALE) * easedProgress;
+            glass.pivot.scale.setScalar(scale);
+        }
 
         /* The pointer's entire contribution: a lean towards the cursor, eased.
            Nothing keys off how fast it moves or whether it is over the word —
