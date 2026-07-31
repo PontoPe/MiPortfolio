@@ -3,7 +3,7 @@
  * not to run.
  *
  * Loaded through a dynamic import from index.js, which means three.js and the
- * 3MB sculpt are only fetched once the browser has been judged capable of
+ * lettering mesh are only fetched once the browser has been judged capable of
  * showing them — a phone or a reduced-motion visitor never touches this file.
  */
 import * as THREE from "three";
@@ -87,7 +87,8 @@ export const mountHero = async ({ host, wordBox }) => {
            where the flat one did — except on a narrow viewport, where the
            canvas is barely wider than the word and the ceiling pulls it in
            clear of the edge fade. */
-        fitWidth = Math.min(wordBox.clientWidth, width * GLASS.maxCanvasWidthRatio);
+        fitWidth = Math.min(wordBox.clientWidth, width * GLASS.maxCanvasWidthRatio)
+            * GLASS.widthScale;
         glass.setWidth(fitWidth);
     };
 

@@ -1,12 +1,13 @@
 /**
  * The "Welcome" lettering, in glass (z = 0).
  *
- * assets/3d/Welc.glb is a Nomad sculpt: one tube split into six primitives,
- * with positions, vertex colours and UVs — and no normals at all. glTF says a
- * client must derive normals in that case; three.js does not, and leaves the
- * surface unlit, so they are computed here. The material that ships in the
- * file (opaque, roughness 0.25) is discarded outright: everything that makes
- * this read as glass is set below.
+ * assets/3d/Welc-extrude.glb is the script lettering extruded out of
+ * Illustrator: a single closed mesh with positions, normals and UVs. Normals
+ * are still computed defensively — the Nomad sculpt this replaced shipped
+ * without any, and glTF leaves deriving them to the client, which three.js
+ * does not do (the surface simply renders unlit). The material that ships in
+ * the file (opaque, roughness 0.4) is discarded outright: everything that
+ * makes this read as glass is set below.
  *
  * MeshPhysicalMaterial has had `dispersion` since r167, which is the reason
  * this needs no MeshTransmissionMaterial and therefore no drei and no React —

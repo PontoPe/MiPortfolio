@@ -15,7 +15,7 @@
  * Live-tune any of this by loading the page with ?glass in the query string:
  * scripts/hero/debug.js hangs a lil-gui off these objects.
  */
-export const MODEL_URL = "assets/3d/Welc.glb";
+export const MODEL_URL = "assets/3d/Welc-extrude.glb";
 
 export const RENDERER = {
     /* Two is enough for the tube's silhouette; past that the transmission pass
@@ -36,6 +36,12 @@ export const GLASS = {
        a wide screen this ceiling never binds — it only kicks in on narrow ones,
        where it keeps the lettering clear of the canvas edge fade. */
     maxCanvasWidthRatio: 0.8,
+    /* Multiplier on the fitted width, applied after the ceiling above. 1 is the
+       width the PNG had; anything else deliberately breaks the match with the
+       flat still, so this is here to size the sculpt by eye rather than to be
+       animated. Everything downstream is a ratio of the fitted width, so the
+       glass holds together at any value. */
+    widthScale: 1,
     /* How far light travels through the glass, as a ratio of the fitted width
        — a little over the diameter of the tube, which is about 0.1 of the
        word's width. This is what drives how far the backdrop is displaced, so
@@ -63,7 +69,7 @@ export const GLASS = {
        this one it takes a value in the tens to read at all; past ~40 the
        channels separate far enough to tear the strokes apart. */
     dispersion: 22,
-    clearcoat: 1,
+    clearcoat: 0,
     clearcoatRoughness: 0.05,
     envMapIntensity: 1.15,
 };

@@ -22,6 +22,10 @@ export const attachDebugUI = (hero) => {
     const refit = () => hero.glass.setWidth(hero.getFitWidth());
 
     const glass = gui.addFolder("glass");
+    /* Size, not fit: this one goes through resize() because the fitted width is
+       computed there and everything else keys off it. */
+    glass.add(GLASS, "widthScale", 0.4, 2, 0.01).name("size")
+        .onChange(() => hero.relayout());
     glass.add(GLASS, "thicknessRatio", 0, 0.4, 0.001).onChange(refit);
     glass.add(GLASS, "attenuationDistanceRatio", 0.02, 1, 0.005).onChange(refit);
     glass.addColor(GLASS, "attenuationColor").onChange((value) => {
