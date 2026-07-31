@@ -1,6 +1,8 @@
 :root {
     --page-max: 110rem;
     --hero-cluster-width: min(48.75rem, 94vw);
+    --hero-sticker-size: clamp(1rem, 1.2vw, 1.25rem);
+    --hero-sticker-gap: clamp(0.5rem, 0.6vw, 0.625rem);
     /* Shared horizontal edge: hero text, nav logo and content boxes all align to it */
     --page-gutter: clamp(1.5rem, 4vw, 4.5rem);
     --ink: #777c95;
@@ -708,15 +710,15 @@ body::before {
 .hero-sticker-row {
     align-items: center;
     display: flex;
+    gap: var(--hero-sticker-gap);
+    justify-content: center;
 }
 
 .hero-sticker-row-primary {
-    justify-content: space-between;
     width: 100%;
 }
 
 .hero-sticker-row-secondary {
-    justify-content: space-between;
     width: 52%;
 }
 
@@ -752,7 +754,7 @@ body::before {
         0 0.7rem 1.6rem var(--pill-glow);
     color: #ffffff;
     display: inline-block;
-    font-size: clamp(1rem, 1.2vw, 1.25rem);
+    font-size: var(--hero-sticker-size);
     font-weight: 700;
     letter-spacing: 0.07em;
     padding: 0.62rem 1.25rem;
@@ -799,8 +801,6 @@ body::before {
 @media (max-width: 700px) {
     .hero-sticker-row {
         flex-wrap: wrap;
-        gap: 0.65rem 1rem;
-        justify-content: center;
         width: 100%;
     }
 }
