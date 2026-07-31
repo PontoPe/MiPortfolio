@@ -17,7 +17,7 @@ import { createPointer } from "./pointer.js";
 const RESIZE_DEBOUNCE = 150;
 const WORD_REVEAL_DELAY_MS = 900;
 const WORD_VISIBILITY_LEAD_MS = 300;
-const WORD_REVEAL_DURATION_MS = 800;
+const WORD_REVEAL_DURATION_MS = 1000;
 const WORD_REVEAL_START_SCALE = 0.02;
 const NAV_SELECTOR = ".site-nav";
 const LOWER_BOUND_SELECTOR = ".section-panel";
@@ -143,7 +143,7 @@ export const mountHero = async ({ host, wordBox }) => {
                 1,
                 (performance.now() - wordRevealStartedAt) / WORD_REVEAL_DURATION_MS
             );
-            const easedProgress = 1 - (1 - progress) ** 3;
+            const easedProgress = 1 - (1 - progress) ** 4;
             const scale = WORD_REVEAL_START_SCALE
                 + (1 - WORD_REVEAL_START_SCALE) * easedProgress;
             glass.pivot.scale.setScalar(scale);
