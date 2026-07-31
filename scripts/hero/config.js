@@ -41,37 +41,37 @@ export const GLASS = {
        flat still, so this is here to size the sculpt by eye rather than to be
        animated. Everything downstream is a ratio of the fitted width, so the
        glass holds together at any value. */
-    widthScale: 1,
+    widthScale: 1.23,
     /* How far light travels through the glass, as a ratio of the fitted width
        — a little over the diameter of the tube, which is about 0.1 of the
        word's width. This is what drives how far the backdrop is displaced, so
        too low and the refraction goes flat and the dispersion disappears with
        it. glass.js converts it into the model-local units three actually
        wants; the note there is worth reading before touching this. */
-    thicknessRatio: 0.12,
+    thicknessRatio: 0.149,
     /* Beer-Lambert absorption distance, in pixels of that same travel. Short =
        deeply saturated core; long = barely tinted. Kept long on purpose: the
        word should read as clear glass that happens to pick up a violet cast
        where it is thick, not as coloured glass. */
-    attenuationDistanceRatio: 0.42,
+    attenuationDistanceRatio: 0.075,
     /* The tint does NOT come from `color`. It is absorption through the
        volume, which is why thick parts of the tube go saturated while the thin
        edges stay near-clear — a flat `color` would render as violet plastic. */
-    attenuationColor: 0xa98cff,
-    ior: 1.6,
+    attenuationColor: 0xf9f9ff,
+    ior: 1.12,
     /* Low: the roughness feeds the mip level the transmission sample is read
        at, so anything higher blurs the stickers behind the word into mush. */
-    roughness: 0.03,
+    roughness: 0.215,
     /* Rainbow fringing at the edges. Needs transmission > 0, and only shows
        where the surface curves — a flat face refracts all three channels the
        same way and separates nothing. three turns this into an IOR spread of
        only (ior - 1) * 0.025 * dispersion, so against a pale backdrop like
        this one it takes a value in the tens to read at all; past ~40 the
        channels separate far enough to tear the strokes apart. */
-    dispersion: 22,
-    clearcoat: 0,
-    clearcoatRoughness: 0.05,
-    envMapIntensity: 1.15,
+    dispersion: 37,
+    clearcoat: 0.48,
+    clearcoatRoughness: 0,
+    envMapIntensity: 0.7,
 };
 
 export const LIGHTS = {
