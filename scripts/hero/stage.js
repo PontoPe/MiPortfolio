@@ -62,6 +62,14 @@ export const mountHero = async ({ host, wordBox }) => {
     let glassBaseY = 0;
 
     const resize = () => {
+        /* The canvas is absolutely positioned, so a debug size increase would
+           otherwise overlap the stickers and section below. Keep equal flow
+           space above and below the original word, preserving its centre. */
+        const wordImage = wordBox.querySelector("img");
+        const wordHeight = wordImage?.getBoundingClientRect().height || wordBox.offsetHeight;
+        const extraSpace = Math.max(0, GLASS.widthScale - 1) * wordHeight / 2;
+        wordBox.style.setProperty("--hero-glass-size-extra", `${extraSpace}px`);
+
         const nav = document.querySelector(NAV_SELECTOR);
         const lowerBound = document.querySelector(LOWER_BOUND_SELECTOR);
         const wordTop = getDocumentTop(wordBox);

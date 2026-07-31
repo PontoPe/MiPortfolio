@@ -574,8 +574,10 @@ body::before {
 }
 
 .hero-welcome {
+    --hero-glass-size-extra: 0px;
     margin: 0 auto;
     max-width: var(--hero-cluster-width);
+    padding-block: var(--hero-glass-size-extra);
     position: relative;
     width: var(--hero-cluster-width);
 }
