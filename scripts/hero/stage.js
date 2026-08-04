@@ -7,7 +7,7 @@
  * showing them — a phone or a reduced-motion visitor never touches this file.
  */
 import * as THREE from "three";
-import { GLASS, LIGHTS, POINTER, RENDERER } from "./config.js";
+import { BACKGROUND, GLASS, LIGHTS, POINTER, RENDERER } from "./config.js";
 import { addLights, createStage } from "./scene.js";
 import { createBackground } from "./background.js";
 import { createStickers } from "./stickers.js";
@@ -25,6 +25,13 @@ const NAV_SELECTOR = ".site-nav";
    ticker: past that band the rain would be drifting over the about block and
    the project cards, which is not where the hero is. */
 const LOWER_BOUND_SELECTOR = ".news-ticker";
+/* The element carrying the page's CSS grid, which the canvas's grid is aligned
+   to. See .hero-about-band in page-style.css. */
+const GRID_SELECTOR = ".hero-grid";
+
+/* Positive remainder: -4 % 30 is -4 in JS, and a negative phase would shift the
+   grid the wrong way. */
+const wrap = (value, span) => ((value % span) + span) % span;
 
 const getDocumentTop = (element) => {
     let top = 0;
@@ -93,6 +100,23 @@ export const mountHero = async ({ host, wordBox }) => {
         const wordRect = wordBox.getBoundingClientRect();
         glassBaseY = hostRect.top + hostRect.height / 2
             - (wordRect.top + wordRect.height / 2);
+
+        /* Phase-lock the canvas grid to the page grid, so the lattice reads as
+           one background rather than two that meet at the canvas edge.
+           The CSS grid draws a line every cell from the band's top-left. The
+           shader draws one every cell from the plane's origin, which is the
+           canvas's left edge and — uv running bottom-up — its BOTTOM edge.
+           Matching each axis is therefore the gap between those origins,
+           modulo the cell. Both boxes scroll together, so this holds until
+           something resizes, which is exactly when this runs. */
+        const gridHost = document.querySelector(GRID_SELECTOR);
+        if (gridHost) {
+            const gridRect = gridHost.getBoundingClientRect();
+            background.setGridAlign(
+                wrap(hostRect.left - gridRect.left, BACKGROUND.gridSize),
+                wrap(gridRect.top - hostRect.bottom, BACKGROUND.gridSize)
+            );
+        }
         /* The word keeps the width the PNG had, so the 3D lettering lands
            where the flat one did — except on a narrow viewport, where the
            canvas is barely wider than the word and the ceiling pulls it in

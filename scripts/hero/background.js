@@ -99,7 +99,7 @@ void main() {
 }
 `;
 
-const createMaterial = (shared, { edgeFade, blended }) => new THREE.ShaderMaterial({
+const createMaterial = (shared, { edgeFade, blended, offset }) => new THREE.ShaderMaterial({
     vertexShader,
     fragmentShader,
     /* Never `transparent: true`, for both copies. That flag is what three uses
@@ -126,6 +126,7 @@ const createMaterial = (shared, { edgeFade, blended }) => new THREE.ShaderMateri
     toneMapped: false,
     uniforms: {
         ...shared,
+        uOffset: offset,
         uEdgeFade: { value: edgeFade },
     },
 });
@@ -135,7 +136,6 @@ export const createBackground = () => {
        pointer move only has to be written once and the two can never drift. */
     const shared = {
         uSize: { value: new THREE.Vector2(1, 1) },
-        uOffset: { value: new THREE.Vector2(0, 0) },
         uBreathe: { value: 0 },
         uTop: { value: new THREE.Color(BACKGROUND.top) },
         uBottom: { value: new THREE.Color(BACKGROUND.bottom) },
@@ -149,7 +149,22 @@ export const createBackground = () => {
 
     const geometry = new THREE.PlaneGeometry(1, 1);
 
-    const material = createMaterial(shared, { edgeFade: BACKGROUND.edgeFade, blended: true });
+    /* The grid offset is the one uniform the two copies do NOT share.
+       · visible — locked to the page's CSS grid by stage.js and then left
+         alone. It is the same lattice the band below the canvas draws, and a
+         grid that drifted could not stay aligned with a grid that does not.
+       · backdrop — keeps the drift and the pointer parallax. This copy is only
+         ever seen through the lettering, where it is displaced and magnified
+         beyond any relation to the page anyway, so it is free to move: it is
+         what keeps the refraction from being the same picture twice. */
+    const alignOffset = { value: new THREE.Vector2(0, 0) };
+    const driftOffset = { value: new THREE.Vector2(0, 0) };
+
+    const material = createMaterial(shared, {
+        edgeFade: BACKGROUND.edgeFade,
+        blended: true,
+        offset: alignOffset,
+    });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.z = LAYERS.background;
     mesh.frustumCulled = false;
@@ -158,7 +173,11 @@ export const createBackground = () => {
        is the only thing keeping the backdrop from erasing the stickers. */
     mesh.renderOrder = -1;
 
-    const backdropMaterial = createMaterial(shared, { edgeFade: 0, blended: false });
+    const backdropMaterial = createMaterial(shared, {
+        edgeFade: 0,
+        blended: false,
+        offset: driftOffset,
+    });
     const backdrop = new THREE.Mesh(geometry, backdropMaterial);
     backdrop.position.z = LAYERS.backdrop;
     backdrop.frustumCulled = false;
@@ -180,15 +199,25 @@ export const createBackground = () => {
 
     /* Parallax against the stickers, which move the other way, plus a slow
        drift of its own — enough that the refracted grid is never twice the
-       same, whether or not there is a cursor on the page. */
+       same, whether or not there is a cursor on the page. Applies to the
+       refracted copy only; see the note by the two offsets above. The bloom is
+       shared, so both still breathe together. */
     const setMotion = (x, y, time) => {
         const drift = BACKGROUND.driftAmplitude;
         const w = (Math.PI * 2) / BACKGROUND.driftPeriod;
-        shared.uOffset.value.set(
+        driftOffset.value.set(
             x * BACKGROUND.parallax + Math.sin(time * w) * drift,
             y * BACKGROUND.parallax + Math.cos(time * w * 0.73) * drift
         );
         shared.uBreathe.value = Math.sin(time * ((Math.PI * 2) / BACKGROUND.bloomPeriod));
+    };
+
+    /* Shifts the visible grid so its lines fall on the page grid's. Pixels, in
+       the plane's own space: x from the canvas's left edge, y from its bottom
+       (PlaneGeometry uv runs bottom-up). Called on resize by stage.js, which is
+       where both boxes are known. */
+    const setGridAlign = (x, y) => {
+        alignOffset.value.set(x, y);
     };
 
     const dispose = () => {
@@ -197,5 +226,5 @@ export const createBackground = () => {
         backdropMaterial.dispose();
     };
 
-    return { mesh, backdrop, material, setSize, setMotion, dispose };
+    return { mesh, backdrop, material, setSize, setMotion, setGridAlign, dispose };
 };

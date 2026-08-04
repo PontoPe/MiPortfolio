@@ -40,8 +40,14 @@ export const GLASS = {
        width the PNG had; anything else deliberately breaks the match with the
        flat still, so this is here to size the sculpt by eye rather than to be
        animated. Everything downstream is a ratio of the fitted width, so the
-       glass holds together at any value. */
-    widthScale: 1.23,
+       glass holds together at any value.
+
+       Held at 1 now that --hero-cluster-width in page-style.css is what sizes
+       the lettering: that box is bounded by the page gutter so the word keeps
+       its edges on the same lines as the hero copy above it, and a multiplier
+       here would render the sculpt past the box and break exactly that. Size
+       the word by the CSS custom property instead. */
+    widthScale: 1,
     /* How far light travels through the glass, as a ratio of the fitted width
        — a little over the diameter of the tube, which is about 0.1 of the
        word's width. This is what drives how far the backdrop is displaced, so

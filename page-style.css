@@ -1,6 +1,48 @@
 :root {
     --page-max: 110rem;
-    --hero-cluster-width: min(48.75rem, 94vw);
+    /* Clears the fixed nav. Matches main's pt-20, and the hero measures itself
+       against the viewport minus this. */
+    --nav-clearance: 5rem;
+    /* Breathing room under the ticker: where the fold lands. */
+    --hero-foot: clamp(1.7rem, 4svh, 3.5rem);
+    /* How the hero's leftover height is split around the lettering: the space
+       below it is this fraction of the space above. Under 1 so the word sits a
+       little high in its field and reads closer to the ticker than to the copy. */
+    --hero-word-drop: 0.6;
+    /* Page grid, drawn once for the hero and about band. The WebGL hero repeats
+       the same lattice inside its canvas (BACKGROUND.grid / .gridSize in
+       scripts/hero/config.js) and stage.js phase-locks it to this one, so the
+       two read as a single background. Change either and change both. */
+    --grid-cell: 30px;
+    --grid-line: rgba(139, 154, 227, 0.14);
+    /* Width of the "welcome" lettering, and the one number that decides whether
+       the hero fits the viewport — everything else above the fold is either
+       fixed (nav clearance, ticker) or text.
+
+       The third term is the height budget: 3.024 is the lettering's aspect
+       ratio (the 1255x415 artwork, which the 3D sculpt is fitted to as well —
+       see GLASS.widthScale), so it converts leftover height into the width that
+       would consume it. The 23rem it subtracts is everything else that has
+       to fit above the fold — nav clearance, the two blocks of hero copy, the
+       ticker and its margin, the foot — plus enough left over that the word
+       still has air around it rather than just fitting. That term wins on short
+       viewports, keeping the ticker on screen down to a very shallow window;
+       the 100% and rem caps win on tall and on ultrawide ones, where the
+       constraint is taste rather than space.
+
+       100% is the hero's content box — the same box the two blocks of copy
+       above are laid out in — so the lettering can never reach past the page
+       gutter, keeping its edges inside the lines the text above sits on.
+       (Resolved against .hero-welcome's containing block, which is .home-hero;
+       this is why the caps live here rather than in vw.)
+
+       80vw is GLASS.maxCanvasWidthRatio expressed in CSS. The 3D sculpt is
+       fitted to the smaller of this box and that ceiling, which exists to keep
+       the lettering clear of the canvas's edge fade — so without the same
+       ceiling here the box would reserve more width than the sculpt is ever
+       drawn at, and the two renderings of the word (canvas and PNG) would be
+       different sizes. Raise them together or not at all. */
+    --hero-cluster-width: min(100%, 80vw, 96rem, (100svh - 23rem) * 3.024);
     /* Shared horizontal edge: hero text, nav logo and content boxes all align to it */
     --page-gutter: clamp(1.5rem, 4vw, 4.5rem);
     --ink: #777c95;
@@ -570,12 +612,59 @@ body::before {
 --------------------------------------------------------------------------- */
 /* Lives in the shared page shell so the hero text, nav logo and content
    boxes all share the same left edge (--page-gutter). */
-/* The bottom margin collapses with .news-ticker's top margin, so the gap the
-   page shows is the larger of the two. Both were scaled by 1.1 together —
-   max(1.1a, 1.1b) is 1.1 * max(a, b), so the spacing grows by exactly 10% at
-   every viewport rather than only where one of them happens to win. */
+/* ---------------------------------------------------------------------------
+   Hero + about band, and the grid they share
+--------------------------------------------------------------------------- */
+/* One element, one background, so the lattice cannot break between the two
+   sections: there is no second grid to disagree with. The WebGL hero paints
+   over the top of it inside the canvas, drawing the same cell at the same
+   colour — stage.js reads this element's box and offsets the shader's grid to
+   land on the same lines, so the canvas is a continuation of this rather than
+   an overlay on it. Without the 3D hero this is simply the only grid there is.
+   Stacking context so ::before can sit behind the canvas and the copy at -1
+   while staying in front of the page background. */
+.hero-about-band {
+    isolation: isolate;
+    position: relative;
+}
+
+.hero-grid {
+    background-image:
+        repeating-linear-gradient(to right, var(--grid-line) 0 1px, transparent 1px var(--grid-cell)),
+        repeating-linear-gradient(to bottom, var(--grid-line) 0 1px, transparent 1px var(--grid-cell));
+    bottom: calc(-1 * clamp(2.5rem, 5vw, 4.5rem));
+    left: calc(50% - 50vw);
+    /* Runs up behind the nav so the strip the translucent bar sits over is
+       gridded too, and dissolves before the projects panel rather than ending
+       on a line. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 88%, transparent 100%);
+    pointer-events: none;
+    position: absolute;
+    top: calc(-1 * var(--nav-clearance));
+    width: 100vw;
+    z-index: -1;
+}
+
+/* Hero + ticker: one viewport tall, ticker last, fold just under it.
+   svh rather than vh so a mobile browser's retracting toolbar cannot push the
+   ticker below the fold — svh is the *small* viewport, the one that is always
+   visible, so the block is sized for the worst case and only ever gains room. */
+.hero-block {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100svh - var(--nav-clearance));
+    padding-bottom: var(--hero-foot);
+}
+
 .home-hero {
-    margin: 0.35rem 0 clamp(2.365rem, 5.225vh, 3.85rem);
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 0.35rem 0 0;
+    /* Never below its content: on a viewport too short for the hero, the block
+       grows rather than the lettering being crushed into the copy. */
+    min-height: 0;
     position: relative;
     text-align: center;
 }
@@ -589,7 +678,7 @@ body::before {
     display: flex;
     position: relative;
     z-index: 2;
-    font-size: clamp(1rem, 1.65vw, 1.55rem);
+    font-size: clamp(1.15rem, 2.2vw, 2.1rem);
     justify-content: space-between;
     gap: 2rem;
     line-height: 1.3;
@@ -598,7 +687,7 @@ body::before {
 }
 
 .hero-meta .hero-meta-right {
-    font-size: clamp(0.9rem, 1.15vw, 1.15rem);
+    font-size: clamp(1rem, 1.5vw, 1.55rem);
     line-height: 1.4;
     margin-left: auto;
     max-width: 28.9rem;
@@ -613,9 +702,32 @@ body::before {
     opacity: 0.75;
 }
 
+/* Two flexible spacers rather than auto margins on the word: auto margins can
+   only split leftover height evenly, and the composition wants less of it under
+   the lettering than over it. Growing from a zero basis in a 1 : --hero-word-drop
+   ratio does that at any viewport, since it is a share of whatever is left
+   rather than a fixed gap. Pseudo-elements are always the first and last child,
+   so `order` is what puts them either side of the word. */
+.home-hero::before,
+.home-hero::after {
+    content: "";
+    display: block;
+}
+
+.home-hero::before {
+    flex: 1 1 0;
+    order: 1;
+}
+
+.home-hero::after {
+    flex: var(--hero-word-drop) 1 0;
+    order: 3;
+}
+
 .hero-welcome {
     --hero-glass-size-extra: 0px;
     margin: 0 auto;
+    order: 2;
     max-width: var(--hero-cluster-width);
     padding-block: var(--hero-glass-size-extra);
     position: relative;
@@ -744,7 +856,11 @@ body::before {
     --tag-color: #7cc47b;
     align-items: center;
     background: rgba(255, 255, 255, 0.7);
-    border: 0.145em solid var(--tag-color);
+    /* Whole pixels, not em. At nav size an em-based border lands on 1.81px,
+       which the rasteriser resolves to 1px on one edge and 2px on the other
+       depending on where the pill falls in the pixel grid — the content then
+       reads as sitting a pixel off centre even though it is centred exactly. */
+    border: 2px solid var(--tag-color);
     border-radius: 999px;
     color: var(--tag-color);
     display: inline-flex;
@@ -780,10 +896,16 @@ body::before {
    its own width, which puts the second copy where the first started — the loop
    has no seam and no JS.
 --------------------------------------------------------------------------- */
+/* Last item in the hero column. Most of the space above it is the hero's
+   leftover, handed out by the lettering's auto margins; this is only the floor
+   under that, so the two never touch on a viewport with nothing to spare. Sized
+   in svh rather than vw because what squeezes it is a short screen, not a
+   narrow one. */
 .news-ticker {
     background: var(--ticker-bg);
+    flex: none;
     margin-left: calc(50% - 50vw);
-    margin-block: clamp(1.65rem, 3.85vw, 3.025rem);
+    margin-top: clamp(0.75rem, 2.5svh, 2rem);
     overflow: hidden;
     padding-block: clamp(0.6rem, 1vw, 0.95rem);
     width: 100vw;
@@ -793,10 +915,6 @@ body::before {
     animation: tickerScroll 38s linear infinite;
     display: flex;
     width: max-content;
-}
-
-.news-ticker:hover .news-ticker-track {
-    animation-play-state: paused;
 }
 
 /* Both groups must measure exactly the same, or translateX(-50%) lands off the
@@ -852,40 +970,8 @@ body::before {
     display: grid;
     gap: clamp(1.75rem, 3.5vw, 3.25rem);
     grid-template-columns: minmax(0, 1fr);
-    /* Top margin collapses with the ticker's bottom margin — see .home-hero. */
     margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
     margin-top: clamp(2.75rem, 5.5vw, 4.95rem);
-    /* Own stacking context, so the grid below can sit at z-index -1: behind the
-       portrait and the copy, but still in front of the page background. */
-    isolation: isolate;
-    position: relative;
-}
-
-/* Carries the hero's grid on past the ticker. The hero's is drawn in the WebGL
-   backdrop (BACKGROUND.grid in scripts/hero/config.js) and stops with the
-   canvas at the ticker, so this repeats the same 30px cell in the same colour
-   at the same 14%.
-
-   Full-bleed like the ticker: the hero grid runs the whole width of the
-   viewport, and one that stopped at the page gutter would read as a panel
-   dropped on the section rather than as the background continuing. It starts
-   flush under the ticker — the offset is this element's own top margin, which
-   is the one that wins the collapse — and dissolves before the projects panel
-   instead of ending on a line. */
-.home-about::before {
-    background-image:
-        repeating-linear-gradient(to right, rgba(139, 154, 227, 0.14) 0 1px, transparent 1px 30px),
-        repeating-linear-gradient(to bottom, rgba(139, 154, 227, 0.14) 0 1px, transparent 1px 30px);
-    bottom: calc(-1 * clamp(2.5rem, 5vw, 4.5rem));
-    content: "";
-    left: calc(50% - 50vw);
-    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
-            mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
-    pointer-events: none;
-    position: absolute;
-    top: calc(-1 * clamp(2.75rem, 5.5vw, 4.95rem));
-    width: 100vw;
-    z-index: -1;
 }
 
 @media (min-width: 900px) {
@@ -917,11 +1003,16 @@ body::before {
     gap: 0.85rem;
 }
 
+/* Fills its grid column rather than stopping at a fixed measure. The column
+   already ends at the page gutter, so the copy's right margin now matches the
+   portrait's left one instead of leaving a widening band of empty page beside
+   it on a large monitor. Below the two-column breakpoint the column is narrower
+   than the old cap was, so nothing about the small-screen layout changes. */
 .home-about-text {
     color: var(--ink-soft);
     font-size: clamp(1rem, 1.35vw, 1.35rem);
     line-height: 1.55;
-    max-width: 52rem;
+    max-width: 100%;
 }
 
 .home-about-actions {
@@ -929,6 +1020,32 @@ body::before {
     flex-wrap: wrap;
     gap: 0.85rem;
 }
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal (scripts/reveal-on-scroll.js)
+
+   Guarded on html.has-reveal, which the script sets: without it — script
+   blocked, or reduced motion asked for — none of this applies and the content
+   is simply there. The transition is declared only on the revealed state, so
+   the initial hidden position is taken up instantly rather than animated to on
+   load, and the whole group runs off one class on the section.
+--------------------------------------------------------------------------- */
+html.has-reveal [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.5rem);
+}
+
+html.has-reveal [data-reveal-group].is-revealed [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 700ms ease,
+        transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.has-reveal [data-reveal-group].is-revealed [data-reveal="1"] { transition-delay: 110ms; }
+html.has-reveal [data-reveal-group].is-revealed [data-reveal="2"] { transition-delay: 200ms; }
+html.has-reveal [data-reveal-group].is-revealed [data-reveal="3"] { transition-delay: 290ms; }
 
 /* ---------------------------------------------------------------------------
    Panels (sections / cards)

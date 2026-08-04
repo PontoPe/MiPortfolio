@@ -50,6 +50,18 @@
 </div>
 </nav>
 <main class="pt-20 pb-8 max-w-[110rem] mx-auto">
+<!-- Hero and about share one band so they can share one grid: it is a single
+     background on this element, which is the only way the lattice can be
+     guaranteed to line up across the two rather than being two grids that
+     happen to agree. -->
+<div class="hero-about-band">
+<!-- The shared grid. A real element rather than a pseudo one so the hero can
+     measure it: scripts/hero/stage.js reads this box to phase-lock the canvas's
+     own grid to it. -->
+<div aria-hidden="true" class="hero-grid"></div>
+<!-- Everything above the fold. Sized to the viewport in CSS; the hero copy and
+     the lettering absorb the difference. -->
+<div class="hero-block">
 <!-- Hero -->
 <header class="home-hero">
 <div class="hero-meta" data-repel="soft">
@@ -103,21 +115,23 @@
 </ul>
 </div>
 </div>
+</div>
 <!-- About -->
-<section class="home-about portfolio-section" id="about">
-<div aria-label="Portrait of Milena Caldas" class="home-about-portrait" role="img"></div>
+<section class="home-about portfolio-section" data-reveal-group id="about">
+<div aria-label="Portrait of Milena Caldas" class="home-about-portrait" data-reveal="0" role="img"></div>
 <div class="home-about-copy">
-<div class="home-about-tags">
+<div class="home-about-tags" data-reveal="1">
 <span class="status-tag status-tag-cyan">Open to remote</span>
 <span class="status-tag status-tag-violet">Open to relocate</span>
 </div>
-<p class="home-about-text" data-repel="soft">Fiction writer first, designer second — or maybe the other way around, depending on the week. Either way, it's the same work: making something complicated land without making it smaller than it is. I do that with a team at Brazil's largest pediatric hospital, and on my own in Mosaico, a tool for building stories that began as my thesis and grew into an AI writing companion. My app “Dear Stars” won Apple's WWDC21 Swift Student Challenge — and learning experience design is where all of this is headed.</p>
-<div class="home-about-actions">
+<p class="home-about-text" data-repel="soft" data-reveal="2">Fiction writer first, designer second — or maybe the other way around, depending on the week. Either way, it's the same work: making something complicated land without making it smaller than it is. I do that with a team at Brazil's largest pediatric hospital, and on my own in Mosaico, a tool for building stories that began as my thesis and grew into an AI writing companion. My app “Dear Stars” won Apple's WWDC21 Swift Student Challenge — and learning experience design is where all of this is headed.</p>
+<div class="home-about-actions" data-reveal="3">
 <a class="btn-pill btn-pill-primary" href="mailto:milena.am.caldas@gmail.com">send a message</a>
 <a class="btn-pill btn-pill-soft" href="about.html">view my resume</a>
 </div>
 </div>
 </section>
+</div>
 <!-- Project Sections: one glass box, one subsection per category -->
 <section class="section-panel portfolio-section" id="work">
 <div class="panel-subsection portfolio-section" id="design-grafico">
@@ -163,6 +177,7 @@
 <script src="scripts/portfolio-render.js"></script>
 <script src="scripts/repel-text.js"></script>
 <script src="scripts/page-motion.js"></script>
+<script src="scripts/reveal-on-scroll.js"></script>
 <!-- three r180: `dispersion` on MeshPhysicalMaterial needs r167+, and
      renderer.transmissionResolutionScale (which the hero relies on to afford
      that dispersion) needs r171+. The map only names the modules; nothing is
