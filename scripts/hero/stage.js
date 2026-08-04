@@ -20,7 +20,11 @@ const WORD_VISIBILITY_LEAD_MS = 300;
 const WORD_REVEAL_DURATION_MS = 1400;
 const WORD_REVEAL_START_SCALE = 0.02;
 const NAV_SELECTOR = ".site-nav";
-const LOWER_BOUND_SELECTOR = ".section-panel";
+/* The stage bleeds past the lettering so the glass has something to refract on
+   every side, and the falling stickers live inside that bleed. It stops at the
+   ticker: past that band the rain would be drifting over the about block and
+   the project cards, which is not where the hero is. */
+const LOWER_BOUND_SELECTOR = ".news-ticker";
 
 const getDocumentTop = (element) => {
     let top = 0;
@@ -163,7 +167,18 @@ export const mountHero = async ({ host, wordBox }) => {
             * POINTER.float.sway;
 
         background.setMotion(x, y, time);
-        stickers.update(dt, time);
+        /* Cursor in the scene's own space: pixels from the centre of the
+           canvas, y up, which is exactly how the sticker planes are placed. The
+           rect is read per frame rather than cached because the stage scrolls
+           with the page, and a cached top would drift the repulsion away from
+           the cursor the moment the visitor scrolled. */
+        const stageRect = host.getBoundingClientRect();
+        stickers.update(dt, time, pointer.client.active
+            ? {
+                x: pointer.client.x - stageRect.left - stageRect.width / 2,
+                y: -(pointer.client.y - stageRect.top - stageRect.height / 2),
+            }
+            : null);
 
         stage.renderer.render(stage.scene, stage.camera);
     };

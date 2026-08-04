@@ -15,6 +15,10 @@ import { POINTER } from "./config.js";
 export const createPointer = () => {
     const target = { x: 0, y: 0 };
     const current = { x: 0, y: 0 };
+    /* Raw viewport coordinates, unsmoothed and unnormalised. The lean wants the
+       eased -1..1 pair above; the sticker repulsion wants real pixels it can
+       measure a distance in, and its own easing lives per sticker. */
+    const client = { x: 0, y: 0, active: false };
 
     /* Position and nothing else. Pointer velocity used to drive the glass
        thickness here; it read as the word reacting when the cursor crossed it,
@@ -22,9 +26,20 @@ export const createPointer = () => {
     const onMove = (event) => {
         target.x = (event.clientX / window.innerWidth - 0.5) * 2;
         target.y = (event.clientY / window.innerHeight - 0.5) * 2;
+        client.x = event.clientX;
+        client.y = event.clientY;
+        client.active = true;
+    };
+
+    /* Cursor gone from the window entirely: the stickers have to ease home
+       rather than hold the last push forever. The word keeps its lean, which
+       is where it was already pointing. */
+    const onLeave = () => {
+        client.active = false;
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerleave", onLeave);
 
     const update = (dt) => {
         const k = 1 - Math.pow(POINTER.smoothing, dt);
@@ -35,7 +50,8 @@ export const createPointer = () => {
 
     const dispose = () => {
         window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerleave", onLeave);
     };
 
-    return { current, update, dispose };
+    return { current, client, update, dispose };
 };

@@ -32,13 +32,15 @@
 <!-- Navigation -->
 <nav class="site-nav">
 <div class="site-nav-inner">
+<div class="site-nav-brand">
 <a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
+<span class="status-tag status-tag-green">Available</span>
+</div>
 <div class="hidden md:flex items-center">
 <div class="site-nav-links" data-repel="soft">
-<a class="nav-link" href="design-grafico.html">graphic design</a>
-<a class="nav-link" href="ux-ui.html">ux/ui</a>
-<a class="nav-link" href="ilustracao.html">illustration</a>
-<a class="nav-link" href="about.html">about</a>
+<a class="nav-link" href="#work">work</a>
+<a class="nav-link" href="#about">about</a>
+<a class="nav-link" href="about.html">resume</a>
 <a class="nav-link" href="#contact">contact</a>
 </div>
 </div>
@@ -50,9 +52,9 @@
 <main class="pt-20 pb-8 max-w-[110rem] mx-auto">
 <!-- Hero -->
 <header class="home-hero">
-<div class="hero-meta">
-<p class="hero-meta-left">Jr. Product and<br/>Learning Experience Designer</p>
-<p class="hero-meta-right">My name is Milena, a creative designer based in Brazil,<br/>passionate about the intersections between design,<br/>learning, and new technologies.</p>
+<div class="hero-meta" data-repel="soft">
+<p class="hero-meta-left">Product Designer &amp; Learning Experience Designer</p>
+<p class="hero-meta-right">Hi, I'm Milena, a product designer from Curitiba, Brazil, drawn to learning experiences and playful, human interfaces.</p>
 </div>
 <div class="hero-welcome">
 <!-- Host for the WebGL hero (scripts/hero/). Stays empty and hidden unless
@@ -71,21 +73,53 @@
 <img alt="Welcome" src="assets/ui/welcome.png" onerror="this.parentElement.classList.add('no-img')"/>
 <span class="hero-welcome-fallback" aria-hidden="true">Welcome</span>
 </div>
-<div class="hero-stickers" data-repel="soft">
-<div class="hero-sticker-row hero-sticker-row-primary">
-<span class="hero-stickers-lead">to my</span>
-<span class="sticker-pill sticker-blue">Portfolio</span>
-<span class="sticker-pill sticker-cyan">Digital Playground</span>
-<span class="sticker-pill sticker-indigo">Brain</span>
-</div>
-<div class="hero-sticker-row hero-sticker-row-secondary">
-<span class="sticker-pill sticker-pink">Creative Corner</span>
-<span class="sticker-pill sticker-purple">Mess</span>
-</div>
-</div>
 </header>
+<!-- News ticker. The track holds the same list three times and slides by
+     exactly one third of its width, which puts copy 2 where copy 1 started —
+     the loop has no seam. Three copies rather than two so the band still spans
+     the viewport on ultrawide screens; the duplicates are aria-hidden. -->
+<div class="news-ticker">
+<div class="news-ticker-track">
+<ul class="news-ticker-group">
+<li class="news-ticker-item">to my portfolio</li>
+<li class="news-ticker-item">to my digital playground</li>
+<li class="news-ticker-item">to my creative corner</li>
+<li class="news-ticker-item">to my brain</li>
+<li class="news-ticker-item">to my mess</li>
+</ul>
+<ul aria-hidden="true" class="news-ticker-group">
+<li class="news-ticker-item">to my portfolio</li>
+<li class="news-ticker-item">to my digital playground</li>
+<li class="news-ticker-item">to my creative corner</li>
+<li class="news-ticker-item">to my brain</li>
+<li class="news-ticker-item">to my mess</li>
+</ul>
+<ul aria-hidden="true" class="news-ticker-group">
+<li class="news-ticker-item">to my portfolio</li>
+<li class="news-ticker-item">to my digital playground</li>
+<li class="news-ticker-item">to my creative corner</li>
+<li class="news-ticker-item">to my brain</li>
+<li class="news-ticker-item">to my mess</li>
+</ul>
+</div>
+</div>
+<!-- About -->
+<section class="home-about portfolio-section" id="about">
+<div aria-label="Portrait of Milena Caldas" class="home-about-portrait" role="img"></div>
+<div class="home-about-copy">
+<div class="home-about-tags">
+<span class="status-tag status-tag-cyan">Open to remote</span>
+<span class="status-tag status-tag-violet">Open to relocate</span>
+</div>
+<p class="home-about-text" data-repel="soft">Fiction writer first, designer second — or maybe the other way around, depending on the week. Either way, it's the same work: making something complicated land without making it smaller than it is. I do that with a team at Brazil's largest pediatric hospital, and on my own in Mosaico, a tool for building stories that began as my thesis and grew into an AI writing companion. My app “Dear Stars” won Apple's WWDC21 Swift Student Challenge — and learning experience design is where all of this is headed.</p>
+<div class="home-about-actions">
+<a class="btn-pill btn-pill-primary" href="mailto:milena.am.caldas@gmail.com">send a message</a>
+<a class="btn-pill btn-pill-soft" href="about.html">view my resume</a>
+</div>
+</div>
+</section>
 <!-- Project Sections: one glass box, one subsection per category -->
-<section class="section-panel">
+<section class="section-panel portfolio-section" id="work">
 <div class="panel-subsection portfolio-section" id="design-grafico">
 <div class="flex items-center justify-between mb-8">
 <h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="hover:text-primary-dim transition-colors" href="design-grafico.html">Graphic Design</a></h2>

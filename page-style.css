@@ -1,8 +1,6 @@
 :root {
     --page-max: 110rem;
     --hero-cluster-width: min(48.75rem, 94vw);
-    --hero-sticker-size: clamp(1rem, 1.2vw, 1.25rem);
-    --hero-sticker-gap: clamp(0.5rem, 0.6vw, 0.625rem);
     /* Shared horizontal edge: hero text, nav logo and content boxes all align to it */
     --page-gutter: clamp(1.5rem, 4vw, 4.5rem);
     --ink: #777c95;
@@ -10,6 +8,11 @@
     --periwinkle: #aab7ed;
     --periwinkle-deep: #8b9ae3;
     --pill-soft: #dae2ff;
+    /* Violet family: the ticker band and the pill buttons */
+    --violet: #c5baf7;
+    --violet-deep: #a99cf1;
+    --violet-soft: #e3ddf9;
+    --ticker-bg: #cfc8f8;
     /* Reference glass: #4964DB at ~11% alpha */
     --glass-blue: rgba(73, 100, 219, 0.11);
     --panel: rgba(73, 100, 219, 0.09);
@@ -358,32 +361,10 @@ body::before {
         animation: heroWelcomeApproach 1400ms cubic-bezier(0.16, 1, 0.3, 1) 900ms both;
     }
 
-    html.is-ready .home-hero .hero-sticker-row > * {
-        animation: heroTagReveal 400ms ease-out both;
-    }
-
-    html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(1) {
-        animation-delay: 2320ms;
-    }
-
-    html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(2) {
-        animation-delay: 2440ms;
-    }
-
-    html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(3) {
-        animation-delay: 2560ms;
-    }
-
-    html.is-ready .home-hero .hero-sticker-row-primary > :nth-child(4) {
-        animation-delay: 2680ms;
-    }
-
-    html.is-ready .home-hero .hero-sticker-row-secondary > :nth-child(1) {
-        animation-delay: 2800ms;
-    }
-
-    html.is-ready .home-hero .hero-sticker-row-secondary > :nth-child(2) {
-        animation-delay: 2920ms;
+    /* Ticker band lands once the lettering has settled, on the same beat the
+       hero tags used to come in on. */
+    html.is-ready .news-ticker {
+        animation: heroTagReveal 500ms ease-out 2320ms both;
     }
 
     .site-footer {
@@ -495,6 +476,12 @@ body::before {
     width: 100%;
 }
 
+.site-nav-brand {
+    align-items: center;
+    display: flex;
+    gap: clamp(0.75rem, 1.5vw, 1.15rem);
+}
+
 .nav-logo {
     display: inline-flex;
     align-items: center;
@@ -583,8 +570,12 @@ body::before {
 --------------------------------------------------------------------------- */
 /* Lives in the shared page shell so the hero text, nav logo and content
    boxes all share the same left edge (--page-gutter). */
+/* The bottom margin collapses with .news-ticker's top margin, so the gap the
+   page shows is the larger of the two. Both were scaled by 1.1 together —
+   max(1.1a, 1.1b) is 1.1 * max(a, b), so the spacing grows by exactly 10% at
+   every viewport rather than only where one of them happens to win. */
 .home-hero {
-    margin: 0.35rem 0 clamp(2.15rem, 4.75vh, 3.5rem);
+    margin: 0.35rem 0 clamp(2.365rem, 5.225vh, 3.85rem);
     position: relative;
     text-align: center;
 }
@@ -610,7 +601,7 @@ body::before {
     font-size: clamp(0.9rem, 1.15vw, 1.15rem);
     line-height: 1.4;
     margin-left: auto;
-    max-width: 34rem;
+    max-width: 28.9rem;
     text-align: left;
     width: 100%;
 }
@@ -735,116 +726,208 @@ body::before {
     visibility: hidden;
 }
 
-/* Same width as the welcome lettering above, and like .hero-meta it sits above
-   the WebGL hero rather than inside it. */
-.hero-stickers {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    margin: 0.85rem auto 0;
-    max-width: var(--hero-cluster-width);
-    position: relative;
-    width: var(--hero-cluster-width);
-    z-index: 2;
-}
-
-.hero-sticker-row {
-    align-items: center;
-    display: flex;
-    gap: var(--hero-sticker-gap);
-    justify-content: center;
-}
-
-.hero-sticker-row-primary {
-    width: 100%;
-}
-
-.hero-sticker-row-secondary {
-    width: 52%;
-}
-
-.hero-stickers .hero-stickers-lead {
-    color: var(--ink-soft);
-    font-size: clamp(1.2rem, 1.65vw, 1.55rem);
-    font-weight: 500;
-}
-
-/* Liquid glass pills, sized to hold their own under the lettering: colours
-   sampled from the design reference, but the surface is built the way the
-   glass hero is — a tinted body you see the page through, a bright rim where
-   the light catches the edge, and a highlight running across the top face.
-   Tilt lives in --tilt so repel-text.js can compose its translate() with the
-   rotation. */
-.sticker-pill {
-    --tilt: 0deg;
-    --pill-tint: rgba(73, 102, 217, 0.34);
-    --pill-glow: rgba(73, 100, 219, 0.28);
-    backdrop-filter: blur(14px) saturate(1.7) brightness(1.06);
-    -webkit-backdrop-filter: blur(14px) saturate(1.7) brightness(1.06);
-    background:
-        /* the specular smear across the upper half */
-        linear-gradient(150deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 38%, rgba(255, 255, 255, 0) 62%),
-        var(--pill-tint);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 999px;
-    box-shadow:
-        /* rim light top and bottom, then the body glow it casts on the page */
-        inset 0 1px 0 rgba(255, 255, 255, 0.75),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.28),
-        inset 0 0 1.4rem rgba(255, 255, 255, 0.22),
-        0 0.7rem 1.6rem var(--pill-glow);
-    color: #ffffff;
-    display: inline-block;
-    font-size: var(--hero-sticker-size);
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    padding: 0.62rem 1.25rem;
-    position: relative;
-    text-shadow: 0 1px 2px rgba(52, 62, 120, 0.35);
-    text-transform: uppercase;
-    transform: rotate(var(--tilt));
-    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease;
-}
-
-/* Second surface: the caustic pooling at the bottom of a glass body. Kept on
-   a pseudo-element so it does not fight the backdrop-filter above. */
-.sticker-pill::after {
-    background: radial-gradient(120% 80% at 50% 118%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 70%);
-    border-radius: inherit;
-    content: "";
-    inset: 0;
-    pointer-events: none;
-    position: absolute;
-}
-
-/* Gentle: it brightens and settles level rather than jumping at the cursor. */
-.sticker-pill:hover {
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.9),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.35),
-        inset 0 0 1.8rem rgba(255, 255, 255, 0.3),
-        0 0.85rem 1.9rem var(--pill-glow);
-    transform: scale(1.03) rotate(calc(var(--tilt) * 0.4)) !important;
-}
-
-.sticker-blue { --pill-tint: rgba(73, 102, 217, 0.4); --tilt: -4deg; }
-.sticker-cyan { --pill-tint: rgba(0, 167, 218, 0.38); --pill-glow: rgba(0, 140, 190, 0.26); --tilt: 3deg; }
-.sticker-indigo { --pill-tint: rgba(88, 73, 217, 0.4); --tilt: -2deg; }
-.sticker-pink { --pill-tint: rgba(195, 71, 255, 0.4); --pill-glow: rgba(160, 60, 220, 0.26); --tilt: 4deg; }
-.sticker-purple { --pill-tint: rgba(151, 71, 255, 0.4); --pill-glow: rgba(130, 60, 220, 0.26); --tilt: -5deg; }
-
 @media (max-width: 900px) {
     .hero-meta {
         gap: 1rem;
     }
 }
 
-@media (max-width: 700px) {
-    .hero-sticker-row {
-        flex-wrap: wrap;
-        width: 100%;
+/* ---------------------------------------------------------------------------
+   Status tags
+
+   One component for every "AVAILABLE" / "OPEN TO REMOTE" style badge: an
+   outlined pill with a filled dot. Everything is sized in em off the tag's own
+   font-size, so a tag is exactly as wide and as tall as the text it holds —
+   change --tag-font-size on any ancestor and the whole pill scales with it.
+--------------------------------------------------------------------------- */
+.status-tag {
+    --tag-color: #7cc47b;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7);
+    border: 0.145em solid var(--tag-color);
+    border-radius: 999px;
+    color: var(--tag-color);
+    display: inline-flex;
+    font-size: var(--tag-font-size, 0.78rem);
+    font-weight: 700;
+    gap: 0.62em;
+    letter-spacing: 0.075em;
+    line-height: 1;
+    padding: 0.62em 1.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.status-tag::before {
+    background: var(--tag-color);
+    border-radius: 50%;
+    content: "";
+    flex: none;
+    height: 0.62em;
+    width: 0.62em;
+}
+
+.status-tag-green { --tag-color: #7cc47b; }
+.status-tag-cyan { --tag-color: #7ed0ea; }
+.status-tag-violet { --tag-color: #d9a3ef; }
+
+/* ---------------------------------------------------------------------------
+   News ticker
+
+   Full-bleed band under the hero. It lives inside <main>, which is centred and
+   gutter-padded, so the negative margin pulls it back out to the viewport
+   edges. The track is two identical lists side by side and slides exactly half
+   its own width, which puts the second copy where the first started — the loop
+   has no seam and no JS.
+--------------------------------------------------------------------------- */
+.news-ticker {
+    background: var(--ticker-bg);
+    margin-left: calc(50% - 50vw);
+    margin-block: clamp(1.65rem, 3.85vw, 3.025rem);
+    overflow: hidden;
+    padding-block: clamp(0.6rem, 1vw, 0.95rem);
+    width: 100vw;
+}
+
+.news-ticker-track {
+    animation: tickerScroll 38s linear infinite;
+    display: flex;
+    width: max-content;
+}
+
+.news-ticker:hover .news-ticker-track {
+    animation-play-state: paused;
+}
+
+/* Both groups must measure exactly the same, or translateX(-50%) lands off the
+   seam — hence the trailing dot on every item (including the last), which
+   doubles as the separator into the next group. */
+.news-ticker-group {
+    --ticker-gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: center;
+    display: flex;
+    flex: none;
+    gap: var(--ticker-gap);
+    padding-right: var(--ticker-gap);
+}
+
+.news-ticker-item {
+    color: #ffffff;
+    font-size: clamp(1.05rem, 1.9vw, 1.85rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.news-ticker-item::after {
+    background: #ffffff;
+    border-radius: 50%;
+    content: "";
+    display: inline-block;
+    height: 0.32em;
+    margin-inline-start: var(--ticker-gap);
+    vertical-align: 0.2em;
+    width: 0.32em;
+}
+
+@keyframes tickerScroll {
+    to {
+        transform: translateX(-33.3333%);
     }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .news-ticker-track {
+        animation: none;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Home about block
+--------------------------------------------------------------------------- */
+.home-about {
+    align-items: start;
+    display: grid;
+    gap: clamp(1.75rem, 3.5vw, 3.25rem);
+    grid-template-columns: minmax(0, 1fr);
+    /* Top margin collapses with the ticker's bottom margin — see .home-hero. */
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    margin-top: clamp(2.75rem, 5.5vw, 4.95rem);
+    /* Own stacking context, so the grid below can sit at z-index -1: behind the
+       portrait and the copy, but still in front of the page background. */
+    isolation: isolate;
+    position: relative;
+}
+
+/* Carries the hero's grid on past the ticker. The hero's is drawn in the WebGL
+   backdrop (BACKGROUND.grid in scripts/hero/config.js) and stops with the
+   canvas at the ticker, so this repeats the same 30px cell in the same colour
+   at the same 14%.
+
+   Full-bleed like the ticker: the hero grid runs the whole width of the
+   viewport, and one that stopped at the page gutter would read as a panel
+   dropped on the section rather than as the background continuing. It starts
+   flush under the ticker — the offset is this element's own top margin, which
+   is the one that wins the collapse — and dissolves before the projects panel
+   instead of ending on a line. */
+.home-about::before {
+    background-image:
+        repeating-linear-gradient(to right, rgba(139, 154, 227, 0.14) 0 1px, transparent 1px 30px),
+        repeating-linear-gradient(to bottom, rgba(139, 154, 227, 0.14) 0 1px, transparent 1px 30px);
+    bottom: calc(-1 * clamp(2.5rem, 5vw, 4.5rem));
+    content: "";
+    left: calc(50% - 50vw);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    pointer-events: none;
+    position: absolute;
+    top: calc(-1 * clamp(2.75rem, 5.5vw, 4.95rem));
+    width: 100vw;
+    z-index: -1;
+}
+
+@media (min-width: 900px) {
+    .home-about {
+        grid-template-columns: minmax(12rem, 26rem) minmax(0, 1fr);
+    }
+}
+
+.home-about-portrait {
+    aspect-ratio: 1;
+    background: url("assets/ui/misquare.jpeg") center 28% / cover no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 1.5rem;
+    box-shadow: 0 1.25rem 2.75rem rgba(73, 100, 219, 0.2);
+    max-width: 26rem;
+    width: 100%;
+}
+
+.home-about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.15rem, 2vw, 1.75rem);
+}
+
+.home-about-tags {
+    --tag-font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.home-about-text {
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 1.35vw, 1.35rem);
+    line-height: 1.55;
+    max-width: 52rem;
+}
+
+.home-about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1428,6 +1511,47 @@ main {
 .cta-btn-ghost:hover {
     background: var(--periwinkle);
     box-shadow: 0 1.25rem 2.5rem rgba(73, 100, 219, 0.3);
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* Violet pill buttons (about block). Padding is em-based so the pill grows
+   with its label the same way .status-tag does. */
+.btn-pill {
+    align-items: center;
+    border-radius: 9999px;
+    display: inline-flex;
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    font-weight: 700;
+    justify-content: center;
+    padding: 0.85em 1.9em;
+    transition: background-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+/* The pair trades places on hover: violet/white becomes white/grey, and the
+   white one becomes the violet one. */
+.btn-pill-primary {
+    background: var(--violet);
+    box-shadow: 0 0.75rem 1.75rem rgba(122, 106, 224, 0.26);
+    color: #ffffff;
+}
+
+.btn-pill-primary:hover {
+    background: #ffffff;
+    box-shadow: 0 1rem 2.25rem rgba(122, 106, 224, 0.18);
+    color: var(--ink-soft);
+    transform: translateY(-3px);
+}
+
+.btn-pill-soft {
+    background: #ffffff;
+    box-shadow: 0 0.75rem 1.75rem rgba(122, 106, 224, 0.14);
+    color: var(--ink-soft);
+}
+
+.btn-pill-soft:hover {
+    background: var(--violet);
+    box-shadow: 0 1rem 2.25rem rgba(122, 106, 224, 0.26);
     color: #ffffff;
     transform: translateY(-3px);
 }

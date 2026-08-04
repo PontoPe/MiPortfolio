@@ -141,6 +141,13 @@ export const createStickers = () => {
         item.phase = random(0, TAU);
         item.spin = random(-STICKERS.spin, STICKERS.spin);
         item.mesh.rotation.z = random(-STICKERS.tilt, STICKERS.tilt);
+        /* A recycled plane must not carry the last push down with it: it comes
+           back at the top as a different sticker, so it comes back centred and
+           at rest. */
+        item.pushX = 0;
+        item.pushY = 0;
+        item.velX = 0;
+        item.velY = 0;
         /* Just clear of the top edge. Any further out and a large sticker
            spends seconds off screen before it even starts to fade in; the fade
            is what hides the entry, not the distance. */
@@ -170,7 +177,7 @@ export const createStickers = () => {
            slightly differently from the ones nearer the glass. */
         mesh.position.z = (index % 3) * -14;
 
-        const item = { mesh, material };
+        const item = { mesh, material, pushX: 0, pushY: 0, velX: 0, velY: 0 };
         respawn(item);
         group.add(mesh);
         items.push(item);
@@ -180,7 +187,55 @@ export const createStickers = () => {
         size.set(width, height);
     };
 
-    const update = (dt, time) => {
+    /**
+     * How far this sticker is shoved out of its own path by the cursor.
+     *
+     * `pointer` is in the same space as the meshes — canvas pixels from the
+     * centre, y up — or null when there is no cursor on the page. The distance
+     * is taken from the sticker's undisturbed position, so the push is a
+     * function of where the sticker belongs rather than of where it has already
+     * been pushed to: no runaway, and releasing simply lets it ease home.
+     */
+    const repelOffset = (item, baseX, baseY, tile, pointer, dt) => {
+        let targetX = 0;
+        let targetY = 0;
+
+        if (pointer) {
+            const dx = baseX - pointer.x;
+            const dy = baseY - pointer.y;
+            const distance = Math.hypot(dx, dy);
+            const radius = STICKERS.repel.radius + tile * STICKERS.repel.sizeInfluence;
+
+            if (distance > 0.001 && distance < radius) {
+                /* smoothstep twice over. Once is enough to remove the edge at
+                   the rim; squaring it again keeps the offset near zero across
+                   most of the reach and only lets it build close in, so the
+                   sticker is not visibly leaning away from a cursor that is
+                   still a long way off. */
+                const linear = 1 - distance / radius;
+                const smooth = linear * linear * (3 - 2 * linear);
+                const push = STICKERS.repel.push * smooth * smooth;
+                targetX = (dx / distance) * push;
+                targetY = (dy / distance) * push;
+            }
+        }
+
+        /* Damped spring, integrated semi-implicitly (velocity first, then
+           position from the new velocity). An exponential ease leaves at full
+           speed and creeps to a stop; a spring has to accelerate into the move
+           and coasts a little past the end of it, which is the difference
+           between something dodging the cursor and something fleeing it.
+           dt is clamped as well as capped upstream: a long frame would
+           otherwise let the explicit integration overshoot into a bounce. */
+        const step = Math.min(dt, 1 / 30);
+        const { stiffness, damping } = STICKERS.repel;
+        item.velX += ((targetX - item.pushX) * stiffness - item.velX * damping) * step;
+        item.velY += ((targetY - item.pushY) * stiffness - item.velY * damping) * step;
+        item.pushX += item.velX * step;
+        item.pushY += item.velY * step;
+    };
+
+    const update = (dt, time, pointer = null) => {
         items.forEach((item) => {
             if (item.spawnDelay > 0) {
                 item.spawnDelay = Math.max(0, item.spawnDelay - dt);
@@ -203,9 +258,12 @@ export const createStickers = () => {
             const width = aspect >= 1 ? tile : tile * aspect;
             const height = aspect >= 1 ? tile / aspect : tile;
             item.mesh.scale.set(width, height, 1);
-            item.mesh.position.x = item.x * size.x
+            const baseX = item.x * size.x
                 + Math.sin(time * (TAU / item.swayPeriod) + item.phase) * item.sway;
-            item.mesh.position.y = item.y * size.y;
+            const baseY = item.y * size.y;
+            repelOffset(item, baseX, baseY, tile, pointer, dt);
+            item.mesh.position.x = baseX + item.pushX;
+            item.mesh.position.y = baseY + item.pushY;
             item.mesh.rotation.z += item.spin * dt;
 
             /* Fades over the first and last stretch of the fall, so a sticker

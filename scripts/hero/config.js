@@ -185,6 +185,35 @@ export const STICKERS = {
     /* Fraction of the canvas height each sticker fades across as it enters at
        the top and leaves at the bottom, so nothing pops in or out. */
     fade: 0.12,
+    /* Magnetic repulsion from the cursor. Measured against where the sticker
+       would be without any push, never against where it currently is: the
+       cursor can therefore close on the point the sticker is drifting along,
+       the offset grows as it does, and the moment the cursor leaves the
+       sticker eases back onto its own path instead of being left parked
+       somewhere it was shoved to.
+       Pixels, since the camera is 1 unit = 1 CSS pixel (see scene.js). */
+    repel: {
+        /* Reach around the cursor. The sticker's own width is added on top of
+           it at `sizeInfluence`, so a wide badge starts moving before a small
+           star does rather than letting the cursor bury itself in the artwork. */
+        radius: 210,
+        sizeInfluence: 0.5,
+        /* Furthest a sticker is pushed, at the centre of the reach. Deliberately
+           a small fraction of the radius: the reach is wide so the sticker
+           begins easing aside long before the cursor is on it, and the travel
+           is short so what it does is lean out of the way rather than flee. */
+        push: 30,
+        /* The offset is driven by a damped spring rather than an exponential
+           ease, which is where the softness comes from — it has to accelerate
+           into the move instead of starting at full speed.
+           Damping ratio is damping / (2 * sqrt(stiffness)) ~ 0.44: under one, so
+           it drifts a little past the rest point and settles back rather than
+           stopping dead. Low enough to be felt as a settle, high enough that it
+           never reads as a bounce — about a tenth of the travel, once.
+           Stiffness is low enough that the whole move takes about a second. */
+        stiffness: 26,
+        damping: 4.5,
+    },
 };
 
 export const POINTER = {
