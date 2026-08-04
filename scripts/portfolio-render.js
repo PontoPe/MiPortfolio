@@ -27,6 +27,33 @@
         .slice(0, max)
         .join(" • ");
 
+    // Projects the site files under a different category than Notion does.
+    // Kept here for the same reason as casePages below: data/projects-data.js is
+    // regenerated from the database on every build, so a correction made there
+    // would last exactly until the next deploy. Changing the row's "Category" in
+    // Notion is the permanent fix; this is what holds until then.
+    const categoryOverrides = {
+        // Sits under Graphic Design in Notion, but the card opens the LUDIS
+        // product case (case-ludis.html), which belongs with Product Design.
+        "ludis-social": "ux-ui"
+    };
+
+    Object.entries(categoryOverrides).forEach(([slug, targetId]) => {
+        const target = data.categories.find((category) => category.id === targetId);
+        if (!target) {
+            return;
+        }
+        data.categories.forEach((category) => {
+            if (category === target) {
+                return;
+            }
+            const index = category.projects.findIndex((project) => project.slug === slug);
+            if (index !== -1) {
+                target.projects.push(...category.projects.splice(index, 1));
+            }
+        });
+    });
+
     const allProjects = data.categories.flatMap((category) =>
         category.projects.map((project) => ({
             ...project,
@@ -122,6 +149,16 @@
     document.querySelectorAll("[data-featured-projects]").forEach((container) => {
         const category = findCategory(container.dataset.featuredProjects);
         const projects = category ? category.projects.filter((project) => project.featured) : [];
+
+        // Nothing in the category at all: take the whole block out — heading,
+        // "see all" and placeholder — rather than advertising a category and
+        // linking to a page with nothing on it. A category that has projects but
+        // none marked featured keeps its heading, because "see all" still leads
+        // somewhere.
+        if (!category || !category.projects.length) {
+            container.closest(".panel-subsection")?.remove();
+            return;
+        }
 
         if (!projects.length) {
             container.innerHTML = `<p class="text-on-surface-variant">Featured projects are coming soon.</p>`;

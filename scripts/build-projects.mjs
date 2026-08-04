@@ -38,9 +38,15 @@ const CV_URL = process.env.CV_URL ||
 const NOTION_VERSION = "2022-06-28";
 
 // Category select value -> site category definition. Order here = page order.
+//
+// `select` is the value in Notion's "Category" property and `label` is what the
+// site shows — they are deliberately allowed to differ. The Product Design
+// category is still "UX/UI" in the database, so renaming it on the site does not
+// require touching every row (nor does the id, which is also the page name and
+// the anchor the nav links to).
 const CATEGORIES = [
+    { id: "ux-ui", select: "UX/UI", label: "Product Design", page: "ux-ui.html" },
     { id: "design-grafico", select: "Graphic Design", label: "Graphic Design", page: "design-grafico.html" },
-    { id: "ux-ui", select: "UX/UI", label: "UX/UI", page: "ux-ui.html" },
     { id: "ilustracao", select: "Illustration", label: "Illustration", page: "ilustracao.html" }
 ];
 

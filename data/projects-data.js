@@ -196,8 +196,8 @@ window.portfolioData = {
         },
         {
             "id": "ux-ui",
-            "label": "UX/UI",
-            "displayLabel": "UX/UI",
+            "label": "Product Design",
+            "displayLabel": "Product Design",
             "page": "ux-ui.html",
             "projects": [
                 {
