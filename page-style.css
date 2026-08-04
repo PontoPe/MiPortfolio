@@ -5,10 +5,10 @@
     --nav-clearance: 5rem;
     /* Breathing room under the ticker: where the fold lands. */
     --hero-foot: clamp(1.7rem, 4svh, 3.5rem);
-    /* How the hero's leftover height is split around the lettering: the space
-       below it is this fraction of the space above. Under 1 so the word sits a
-       little high in its field and reads closer to the ticker than to the copy. */
-    --hero-word-drop: 0.6;
+    /* Smallest gap either side of the lettering, before any leftover hero height
+       is shared out. Both sides use it, so the word stays centred right down to
+       a viewport with nothing to spare. */
+    --hero-word-gap: clamp(0.75rem, 2.5svh, 2rem);
     /* Page grid, drawn once for the hero and about band. The WebGL hero repeats
        the same lattice inside its canvas (BACKGROUND.grid / .gridSize in
        scripts/hero/config.js) and stage.js phase-locks it to this one, so the
@@ -682,7 +682,10 @@ body::before {
     justify-content: space-between;
     gap: 2rem;
     line-height: 1.3;
-    margin-bottom: clamp(0.75rem, 1.4vw, 1.15rem);
+    /* The gap under the copy belongs to .home-hero::before, so that the space
+       above the lettering and the space below it are the same thing measured
+       twice. See the spacer rule. */
+    margin-bottom: 0;
     text-align: left;
 }
 
@@ -702,25 +705,30 @@ body::before {
     opacity: 0.75;
 }
 
-/* Two flexible spacers rather than auto margins on the word: auto margins can
-   only split leftover height evenly, and the composition wants less of it under
-   the lettering than over it. Growing from a zero basis in a 1 : --hero-word-drop
-   ratio does that at any viewport, since it is a share of whatever is left
-   rather than a fixed gap. Pseudo-elements are always the first and last child,
-   so `order` is what puts them either side of the word. */
+/* The word's vertical position: one spacer above it, one below, identical.
+   Same floor (--hero-word-gap) and the same share of whatever height the hero
+   has left over, so the lettering sits centred between the copy and the ticker
+   at every viewport rather than at a fixed offset from either.
+
+   These carry the whole gap on both sides — the copy's margin-bottom and the
+   ticker's margin-top are zeroed into them below. That is the point: a fixed
+   margin on one side only would put the word off centre by the difference, and
+   the two were never the same number.
+
+   Pseudo-elements are always the first and last child, so `order` is what puts
+   them either side of the word. */
 .home-hero::before,
 .home-hero::after {
     content: "";
     display: block;
+    flex: 1 1 var(--hero-word-gap);
 }
 
 .home-hero::before {
-    flex: 1 1 0;
     order: 1;
 }
 
 .home-hero::after {
-    flex: var(--hero-word-drop) 1 0;
     order: 3;
 }
 
@@ -896,16 +904,14 @@ body::before {
    its own width, which puts the second copy where the first started — the loop
    has no seam and no JS.
 --------------------------------------------------------------------------- */
-/* Last item in the hero column. Most of the space above it is the hero's
-   leftover, handed out by the lettering's auto margins; this is only the floor
-   under that, so the two never touch on a viewport with nothing to spare. Sized
-   in svh rather than vw because what squeezes it is a short screen, not a
-   narrow one. */
+/* Last item in the hero column. No top margin of its own: the gap above it is
+   .home-hero::after, the twin of the spacer under the copy, which is what keeps
+   the lettering centred between the two. */
 .news-ticker {
     background: var(--ticker-bg);
     flex: none;
     margin-left: calc(50% - 50vw);
-    margin-top: clamp(0.75rem, 2.5svh, 2rem);
+    margin-top: 0;
     overflow: hidden;
     padding-block: clamp(0.6rem, 1vw, 0.95rem);
     width: 100vw;
