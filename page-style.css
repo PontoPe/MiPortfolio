@@ -209,12 +209,14 @@ body::before {
    own keyframes.
 --------------------------------------------------------------------------- */
 .parallax-bg {
-    --ambient-scroll-y: 0px;
     position: fixed;
     inset: -12vmax;
     z-index: -3;
     overflow: hidden;
     pointer-events: none;
+    /* Carries the scroll drift for the bokeh pseudo-elements. See the note on
+       @keyframes ambientCircleFloat. */
+    transform: translate3d(0, 0, 0);
 }
 
 .parallax-bg::before,
@@ -244,10 +246,13 @@ body::before {
     opacity: 0.42;
 }
 
+/* The lag behind the pointer used to be `transition: transform 500ms`, which a
+   per-frame transform write restarts on every frame — four interrupted
+   transitions a frame, on four blurred full-viewport boxes. scripts/page-motion.js
+   eases the value itself now, so what lands here is a plain composited translate. */
 .parallax-layer {
     position: absolute;
     will-change: transform;
-    transition: transform 500ms ease-out;
 }
 
 .parallax-layer:nth-child(1) {
@@ -289,31 +294,36 @@ body::before {
     filter: blur(14px);
 }
 
+/* The scroll drift these used to carry as calc(var(--ambient-scroll-y) …) now
+   lives on .parallax-bg itself, written by scripts/page-motion.js. A custom
+   property read inside a running keyframe has to be resolved on the main thread
+   every time it changes, and changing it on :root invalidated the whole
+   document once per scroll frame; the parent transform composites instead. */
 @keyframes ambientCircleFloat {
     0% {
-        transform: translate3d(-1.2rem, calc(var(--ambient-scroll-y, 0px) + 0.8rem), 0) rotate(0deg) scale(1);
+        transform: translate3d(-1.2rem, 0.8rem, 0) rotate(0deg) scale(1);
     }
 
     50% {
-        transform: translate3d(1.6rem, calc(var(--ambient-scroll-y, 0px) - 1.1rem), 0) rotate(4deg) scale(1.025);
+        transform: translate3d(1.6rem, -1.1rem, 0) rotate(4deg) scale(1.025);
     }
 
     100% {
-        transform: translate3d(0.4rem, calc(var(--ambient-scroll-y, 0px) + 1.5rem), 0) rotate(-3deg) scale(0.985);
+        transform: translate3d(0.4rem, 1.5rem, 0) rotate(-3deg) scale(0.985);
     }
 }
 
 @keyframes ambientCircleFloatReverse {
     0% {
-        transform: translate3d(1.1rem, calc(var(--ambient-scroll-y, 0px) - 0.7rem), 0) rotate(0deg) scale(1);
+        transform: translate3d(1.1rem, -0.7rem, 0) rotate(0deg) scale(1);
     }
 
     50% {
-        transform: translate3d(-1.5rem, calc(var(--ambient-scroll-y, 0px) + 1rem), 0) rotate(-5deg) scale(0.98);
+        transform: translate3d(-1.5rem, 1rem, 0) rotate(-5deg) scale(0.98);
     }
 
     100% {
-        transform: translate3d(-0.3rem, calc(var(--ambient-scroll-y, 0px) - 1.4rem), 0) rotate(3deg) scale(1.02);
+        transform: translate3d(-0.3rem, -1.4rem, 0) rotate(3deg) scale(1.02);
     }
 }
 
@@ -1591,10 +1601,13 @@ main {
 }
 
 /* Cursor-repellent text */
+/* No transition and no will-change on purpose. There are a few hundred of these
+   on the page: a transition here would be restarted by every frame of the new
+   target scripts/repel-text.js writes, and will-change would ask the compositor
+   for a few hundred backing stores (at 2x each on a retina screen). The easing
+   is done in the script instead. */
 .repel-word {
     display: inline-block;
-    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
 }
 
 /* ---------------------------------------------------------------------------
