@@ -547,15 +547,15 @@ body::before {
 .construction-banner-message {
     display: block;
     height: auto;
-    max-width: calc(100% - 3rem);
-    width: 54.28125rem;
+    max-width: calc(100% - 2rem);
+    width: 36.1875rem;
 }
 
 .construction-banner-message-mobile {
     align-items: center;
     color: #29234f;
     display: none;
-    font-size: clamp(0.66rem, 2.8vw, 0.9rem);
+    font-size: 0.66rem;
     font-weight: 600;
     gap: 0.45rem;
     line-height: 1;
@@ -563,11 +563,11 @@ body::before {
 }
 
 .construction-banner-icon {
-    background: url("assets/ui/construction-message.png") left center / 54.28125rem auto no-repeat;
+    background: url("assets/ui/construction-message.png") left center / 36.1875rem auto no-repeat;
     display: block;
-    flex: 0 0 clamp(1.65rem, 6vw, 2.475rem);
-    height: clamp(1.45rem, 5.25vw, 2.175rem);
-    width: clamp(1.65rem, 6vw, 2.475rem);
+    flex: 0 0 1.65rem;
+    height: 1.45rem;
+    width: 1.65rem;
 }
 
 @keyframes constructionStripeScroll {
