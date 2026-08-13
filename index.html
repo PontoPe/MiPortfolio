@@ -15,7 +15,7 @@
 <link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
 <link href="page-style.css" rel="stylesheet"/>
 </head>
-<body class="font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<body class="home-page font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
 <div aria-live="polite" aria-label="Loading portfolio" class="site-loader" role="status">
 <div class="site-loader-inner">
 <span aria-hidden="true" class="site-loader-mark">MC</span>
@@ -49,8 +49,16 @@
 <span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
 </button>
 </div>
+<!-- TODO: Remove this home-only construction banner when the portfolio is officially launched. -->
+<aside aria-label="This website is under construction — Real work. Pixels still in motion." class="construction-banner">
+<img alt="" aria-hidden="true" class="construction-banner-message" src="assets/ui/construction-message.png"/>
+<span aria-hidden="true" class="construction-banner-message-mobile">
+<span class="construction-banner-icon"></span>
+<span>Website in development — Pixels still in motion.</span>
+</span>
+</aside>
 </nav>
-<main class="pt-20 pb-8 max-w-[110rem] mx-auto">
+<main class="home-main pb-8 max-w-[110rem] mx-auto">
 <!-- Hero and about share one band so they can share one grid: it is a single
      background on this element, which is the only way the lattice can be
      guaranteed to line up across the two rather than being two grids that

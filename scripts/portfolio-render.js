@@ -67,14 +67,31 @@
 
     // Projects with a bespoke, hand-built case page instead of the generic
     // project.html template. Kept here rather than in data/projects-data.js
-    // because that file is regenerated from Notion on every build. If a
-    // `casePage` field ever arrives from Notion, it takes precedence.
+    // because that file is regenerated from Notion on every build. Any future
+    // Notion-provided `casePage` is validated below; explicit title routes stay
+    // authoritative.
     const casePages = {
-        "ludis-social": "case-ludis.html",
         "mosaico": "case-mosaico.html"
     };
 
-    const projectHref = (project) => project.casePage
+    // Title-based routes survive Notion slug changes and capitalization edits.
+    const titleCasePages = {
+        "ludis": "/case-ludis-lp.html"
+    };
+
+    const normalizeProjectTitle = (title) => String(title ?? "").trim().toLowerCase();
+
+    // A future Notion-provided casePage must stay local: reject schemes, traversal,
+    // and malformed values before placing external data in an href.
+    const safeLocalCasePage = (value) => {
+        const page = String(value ?? "").trim();
+        return /^\/?[a-z0-9][a-z0-9/_-]*\.html(?:[?#][a-z0-9=&%_+.-]*)?$/i.test(page)
+            ? page
+            : "";
+    };
+
+    const projectHref = (project) => titleCasePages[normalizeProjectTitle(project.title)]
+        || safeLocalCasePage(project.casePage)
         || casePages[project.slug]
         || `project.html?project=${encodeURIComponent(project.slug)}`;
 
@@ -108,7 +125,7 @@
 
         return `
             <article class="project-card group cursor-pointer" data-subcats="${escapeHtml(subcats)}">
-                <a class="block" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
+                <a class="block" href="${escapeHtml(href)}" aria-label="Open ${escapeHtml(project.title)} project">
                     <div class="project-frame relative aspect-square overflow-hidden rounded-[2rem] bg-white/25">
                         ${renderThumbnail(project)}
                     </div>
@@ -117,7 +134,7 @@
                     <p class="text-primary text-xs font-bold mb-1">${escapeHtml(limitCardMeta(project.cardMeta))}</p>
                     <div class="project-card-row flex justify-between items-start gap-6">
                         <${safeHeading} class="font-headline text-2xl font-bold text-on-surface">${escapeHtml(project.title)}</${safeHeading}>
-                        <a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-[#FAF9FF] group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="${href}" aria-label="Open ${escapeHtml(project.title)} project">
+                        <a class="project-arrow bg-surface-container-highest hover:bg-primary hover:text-[#FAF9FF] group-hover:bg-primary group-hover:text-[#FAF9FF] transition-colors" href="${escapeHtml(href)}" aria-label="Open ${escapeHtml(project.title)} project">
                             <span class="material-symbols-outlined">arrow_forward</span>
                         </a>
                     </div>

@@ -518,6 +518,87 @@ body::before {
     box-shadow: 0 0.5rem 1.75rem rgba(73, 100, 219, 0.1);
 }
 
+/* Home-only launch notice. Both graphics come from the supplied banner kit;
+   the stripe tile moves by exactly one rendered tile width for a seamless loop. */
+.home-page {
+    --construction-banner-height: 1.75rem;
+    --nav-clearance: calc(5rem + var(--construction-banner-height));
+}
+
+.home-main {
+    padding-top: var(--nav-clearance);
+}
+
+.construction-banner {
+    align-items: center;
+    animation: constructionStripeScroll 12s linear infinite;
+    background-image: url("assets/ui/construction-stripes.png");
+    background-position: 0 50%;
+    background-repeat: repeat-x;
+    background-size: 46.0274rem var(--construction-banner-height);
+    display: flex;
+    height: var(--construction-banner-height);
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.construction-banner-message {
+    display: block;
+    height: auto;
+    max-width: calc(100% - 2rem);
+    width: 36.1875rem;
+}
+
+.construction-banner-message-mobile {
+    align-items: center;
+    color: #29234f;
+    display: none;
+    font-size: 0.66rem;
+    font-weight: 600;
+    gap: 0.45rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.construction-banner-icon {
+    background: url("assets/ui/construction-message.png") left center / 36.1875rem auto no-repeat;
+    display: block;
+    flex: 0 0 1.65rem;
+    height: 1.45rem;
+    width: 1.65rem;
+}
+
+@keyframes constructionStripeScroll {
+    to {
+        background-position: -46.0274rem 50%;
+    }
+}
+
+@media (max-width: 520px) {
+    .construction-banner-message {
+        display: none;
+    }
+
+    .construction-banner-message-mobile {
+        display: flex;
+    }
+}
+
+@media (max-width: 767px) {
+    .home-page {
+        /* The touch-sized menu button makes the mobile nav row slightly taller. */
+        --nav-clearance: calc(5.25rem + var(--construction-banner-height));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .construction-banner {
+        animation: none;
+    }
+}
+
 .site-nav-inner {
     align-items: center;
     display: flex;
