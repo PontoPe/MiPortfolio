@@ -611,23 +611,85 @@ p.lp-hero-lead {
 }
 
 /* =========================================================================
-   6 — Screen carousel (full bleed)
+   6 — Infinite screen carousel (full bleed)
+   The script clones the single authored set. Each set carries its own trailing
+   gap, so translating the two-set track by exactly 50% produces no seam.
 ========================================================================= */
 .lp-carousel {
-    overflow-x: auto;
+    overflow: hidden;
     padding-block: calc(212 * var(--s)) calc(150 * var(--s));
-    scrollbar-width: none;
+    position: relative;
 }
 
-.lp-carousel::-webkit-scrollbar {
-    display: none;
+.lp-carousel-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
 }
 
-.lp-carousel img {
+.lp-carousel.is-ready .lp-carousel-track {
+    animation: lpPhoneCarousel 36s linear infinite;
+}
+
+.lp-carousel.is-paused .lp-carousel-track {
+    animation-play-state: paused;
+}
+
+.lp-carousel-set {
+    display: flex;
+    flex: none;
+    gap: calc(80 * var(--s));
+    padding-right: calc(80 * var(--s));
+}
+
+.lp-carousel-phone {
     display: block;
-    height: auto;
-    min-width: calc(1200 * var(--s));
-    width: 100%;
+    flex: none;
+    height: calc(802 * var(--s));
+    max-width: none;
+    width: calc(389 * var(--s));
+}
+
+.lp-carousel-toggle {
+    align-items: center;
+    background: rgba(253, 255, 255, 0.9);
+    border: 1px solid rgba(123, 77, 203, 0.2);
+    border-radius: 999px;
+    bottom: calc(70 * var(--s));
+    box-shadow: 0 calc(10 * var(--s)) calc(30 * var(--s)) rgba(60, 41, 100, 0.14);
+    color: #7b4dcb;
+    display: flex;
+    height: calc(58 * var(--s));
+    justify-content: center;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+    position: absolute;
+    right: max(var(--lp-gutter), calc(70 * var(--s)));
+    transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+    width: calc(58 * var(--s));
+    z-index: 2;
+}
+
+.lp-carousel-toggle:hover,
+.lp-carousel-toggle:focus-visible {
+    background: #7b4dcb;
+    color: #ffffff;
+    transform: scale(1.06);
+}
+
+.lp-carousel-toggle:focus-visible {
+    outline: 3px solid rgba(123, 77, 203, 0.35);
+    outline-offset: 3px;
+}
+
+.lp-carousel-toggle .material-symbols-outlined {
+    font-size: 1.35rem;
+}
+
+@keyframes lpPhoneCarousel {
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
 }
 
 /* =========================================================================
@@ -951,6 +1013,15 @@ p.lp-hero-lead {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .lp-carousel.is-ready .lp-carousel-track {
+        animation: none;
+        transform: none;
+    }
+
+    .lp-carousel-toggle {
+        display: none;
+    }
+
     .lp *,
     .lp *::before,
     .lp *::after {

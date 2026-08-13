@@ -228,11 +228,23 @@
 </section>
 
 <!-- ======================================================================
-     6 — The shipped screens, full bleed
+     6 — The shipped screens, continuously rotating
 ====================================================================== -->
 <section class="lp-band lp-band--grid">
-<div class="lp-carousel">
-<img alt="Five LUDIS screens: login, new team, the empty playbook, the June calendar and the profile form" src="imagesProjects/ludis-lp/carousel.png"/>
+<div aria-label="Shipped LUDIS screens" class="lp-carousel" data-phone-carousel role="region">
+<div class="lp-carousel-track">
+<!-- TODO: Add future shipped-screen assets to this set only; ludis-lp.js clones it to complete the infinite loop. -->
+<div class="lp-carousel-set">
+<img alt="LUDIS login screen" class="lp-carousel-phone" decoding="async" height="802" src="imagesProjects/ludis-lp/carousel-1.png" width="389"/>
+<img alt="Create a new LUDIS team" class="lp-carousel-phone" decoding="async" height="802" src="imagesProjects/ludis-lp/carousel-2.png" width="389"/>
+<img alt="Empty LUDIS playbook screen" class="lp-carousel-phone" decoding="async" height="802" src="imagesProjects/ludis-lp/carousel-3.png" width="389"/>
+<img alt="LUDIS June calendar" class="lp-carousel-phone" decoding="async" height="802" src="imagesProjects/ludis-lp/carousel-4.png" width="389"/>
+<img alt="LUDIS user profile form" class="lp-carousel-phone" decoding="async" height="802" src="imagesProjects/ludis-lp/carousel-5.png" width="389"/>
+</div>
+</div>
+<button aria-label="Pause screen carousel" aria-pressed="false" class="lp-carousel-toggle" data-phone-carousel-toggle type="button">
+<span aria-hidden="true" class="material-symbols-outlined" data-phone-carousel-icon>pause</span>
+</button>
 </div>
 </section>
 
@@ -371,6 +383,6 @@
 <p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
 </footer>
 
-<script src="scripts/ludis-lp.js"></script>
+<script src="scripts/ludis-lp.js?v=20260813-phone-carousel"></script>
 </body>
 </html>
