@@ -26,7 +26,12 @@ const NAV_SELECTOR = ".site-nav";
    check made before the scene exists can tell which machines those are. So the
    scene measures itself: if the mean frame is late over a run of frames, it
    drops a step. Resolution first (the cheapest thing to lose to a curved
-   refraction), then dispersion, which is what actually costs the extra passes. */
+   refraction), then dispersion, which is what actually costs the extra passes.
+
+   This ladder is internal to the scene and is the one thing that does adapt on
+   its own: the hero is still there, still glass, still the same picture — only
+   rendered at fewer pixels. It never touches the rest of the page. Turning the
+   design itself down is opt-in and lives in scripts/perf-tier.js. */
 const QUALITY_STEPS = [
     { pixelRatio: RENDERER.maxPixelRatio, transmissionScale: RENDERER.transmissionResolutionScale, dispersion: GLASS.dispersion },
     { pixelRatio: 1.5, transmissionScale: 0.35, dispersion: GLASS.dispersion },
@@ -39,7 +44,6 @@ const QUALITY_SLOW_FRAME_MS = 24;
 /* Nothing is measured until the zoom-in has finished — it is the most expensive
    moment of the scene's life and the least representative of it. */
 const QUALITY_WARMUP_MS = WORD_REVEAL_DURATION_MS + 600;
-const PERF_TIER_KEY = "portfolio:perf-tier";
 /* The stage bleeds past the lettering so the glass has something to refract on
    every side, and the falling stickers live inside that bleed. It stops at the
    ticker: past that band the rain would be drifting over the about block and
@@ -185,20 +189,6 @@ export const mountHero = async ({ host, wordBox }) => {
     let sampleFrames = 0;
     let sampleSeconds = 0;
 
-    /* Last step reached and still late: the machine is not going to run this
-       scene. Nothing is torn down — mid-view the swap back to the PNG would be
-       a worse artefact than a slow hero — but the tier is recorded, so the next
-       page of the visit skips the WebGL hero and the expensive CSS with it.
-       See scripts/perf-tier.js, which owns this key. */
-    const recordSlowMachine = () => {
-        document.documentElement.classList.add("perf-lite");
-        try {
-            window.sessionStorage.setItem(PERF_TIER_KEY, "lite");
-        } catch (error) {
-            /* Storage unavailable: the class still applies to this page. */
-        }
-    };
-
     const downgrade = () => {
         qualityStep += 1;
         const step = QUALITY_STEPS[qualityStep];
@@ -249,8 +239,11 @@ export const mountHero = async ({ host, wordBox }) => {
         if (qualityStep < QUALITY_STEPS.length - 1) {
             downgrade();
         } else {
+            /* Bottom of the ladder and still late. Nothing further happens: the
+               scene stays, at its cheapest settings, and the rest of the page
+               is left alone. Turning the design down is a decision for the
+               visitor to make (?perf=lite), not for a frame counter. */
             qualitySettled = true;
-            recordSlowMachine();
         }
     };
 

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Styleguide — Portfólio Milena Caldas</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+<link href="tokens.css" rel="stylesheet">
+<style>
+/* ===========================================================================
+   IMPLEMENTAÇÃO DE REFERÊNCIA
+   Este é o CSS canônico dos componentes. Copie daqui.
+   Nenhum valor literal — tudo vem de tokens.css.
+=========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--color-bg-page);
+    color: var(--color-text-body);
+    font-family: var(--font-family);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+}
+
+h1, h2, h3, p, ul, figure { margin: 0; }
+
+.material-symbols-outlined {
+    font-variation-settings: "FILL" var(--icon-fill), "wght" var(--icon-weight),
+                             "GRAD" var(--icon-grade), "opsz" 24;
+    font-size: var(--icon-size);
+}
+
+/* --- bandas -------------------------------------------------------------- */
+.band { position: relative; padding-block: var(--section-pad-tight-top) var(--section-pad-tight-bottom); }
+.band--loose { padding-block: var(--section-pad-loose-top) var(--section-pad-loose-bottom); }
+.band--white { background: var(--color-bg-page); }
+.band--subtle { background: var(--color-bg-subtle); }
+.band--grid {
+    --cell: var(--band-grid-cell);
+    background:
+        repeating-linear-gradient(to right,
+            var(--band-grid-void) 0,
+            var(--band-grid-void) calc(var(--cell) - 10 * var(--s)),
+            var(--band-grid-line) calc(var(--cell) - 5 * var(--s)),
+            var(--band-grid-void) var(--cell)),
+        repeating-linear-gradient(to bottom,
+            var(--band-grid-void) 0,
+            var(--band-grid-void) calc(var(--cell) - 10 * var(--s)),
+            var(--band-grid-line) calc(var(--cell) - 5 * var(--s)),
+            var(--band-grid-void) var(--cell)),
+        var(--band-grid-bg);
+}
+
+.wrap {
+    width: var(--container-wrap);
+    max-width: calc(100% - 2 * var(--container-gutter));
+    margin-inline: auto;
+}
+
+/* --- bloco de título + texto --------------------------------------------- */
+.text-block { max-width: var(--measure); }
+
+.text-block h1,
+.text-block h2 {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+}
+.text-block h2 { font-size: var(--font-size-h2); }
+.text-block h3 { font-size: var(--font-size-h3); font-weight: var(--font-weight-bold); color: var(--color-text-heading); line-height: var(--line-height-heading); }
+
+/* papéis de corpo */
+.lead { font-size: var(--font-size-body-lg); }
+.note { font-size: var(--font-size-body-sm); line-height: var(--line-height-body-sm); }
+
+.text-block h1 + p,
+.text-block h2 + p { margin-top: var(--rhythm-head-body); }
+.text-block p + p  { margin-top: var(--rhythm-para); }
+.text-block p + h2 { margin-top: var(--rhythm-block); }
+.text-block .tag-group + h1,
+.text-block .tag-group + h2 { margin-top: var(--rhythm-head-body); }
+.text-block > .btn { margin-top: var(--rhythm-action); }
+
+.text-block strong {
+    color: var(--color-text-strong);
+    font-weight: var(--font-weight-bold);
+}
+
+.text-block a {
+    color: var(--color-text-heading);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1px;
+}
+.text-block a:hover { color: var(--color-accent-hover); }
+
+/* --- tag ----------------------------------------------------------------- */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    height: var(--tag-height);
+    padding: 0 var(--tag-padding-x);
+    border: var(--tag-border) solid currentColor;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-tight);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-caption);
+    white-space: nowrap;
+}
+.tag--pink  { color: var(--color-tag-pink); }
+.tag--green { color: var(--color-tag-green); }
+.tag--blue  { color: var(--color-tag-blue); }
+
+.tag-group { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+/* --- botão --------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    height: var(--btn-height);
+    min-width: var(--btn-min-width);
+    padding: 0 var(--btn-padding-x);
+    border: var(--btn-border) solid var(--color-accent-hover);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-300);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-body);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--easing-standard);
+}
+.btn--primary        { background: var(--purple-500); }
+.btn--primary:hover  { background: var(--purple-600); }
+.btn--primary:active { background: var(--purple-600); box-shadow: none; }
+
+.btn--secondary        { background: var(--purple-200); }
+.btn--secondary:hover  { background: var(--purple-300); }
+.btn--secondary:active { background: var(--purple-400); box-shadow: none; }
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    background: var(--gray-200);
+    border-color: var(--gray-400);
+    color: var(--gray-600);
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* --- foco: uma regra, todo focável --------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+.btn:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--radius-pill);
+}
+
+/* --- grids --------------------------------------------------------------- */
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--gap-cards); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap-cards); }
+.grid-gallery { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: var(--gap-gallery); }
+.grid-split { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--gap-column); }
+
+/* --- cards --------------------------------------------------------------- */
+.band-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-band-card);
+    padding: var(--space-6) var(--space-5);
+}
+.band-card b {
+    display: block;
+    color: var(--color-text-heading);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-4);
+}
+.band-card h3 {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-weight-bold);
+}
+.band-card h3 + p { margin-top: var(--space-2); }
+
+/* --- métrica ------------------------------------------------------------- */
+.stat { display: flex; align-items: center; gap: var(--space-6); color: var(--color-text-heading); }
+.stat + .stat { margin-top: var(--space-8); }
+.stat b { font-size: var(--font-size-display); font-weight: var(--font-weight-medium); line-height: 1; }
+.stat span { font-size: var(--font-size-body); }
+
+/* --- imagem -------------------------------------------------------------- */
+.figure img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+.figure figcaption {
+    margin-top: var(--space-2);
+    font-size: var(--font-size-body-sm);
+    color: var(--color-text-heading);
+}
+.grid-gallery .ph { aspect-ratio: 318 / 695; border-radius: var(--radius-image); }
+
+.ph {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--color-bg-surface);
+    border: 1px dashed var(--color-border);
+}
+
+/* --- link com ícone ------------------------------------------------------ */
+.link-jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-body);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    text-decoration: none;
+    min-height: var(--touch-target);
+}
+.link-jump:hover { color: var(--color-accent-hover); }
+
+/* --- CTA ----------------------------------------------------------------- */
+.cta-block { text-align: center; }
+.cta-block .cta-lead { color: var(--color-text-body); font-weight: var(--font-weight-medium); }
+.cta-block h2 {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    margin-block: var(--space-2) var(--space-6);
+}
+
+/* --- chrome de amostra --------------------------------------------------- */
+.nav-demo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding: var(--space-3) var(--page-gutter);
+    background: var(--color-bg-page);
+    border-bottom: 1px solid var(--color-border);
+}
+.nav-demo .links { display: flex; gap: var(--space-6); }
+.nav-demo a { color: var(--color-text-body); text-decoration: none; font-size: var(--font-size-body-sm); font-weight: var(--font-weight-medium); }
+.nav-demo a:hover { color: var(--color-accent-hover); }
+.nav-demo a.is-active { color: var(--color-accent-hover); font-weight: var(--font-weight-bold); text-decoration: underline; text-underline-offset: 0.45em; }
+
+.status-tag {
+    display: inline-flex; align-items: center; gap: 0.62em;
+    border: var(--tag-border) solid var(--color-tag-green);
+    border-radius: var(--radius-pill);
+    color: var(--color-tag-green);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-caption);
+    line-height: var(--line-height-tight);
+    padding: 0.62em 1.05em;
+    text-transform: uppercase;
+}
+.status-tag::before { content: ""; width: 0.62em; height: 0.62em; border-radius: 50%; background: currentColor; }
+
+.footer-demo {
+    text-align: center;
+    padding: var(--space-6) var(--space-5);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--font-size-body-sm);
+}
+.footer-demo .links { display: flex; justify-content: center; gap: var(--space-5); margin-bottom: var(--space-3); }
+.footer-demo a { color: var(--color-text-heading); }
+
+/* --- andaime do styleguide ----------------------------------------------- */
+.sg-head { padding: var(--space-10) var(--page-gutter) var(--space-6); max-width: var(--container-max); margin-inline: auto; }
+.sg-title { font-size: var(--font-size-h1); font-weight: var(--font-weight-bold); color: var(--color-text-heading); line-height: var(--line-height-heading); }
+.sg-label {
+    font-family: ui-monospace, monospace;
+    font-size: var(--font-size-caption);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-caption);
+    color: var(--color-text-body);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-2);
+    margin-bottom: var(--space-5);
+}
+.sg-note { font-size: var(--font-size-body-sm); color: var(--color-text-body); margin-top: var(--space-4); }
+.sg-row { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+.swatches { display: grid; grid-template-columns: repeat(9, 1fr); gap: var(--space-1); }
+.swatch { aspect-ratio: 1; border-radius: var(--space-1); }
+.swatch-row { margin-bottom: var(--space-4); }
+.swatch-name { font-size: var(--font-size-caption); font-weight: var(--font-weight-bold); text-transform: uppercase; letter-spacing: var(--letter-spacing-caption); margin-bottom: var(--space-1); }
+
+@media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-split { grid-template-columns: minmax(0,1fr); gap: var(--gap-stack); }
+    .grid-gallery { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .nav-demo .links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="sg-head">
+    <p class="sg-label">styleguide</p>
+    <h1 class="sg-title">Portfólio Milena Caldas</h1>
+    <p class="sg-note">Render de referência. Todo valor vem de <code>tokens.css</code>. Copie o markup daqui.</p>
+</header>
+
+<!-- ====================== CHROME ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">nav — variante case</p>
+    </div>
+    <nav class="nav-demo">
+        <div class="sg-row">
+            <strong>MC</strong>
+            <span class="status-tag">Available</span>
+        </div>
+        <div class="links">
+            <a href="#">work</a>
+            <a href="#">about</a>
+            <a href="#">resume</a>
+            <a href="#" class="is-active">contact</a>
+        </div>
+        <button type="button" aria-label="Menu" style="background:none;border:0;padding:var(--space-2)">
+            <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+        </button>
+    </nav>
+</section>
+
+<!-- ====================== CORES ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">paleta</p>
+
+        <div class="swatch-row">
+            <p class="swatch-name">purple — primária</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--purple-100)"></div>
+                <div class="swatch" style="background:var(--purple-200)"></div>
+                <div class="swatch" style="background:var(--purple-300)"></div>
+                <div class="swatch" style="background:var(--purple-400)"></div>
+                <div class="swatch" style="background:var(--purple-500)"></div>
+                <div class="swatch" style="background:var(--purple-600)"></div>
+                <div class="swatch" style="background:var(--purple-700)"></div>
+                <div class="swatch" style="background:var(--purple-800)"></div>
+                <div class="swatch" style="background:var(--purple-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">gray — neutra</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--gray-100)"></div>
+                <div class="swatch" style="background:var(--gray-200)"></div>
+                <div class="swatch" style="background:var(--gray-300)"></div>
+                <div class="swatch" style="background:var(--gray-400)"></div>
+                <div class="swatch" style="background:var(--gray-500)"></div>
+                <div class="swatch" style="background:var(--gray-600)"></div>
+                <div class="swatch" style="background:var(--gray-700)"></div>
+                <div class="swatch" style="background:var(--gray-800)"></div>
+                <div class="swatch" style="background:var(--gray-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">pink</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--pink-100)"></div>
+                <div class="swatch" style="background:var(--pink-200)"></div>
+                <div class="swatch" style="background:var(--pink-300)"></div>
+                <div class="swatch" style="background:var(--pink-400)"></div>
+                <div class="swatch" style="background:var(--pink-500)"></div>
+                <div class="swatch" style="background:var(--pink-600)"></div>
+                <div class="swatch" style="background:var(--pink-700)"></div>
+                <div class="swatch" style="background:var(--pink-800)"></div>
+                <div class="swatch" style="background:var(--pink-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">blue</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--blue-100)"></div>
+                <div class="swatch" style="background:var(--blue-200)"></div>
+                <div class="swatch" style="background:var(--blue-300)"></div>
+                <div class="swatch" style="background:var(--blue-400)"></div>
+                <div class="swatch" style="background:var(--blue-500)"></div>
+                <div class="swatch" style="background:var(--blue-600)"></div>
+                <div class="swatch" style="background:var(--blue-700)"></div>
+                <div class="swatch" style="background:var(--blue-800)"></div>
+                <div class="swatch" style="background:var(--blue-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">green</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--green-100)"></div>
+                <div class="swatch" style="background:var(--green-200)"></div>
+                <div class="swatch" style="background:var(--green-300)"></div>
+                <div class="swatch" style="background:var(--green-400)"></div>
+                <div class="swatch" style="background:var(--green-500)"></div>
+                <div class="swatch" style="background:var(--green-600)"></div>
+                <div class="swatch" style="background:var(--green-700)"></div>
+                <div class="swatch" style="background:var(--green-800)"></div>
+                <div class="swatch" style="background:var(--green-900)"></div>
+            </div>
+        </div>
+
+        <p class="sg-note"><strong>red</strong> existe na paleta e não é usada em nenhuma página. Não introduza.</p>
+    </div>
+</section>
+
+<!-- ====================== ESCALA TIPOGRÁFICA ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">escala tipográfica</p>
+        <div style="display:grid;gap:var(--space-5)">
+            <div><p class="note">H1 · 48 → 56px</p><span style="font-size:var(--font-size-h1);font-weight:var(--font-weight-bold);line-height:var(--line-height-heading);color:var(--color-text-heading)">Título de página</span></div>
+            <div><p class="note">H2 · 40 → 42px</p><span style="font-size:var(--font-size-h2);font-weight:var(--font-weight-bold);line-height:var(--line-height-heading);color:var(--color-text-heading)">Título de seção</span></div>
+            <div><p class="note">H3 · 32 → 36px</p><span style="font-size:var(--font-size-h3);font-weight:var(--font-weight-bold);line-height:var(--line-height-heading);color:var(--color-text-heading)">Subtítulo</span></div>
+            <div><p class="note">H4 · 28px</p><span style="font-size:var(--font-size-h4);font-weight:var(--font-weight-bold);color:var(--color-text-heading)">Título de bloco</span></div>
+            <div><p class="note">H5 · 24px</p><span style="font-size:var(--font-size-h5);font-weight:var(--font-weight-bold);color:var(--color-text-heading)">Título de card</span></div>
+            <div><p class="note">H6 · 18 → 20px</p><span style="font-size:var(--font-size-h6);font-weight:var(--font-weight-bold);color:var(--color-text-heading)">Rótulo de grupo</span></div>
+            <div><p class="note">Body Large · 18px / 1.5</p><span class="lead">Parágrafo de abertura, um por bloco.</span></div>
+            <div><p class="note">Body Medium · 16px / 1.5</p><span>Texto padrão, lista e campo de formulário.</span></div>
+            <div><p class="note">Body Small · 14px / 1.4</p><span class="note">Nota secundária, legenda, descrição de interface.</span></div>
+            <div><p class="note">Caption · 12px / 1.3</p><span style="font-size:var(--font-size-caption);line-height:var(--line-height-caption);font-weight:var(--font-weight-bold);text-transform:uppercase;letter-spacing:var(--letter-spacing-caption)">Tag e rótulo</span></div>
+        </div>
+        <p class="sg-note">Pesos: 400 padrão, 500 rótulo e numeral, 700 título e destaque. Nada fora dos três.</p>
+    </div>
+</section>
+
+<!-- ====================== BLOCO DE TEXTO ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">bloco de título + texto — com tag</p>
+        <div class="text-block">
+            <div class="tag-group">
+                <span class="tag tag--blue">Product design</span>
+                <span class="tag tag--pink">2022</span>
+                <span class="tag tag--green">Shipped</span>
+            </div>
+            <h2>Título da seção</h2>
+            <p class="lead">Parágrafo de abertura, em Body Large. O espaço acima dele é <strong>--rhythm-head-body</strong>, a única relação de ritmo confirmada como regra na extração.</p>
+            <p>Parágrafo padrão, em Body Medium, separado por <strong>--rhythm-para</strong>. Um <a href="#">link no corpo</a> é sublinhado e nunca se distingue só por cor.</p>
+            <p class="note">Nota secundária, em Body Small. Use para observação de apoio, nunca para conteúdo principal.</p>
+            <a class="btn btn--primary" href="#">Ação principal</a>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== BOTÕES ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">botões</p>
+        <div class="sg-row">
+            <a class="btn btn--primary" href="#">Send a message</a>
+            <a class="btn btn--secondary" href="#">View CV</a>
+            <button class="btn btn--primary" type="button" disabled>Indisponível</button>
+        </div>
+        <div class="sg-row" style="margin-top:var(--space-5)">
+            <a class="btn btn--primary" href="#">
+                Continuar
+                <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </a>
+            <a class="link-jump" href="#">
+                <span class="material-symbols-outlined" aria-hidden="true">arrow_downward</span>
+                How I did it
+            </a>
+        </div>
+        <p class="sg-note">Um primário por página. O secundário só aparece à direita de um primário. Navegue com Tab para conferir o anel de foco.</p>
+    </div>
+</section>
+
+<!-- ====================== TAGS ====================== -->
+<section class="band band--grid">
+    <div class="wrap">
+        <p class="sg-label">tags — sempre span, nunca interativas</p>
+        <div class="tag-group">
+            <span class="tag tag--pink">Pink</span>
+            <span class="tag tag--green">Green</span>
+            <span class="tag tag--blue">Blue</span>
+        </div>
+        <p class="sg-note">Grupo de 2 ou 3, cores diferentes entre si, sempre acima do título.<br>
+        <strong>Exceção de contraste declarada:</strong> os três tokens ficam nos degraus pastel do Figma e reprovam em WCAG AA (1.84 / 2.76 / 2.53 sobre branco). Decisão de marca. Nenhum outro componente herda estes degraus.</p>
+    </div>
+</section>
+
+<!-- ====================== CARDS ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">cards numerados</p>
+        <div class="grid-3">
+            <div class="band-card">
+                <b>01</b>
+                <h3>Multi-Sport Templates</h3>
+                <p>Added soccer, volleyball, and basketball.</p>
+            </div>
+            <div class="band-card">
+                <b>02</b>
+                <h3>Custom Backgrounds</h3>
+                <p>Upload images to serve as custom backgrounds.</p>
+            </div>
+            <div class="band-card">
+                <b>03</b>
+                <h3>Offline &amp; Export</h3>
+                <p>Save locally, with shareable images or PDFs.</p>
+            </div>
+        </div>
+        <p class="sg-note">Numere apenas quando a ordem carregar informação.</p>
+    </div>
+</section>
+
+<!-- ====================== BANDA DE 2 COLUNAS + MÉTRICAS ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">banda de duas colunas — gap --gap-column</p>
+        <div class="grid-split">
+            <div>
+                <div class="stat"><b>8</b><span>new teams created<br>in week one</span></div>
+                <div class="stat"><b>20</b><span>active users<br>in week one</span></div>
+            </div>
+            <div class="text-block">
+                <h2>Result &amp; Reflection</h2>
+                <p>A coluna de texto respeita <strong>--measure</strong> mesmo dentro de um grid.</p>
+                <a class="btn btn--secondary" href="#">Ver projeto</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== IMAGENS ====================== -->
+<section class="band band--grid">
+    <div class="wrap">
+        <p class="sg-label">imagem com legenda — sem raio, sem overlay, sem filtro</p>
+        <figure class="figure">
+            <span class="ph"></span>
+            <figcaption>Legenda abaixo, em --font-size-body-sm.</figcaption>
+        </figure>
+    </div>
+</section>
+
+<section class="band band--loose band--white">
+    <div class="wrap">
+        <p class="sg-label">galeria — 5 colunas, 2 em ≤900px</p>
+        <div class="grid-gallery">
+            <span class="ph"></span><span class="ph"></span><span class="ph"></span>
+            <span class="ph"></span><span class="ph"></span><span class="ph"></span>
+            <span class="ph"></span><span class="ph"></span><span class="ph"></span>
+            <span class="ph"></span>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== CTA ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">bloco CTA — única composição centralizada</p>
+        <div class="cta-block">
+            <p class="cta-lead">Wanna work together?</p>
+            <h2>Let's build something<br>extraordinary!</h2>
+            <a class="btn btn--primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer-demo">
+    <div class="links">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Behance</a>
+        <a href="#">View CV</a>
+    </div>
+    <p>© 2026 Milena Caldas. All rights reserved.<br>
+       Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
+</footer>
+
+</body>
+</html>

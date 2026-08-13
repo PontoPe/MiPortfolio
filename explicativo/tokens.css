@@ -1,0 +1,376 @@
+/* ===========================================================================
+   tokens.css — fonte única da verdade
+   ---------------------------------------------------------------------------
+   Origem de cada bloco:
+     1–3  design-system.md (Figma, validado em WCAG 2.1 AA). Não alterar.
+     4–8  extraído de case-ludis-lp.css + page-style.css (valores de fonte,
+          repositório PontoPe/MiPortfolio). Números do artboard 1920.
+
+   Modelo de escala — HÍBRIDO (decisão fechada):
+     LAYOUT      → proporcional, em `--s`. Container, colunas, gaps, padding
+                   de seção, ritmo vertical, largura de imagem.
+     COMPONENTE  → fixo, em px/rem. Tipografia, tag, botão, alvo de toque,
+                   focus ring, raio de componente.
+
+   Carregar ANTES de page-style.css e de qualquer folha de página.
+=========================================================================== */
+
+:root {
+
+/* ===========================================================================
+   1. PALETA PRIMITIVA                                    [design-system.md]
+   Toda escala parte do 500. 100–400 = base + 80/60/40/20% branco.
+   600–900 = base + 20/40/60/80% preto. Cor nova entra pelo 500.
+   Nunca criar degrau na mão.
+=========================================================================== */
+
+    /* purple — primária */
+    --purple-100: #F1EFFF;
+    --purple-200: #E3E0FF;
+    --purple-300: #D5D0FF;
+    --purple-400: #C7C1FF;
+    --purple-500: #B9B1FF;
+    --purple-600: #948ECC;
+    --purple-700: #6F6A99;
+    --purple-800: #4A4766;
+    --purple-900: #121219;   /* exceção mantida: 90% preto, não 80% */
+
+    /* pink — secundária */
+    --pink-100: #F9EEFF;
+    --pink-200: #F3DDFE;
+    --pink-300: #EECCFE;
+    --pink-400: #E8BBFD;
+    --pink-500: #E2AAFD;
+    --pink-600: #B588CA;
+    --pink-700: #886698;
+    --pink-800: #5A4465;
+    --pink-900: #2D2233;
+
+    /* blue — secundária */
+    --blue-100: #E8F7FB;
+    --blue-200: #D2EFF8;
+    --blue-300: #BBE6F4;
+    --blue-400: #A5DEF1;
+    --blue-500: #8ED6ED;
+    --blue-600: #72ABBE;
+    --blue-700: #55808E;
+    --blue-800: #39565F;
+    --blue-900: #1C2B2F;
+
+    /* gray — neutra */
+    --gray-100: #EAEBF0;
+    --gray-200: #D6D7E1;
+    --gray-300: #C1C4D3;
+    --gray-400: #ADB0C4;
+    --gray-500: #989CB5;
+    --gray-600: #7A7D91;
+    --gray-700: #5B5E6D;
+    --gray-800: #3D3E48;
+    --gray-900: #1E1F24;
+
+    /* green — sucesso */
+    --green-100: #E6F7E1;
+    --green-200: #CCEFC4;
+    --green-300: #B3E7A6;
+    --green-400: #99DF88;
+    --green-500: #80D76A;
+    --green-600: #66AC55;
+    --green-700: #4D8140;
+    --green-800: #33562B;
+    --green-900: #1A2B15;
+
+    /* red — erro. NÃO USADA em nenhuma página do portfólio. */
+    --red-100: #FAD8D8;
+    --red-200: #F6B0B0;
+    --red-300: #F18989;
+    --red-400: #ED6161;
+    --red-500: #E83A3A;
+    --red-600: #BA2E2E;
+    --red-700: #8B2323;
+    --red-800: #5D1717;
+    --red-900: #2E0C0C;
+
+    /* Sem escala de warning — decidido. */
+
+
+/* ===========================================================================
+   2. CAMADA SEMÂNTICA                                    [design-system.md]
+=========================================================================== */
+
+    /* superfícies */
+    --color-bg-page:       #FFFFFF;
+    --color-bg-surface:    var(--gray-100);    /* cards neutros              */
+    --color-bg-subtle:     var(--purple-100);  /* banda alternada            */
+    --color-bg-card:       var(--purple-200);  /* card sobre banda lavanda   */
+    --color-bg-inverse:    var(--purple-900);  /* seção escura — SEM USO HOJE*/
+
+    /* texto */
+    --color-text-heading:  var(--purple-700);  /* 5.00 sobre branco          */
+    --color-text-body:     var(--gray-700);    /* 6.43 sobre branco          */
+    --color-text-strong:   var(--purple-800);  /* 8.81 — destaque em corpo   */
+    --color-text-inverse:  #FFFFFF;            /* 18.65 sobre bg-inverse     */
+
+    /* bordas */
+    --color-border:        var(--gray-300);    /* divisor decorativo         */
+    --color-border-strong: var(--gray-600);    /* limite de componente, 4.06 */
+
+    /* marca */
+    --color-accent:        var(--purple-500);
+    --color-accent-hover:  var(--purple-600);
+    --color-focus-ring:    var(--purple-700);  /* 5.00 sobre branco          */
+
+    /* estado */
+    --color-success:       var(--green-700);
+    --color-error:         var(--red-600);     /* 5.97 — sem uso no site     */
+
+    /* tags — EXCEÇÃO DECLARADA pela Milena.
+       Degraus originais do Figma, mantidos por decisão de marca:
+       pink no 500, green e blue no 600. Contraste sobre branco, texto 12px:
+       pink 1.84 · green 2.76 · blue 2.53. Reprovam em texto (4.5) e em
+       limite de componente (3.0). Sobre --color-bg-subtle cai para
+       1.63 / 2.44 / 2.24. A exceção vale SÓ para .tag — nenhum outro
+       componente pode usar estes degraus como texto.
+       Para reverter aos degraus acessíveis, troque as três linhas abaixo
+       por --pink-800, --green-800 e --blue-800. */
+    --color-tag-pink:      var(--pink-500);    /* #E2AAFD */
+    --color-tag-green:     var(--green-600);   /* #66AC55 */
+    --color-tag-blue:      var(--blue-600);    /* #72ABBE */
+
+
+/* ===========================================================================
+   3. TIPOGRAFIA                                          [design-system.md]
+   Família única: Poppins. Pesos 400, 500, 700.
+   500 é legítimo (uso medido em .lp-jump e .lp-stat).
+   Kalam foi REMOVIDA — era carregada e nunca usada.
+=========================================================================== */
+
+    --font-family:        'Poppins', system-ui, sans-serif;
+    --font-family-script: 'Caveat', cursive;   /* exclusivo do site-loader */
+
+    --font-weight-regular: 400;
+    --font-weight-medium:  500;
+    --font-weight-bold:    700;
+
+    /* Escala tipográfica. Substitui a escala C do design-system.md por
+       decisão da Milena. Títulos são fluidos dentro da faixa declarada;
+       corpo é fixo, sem clamp. */
+
+    /* display — acima da hierarquia de títulos, só numeral de métrica */
+    --font-size-display: clamp(3.5rem, 7.5vw, 5.4375rem);  /* 56 → 87px */
+
+    /* títulos */
+    --font-size-h1: clamp(3rem, 4.6vw, 3.5rem);        /* 48 → 56px */
+    --font-size-h2: clamp(2.5rem, 3.4vw, 2.625rem);    /* 40 → 42px */
+    --font-size-h3: clamp(2rem, 2.6vw, 2.25rem);       /* 32 → 36px */
+    --font-size-h4: 1.75rem;                           /* 28px      */
+    --font-size-h5: 1.5rem;                            /* 24px      */
+    --font-size-h6: clamp(1.125rem, 1.4vw, 1.25rem);   /* 18 → 20px */
+
+    /* corpo */
+    --font-size-body-lg: 1.125rem;   /* 18px — parágrafo de abertura        */
+    --font-size-body:    1rem;       /* 16px — padrão de texto, lista, campo*/
+    --font-size-body-sm: 0.875rem;   /* 14px — nota secundária, legenda     */
+    --font-size-caption: 0.75rem;    /* 12px — tag, rótulo, texto de apoio  */
+
+    --line-height-heading: 1.08;   /* medido no Figma, mantido */
+    --line-height-body:    1.5;
+    --line-height-body-sm: 1.4;
+    --line-height-caption: 1.3;
+    --line-height-tight:   1;      /* pílula de altura fixa: tag e botão */
+
+    --letter-spacing-caption: 0.04em;   /* bold uppercase 12px fecha sem ele */
+
+    --measure: 54ch;   /* medida de leitura; proporção do arquivo Figma */
+
+
+/* ===========================================================================
+   4. ESCALA DE LAYOUT `--s`                    [case-ludis-lp.css, medido]
+   1 px de design do artboard 1920. Redefinida nos media queries do fim.
+=========================================================================== */
+
+    --s: 0.0520833vw;
+
+
+/* ===========================================================================
+   5. CONTAINER E GRADE                                   [medido]
+=========================================================================== */
+
+    --container-wrap:   calc(1712 * var(--s));         /* miolo de case      */
+    --container-gutter: clamp(1rem, 5.4vw, 104px);     /* recuo do case      */
+    --container-max:    110rem;                        /* nav, footer, chrome*/
+    --page-gutter:      clamp(1.5rem, 4vw, 4.5rem);    /* recuo do chrome    */
+
+    /* gaps de grid — todos proporcionais */
+    --gap-column:       calc(60 * var(--s));   /* REGRA: banda de 2 colunas  */
+    --gap-cards:        calc(33 * var(--s));   /* grid de 2 ou 3 cards       */
+    --gap-gallery:      calc(30 * var(--s));   /* grid da galeria            */
+    --gap-stack:        calc(90 * var(--s));   /* empilhado, ≤900px          */
+    --gap-inline:       calc(16 * var(--s));   /* entre tags no hero         */
+
+
+/* ===========================================================================
+   6. RITMO VERTICAL                            [medido — substitui a tabela
+   derivada da seção 3 do design-system.md, como o próprio documento previa]
+=========================================================================== */
+
+    --rhythm-head-body:      calc(40 * var(--s));   /* h2 → 1º parágrafo. REGRA (3×) */
+    --rhythm-head-component: calc(76 * var(--s));   /* h2 → grid/componente. faixa medida 69–82 */
+    --rhythm-para:           calc(46 * var(--s));   /* parágrafo → parágrafo. dominante (2/3) */
+    --rhythm-block:          calc(94 * var(--s));   /* parágrafo → h2 seguinte */
+    --rhythm-action:         calc(55 * var(--s));   /* conteúdo → botão. medidos: 50/55/63 */
+
+    /* padding vertical de seção — dois pares fixos, ambos medidos */
+    --section-pad-tight-top:    calc(65 * var(--s));
+    --section-pad-tight-bottom: calc(68 * var(--s));
+    --section-pad-loose-top:    calc(124 * var(--s));
+    --section-pad-loose-bottom: calc(122 * var(--s));
+
+    /* clearance da nav fixa */
+    --nav-clearance: 5rem;
+
+
+/* ===========================================================================
+   7. ESPAÇAMENTO INTERNO DE COMPONENTE            [design-system.md, fixo]
+   Base 8pt (Apple HIG), sub-grade de 4pt.
+=========================================================================== */
+
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  24px;
+    --space-6:  32px;
+    --space-8:  48px;
+    --space-10: 64px;
+    --space-12: 96px;
+    --space-16: 128px;
+
+    --radius-pill: 999px;
+    --radius-card: 12px;
+    --radius-panel: 2rem;                      /* .section-panel, medido     */
+    --radius-band-card: calc(28 * var(--s));   /* card dentro de banda, medido */
+    --radius-image: calc(6 * var(--s));        /* imagem de galeria, medido  */
+
+    --shadow-300: 0px 4px 4px -1px rgba(12, 12, 13, 0.15);
+    --shadow-panel: 0 1.5rem 3rem rgba(74, 71, 102, 0.14);
+    --shadow-card:  0 1rem 2.25rem rgba(74, 71, 102, 0.18);
+    --shadow-card-hover: 0 1.5rem 3rem rgba(74, 71, 102, 0.28);
+    /* Alfas medidos do site; base RGB migrada para --purple-800 (74,71,102). */
+
+    --touch-target: 44px;   /* mínimo HIG */
+
+
+/* ===========================================================================
+   8. COMPONENTES — FIXO                                  [design-system.md]
+=========================================================================== */
+
+    --tag-height:       28px;
+    --tag-border:       2px;
+    --tag-padding-x:    var(--space-3);
+
+    --btn-height:       48px;
+    --btn-min-width:    120px;
+    --btn-padding-x:    var(--space-5);
+    --btn-border:       2px;
+
+    --focus-ring-width:  2px;
+    --focus-ring-offset: 2px;
+
+    --icon-size:      24px;   /* opsz do Material Symbols */
+    --icon-size-lg:   30px;
+    --icon-weight:    400;
+    --icon-fill:      0;
+    --icon-grade:     0;
+
+
+/* ===========================================================================
+   9. MOVIMENTO                                           [medido]
+=========================================================================== */
+
+    --duration-fast:  120ms;   /* troca de cor de botão (design-system.md)  */
+    --duration-base:  200ms;   /* padrão do site: hover de link e botão     */
+    --duration-slow:  520ms;   /* card de projeto                           */
+    --easing-standard: ease;
+    --easing-emphasis: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --hover-lift: -3px;        /* botão. card usa -4px                      */
+
+
+/* ===========================================================================
+   10. BANDAS DE FUNDO                                    [medido]
+=========================================================================== */
+
+    --band-grid-bg:   #FDFFFF;
+    --band-grid-cell: calc(75 * var(--s));
+    --band-grid-line: rgba(109, 124, 158, 0.08);
+    --band-grid-void: rgba(109, 124, 158, 0);
+}
+
+
+/* ===========================================================================
+   11. MIGRAÇÃO DO CHROME
+   page-style.css declara uma paleta própria que não existe no design system.
+   Estes overrides a redirecionam para os tokens acima sem tocar naquele
+   arquivo. Carregar tokens.css DEPOIS de page-style.css para que valham,
+   ou mover este bloco para o fim da cascata.
+=========================================================================== */
+
+:root {
+    --ink:             var(--color-text-body);     /* era #777c95, 4.28 */
+    --ink-soft:        var(--color-text-body);     /* era #9ca0b2, 2.62 — reprovava */
+    --periwinkle:      var(--color-accent);
+    --periwinkle-deep: var(--color-accent-hover);
+    --pill-soft:       var(--purple-200);
+    --violet:          var(--purple-500);
+    --violet-deep:     var(--purple-600);
+    --violet-soft:     var(--purple-200);
+    --ticker-bg:       var(--purple-300);
+    --page-max:        var(--container-max);
+
+    --glass-blue:    rgba(74, 71, 102, 0.11);
+    --panel:         rgba(74, 71, 102, 0.09);
+    --panel-strong:  rgba(74, 71, 102, 0.16);
+    --shadow-tint:   rgba(74, 71, 102, 0.14);
+
+    /* grade ambiente do chrome */
+    --grid-cell: 30px;
+    --grid-line: rgba(148, 142, 204, 0.14);   /* base migrada p/ purple-600 */
+}
+
+
+/* ===========================================================================
+   12. BREAKPOINTS
+   Dois pontos de quebra reais. Não inventar um terceiro.
+=========================================================================== */
+
+/* Acima do artboard: a escala congela em 1:1. */
+@media (min-width: 1921px) {
+    :root { --s: 1px; }
+}
+
+/* Abaixo de 900px a escala linear deixa de ser legível: --s é fixada numa
+   faixa e todos os grids colapsam para uma coluna. */
+@media (max-width: 900px) {
+    :root {
+        --s: clamp(0.42px, 0.125vw, 0.56px);
+        --container-gutter: 1.25rem;
+    }
+}
+
+/* 768px é o único BP do chrome: abaixo dele a nav desktop some e o botão
+   de menu assume. */
+
+
+/* ===========================================================================
+   13. MOVIMENTO REDUZIDO
+=========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+    }
+}

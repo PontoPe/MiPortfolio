@@ -27,9 +27,10 @@
     --lp-lav-card: #e3e0ff;     /* cards sitting on a tinted band   */
     --lp-lav-solid: #b9b1ff;    /* buttons, list rules              */
     --lp-lav-circle: #d5d0ff;   /* methodology icon discs           */
-    --lp-chip: #e2aafd;         /* outline chips                    */
-    --lp-cyan: #8ed6ed;
-    --lp-green: #7db96e;
+    /* the design system's three tag colours (explicativo/tokens.css) */
+    --lp-chip: #e2aafd;         /* --pink-500, outline chips + tag  */
+    --lp-blue: #72abbe;         /* --blue-600                       */
+    --lp-green: #66ac55;        /* --green-600                      */
     --lp-grid-bg: #fdffff;
     /* the artboard's rules are a soft ~10px band, not a hairline */
     --lp-line-0: rgba(109, 124, 158, 0);
@@ -179,18 +180,18 @@
 ========================================================================= */
 .lp-hero {
     padding-bottom: calc(47 * var(--s));
-    padding-top: calc(3.7rem + 19 * var(--s));
+    padding-top: calc(3.7rem + 81 * var(--s));
     --lp-cell: calc(69.2 * var(--s));
 }
 
 .lp-hero-grid {
     align-items: start;
     display: grid;
-    grid-template-columns: calc(856 * var(--s)) calc(856 * var(--s));
+    grid-template-columns: calc(839 * var(--s)) calc(873 * var(--s));
 }
 
 .lp-hero-copy {
-    padding-top: calc(120 * var(--s));
+    padding-top: calc(58 * var(--s));
 }
 
 .lp-hero-logo {
@@ -220,15 +221,16 @@
     text-transform: uppercase;
 }
 
-.lp-tag--cyan { --lp-tag: var(--lp-cyan); }
+.lp-tag--blue { --lp-tag: var(--lp-blue); }
 .lp-tag--violet { --lp-tag: var(--lp-chip); }
 .lp-tag--green { --lp-tag: var(--lp-green); }
 
-.lp-hero-lead {
-    font-size: calc(36 * var(--s));
+/* `.lp p` is more specific than a bare class, so the lead has to out-rank it */
+p.lp-hero-lead {
+    font-size: calc(35 * var(--s));
     line-height: calc(40 * var(--s));
     margin-top: calc(44 * var(--s));
-    max-width: none;
+    max-width: calc(850 * var(--s));
 }
 
 .lp-jump {
@@ -239,7 +241,7 @@
     font-weight: 500;
     gap: calc(15 * var(--s));
     letter-spacing: calc(0.5 * var(--s));
-    margin-top: calc(88 * var(--s));
+    margin-top: calc(61 * var(--s));
     text-transform: uppercase;
 }
 
@@ -257,7 +259,7 @@
 .lp-hero-shot {
     aspect-ratio: 707 / 757;
     position: relative;
-    width: calc(707 * var(--s));
+    width: calc(779 * var(--s));
 }
 
 .lp-hero-shot img {
@@ -632,7 +634,19 @@
    7 — User validation
 ========================================================================= */
 .lp-validation {
+    overflow: hidden;
     padding-block: calc(61 * var(--s)) calc(66 * var(--s));
+    position: relative;
+}
+
+/* GOAT looking over the bottom edge of the band */
+.lp-peek {
+    bottom: 0;
+    display: block;
+    height: auto;
+    position: absolute;
+    right: calc(22 * var(--s));
+    width: calc(787 * var(--s));
 }
 
 .lp-validation h2 + p {
@@ -735,7 +749,7 @@
    9 — Result & reflection
 ========================================================================= */
 .lp-result {
-    padding-block: calc(56 * var(--s)) calc(77 * var(--s));
+    padding-block: calc(56 * var(--s)) calc(124 * var(--s));
 }
 
 .lp-result-grid {
@@ -779,15 +793,46 @@
 }
 
 /* =========================================================================
-   10 — Screen gallery
+   10 — Download CTA + screen gallery, sharing one band
 ========================================================================= */
 .lp-gallery {
-    padding-block: calc(124 * var(--s)) calc(122 * var(--s));
+    padding-block: calc(54 * var(--s)) calc(130 * var(--s));
+}
+
+.lp-cta {
+    display: grid;
+    gap: calc(81 * var(--s));
+    grid-template-columns: calc(1023 * var(--s)) calc(554 * var(--s));
+}
+
+.lp-cta-card {
+    background: var(--lp-lav-card);
+    border-radius: calc(30 * var(--s));
+    padding: calc(105 * var(--s)) calc(101 * var(--s)) calc(74 * var(--s));
+}
+
+.lp-cta-card p {
+    font-size: calc(44 * var(--s));
+    line-height: calc(65 * var(--s));
+}
+
+.lp-cta-card .lp-btn {
+    display: flex;
+    margin: calc(66 * var(--s)) auto 0;
+    width: fit-content;
+}
+
+.lp-cta-mascot {
+    align-self: start;
+    display: block;
+    height: auto;
+    width: 100%;
 }
 
 .lp-gallery-grid {
     display: grid;
     gap: calc(30 * var(--s));
+    margin-top: calc(179 * var(--s));
     grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
@@ -861,6 +906,25 @@
     .lp-findings,
     .lp-flow {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lp-cta {
+        gap: calc(40 * var(--s));
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lp-cta-mascot {
+        justify-self: center;
+        max-width: calc(400 * var(--s));
+    }
+
+    /* single column leaves no room beside the button, so GOAT drops below it */
+    .lp-validation {
+        padding-bottom: calc(230 * var(--s));
+    }
+
+    .lp-peek {
+        width: calc(420 * var(--s));
     }
 
     .lp-ba-device {
