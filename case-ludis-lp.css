@@ -1,0 +1,895 @@
+/* ===========================================================================
+   LUDIS — case landing page
+   ---------------------------------------------------------------------------
+   A 1:1 rebuild of the Figma frame "Desktop - 9" (1920 px artboard). Every
+   measurement below is the Figma number in design pixels, multiplied by --s.
+
+     --s   one design pixel.  0.0520833vw == 1px at a 1920 px viewport, so the
+           whole page scales proportionally on anything narrower and freezes
+           at 1:1 once the window is wider than the artboard.
+
+   Below 900 px the two-column bands collapse to one and --s is pinned to a
+   readable range instead of tracking the viewport, because a 1920-wide layout
+   linearly scaled to a phone would put body copy at 8 px.
+
+   Load order: page-style.css (site chrome: nav, footer, tokens) → this file.
+=========================================================================== */
+
+.lp {
+    /* one design pixel */
+    --s: 0.0520833vw;
+
+    /* palette, sampled off the export */
+    --lp-ink: #5b5e6d;          /* body copy                        */
+    --lp-head: #6f6a99;         /* section headings                 */
+    --lp-violet: #7672a3;       /* result figures, step numerals    */
+    --lp-lav-bg: #f1efff;       /* tinted section bands + cards     */
+    --lp-lav-card: #e3e0ff;     /* cards sitting on a tinted band   */
+    --lp-lav-solid: #b9b1ff;    /* buttons, list rules              */
+    --lp-lav-circle: #d5d0ff;   /* methodology icon discs           */
+    --lp-chip: #e2aafd;         /* outline chips                    */
+    --lp-cyan: #8ed6ed;
+    --lp-green: #7db96e;
+    --lp-grid-bg: #fdffff;
+    /* the artboard's rules are a soft ~10px band, not a hairline */
+    --lp-line-0: rgba(109, 124, 158, 0);
+    --lp-line-1: rgba(109, 124, 158, 0.08);
+
+    --lp-wrap: calc(1712 * var(--s));
+    --lp-gutter: clamp(1rem, 5.4vw, 104px);
+
+    background: #ffffff;
+    color: var(--lp-ink);
+    font-family: "Poppins", "Sofia Pro", system-ui, sans-serif;
+    overflow-x: hidden;
+}
+
+/* page-style.css paints an ambient lavender wash behind the portfolio grid;
+   it would fight the flat bands this page is built out of. */
+.lp::before {
+    display: none;
+}
+
+@media (min-width: 1921px) {
+    .lp {
+        --s: 1px;
+    }
+}
+
+.lp-main {
+    margin: 0;
+    max-width: none;
+    padding: 0;
+}
+
+.lp-wrap {
+    margin-inline: auto;
+    max-width: calc(100% - 2 * var(--lp-gutter));
+    position: relative;
+    width: var(--lp-wrap);
+}
+
+/* =========================================================================
+   Bands
+   Three backgrounds carry the whole page: the ruled paper the hero and the
+   evidence sections sit on, the lavender tint, and plain white.
+========================================================================= */
+.lp-band {
+    position: relative;
+}
+
+.lp-band--grid {
+    background:
+        repeating-linear-gradient(to right,
+            var(--lp-line-0) 0,
+            var(--lp-line-0) calc(var(--lp-cell) - 10 * var(--s)),
+            var(--lp-line-1) calc(var(--lp-cell) - 5 * var(--s)),
+            var(--lp-line-0) var(--lp-cell)),
+        repeating-linear-gradient(to bottom,
+            var(--lp-line-0) 0,
+            var(--lp-line-0) calc(var(--lp-cell) - 10 * var(--s)),
+            var(--lp-line-1) calc(var(--lp-cell) - 5 * var(--s)),
+            var(--lp-line-0) var(--lp-cell)),
+        var(--lp-grid-bg);
+    --lp-cell: calc(75 * var(--s));
+}
+
+.lp-band--lav {
+    background: var(--lp-lav-bg);
+}
+
+.lp-band--white {
+    background: #ffffff;
+}
+
+/* the gallery sits on the ruled paper's ground with the rules faded out */
+.lp-gallery {
+    background: var(--lp-grid-bg);
+}
+
+/* =========================================================================
+   Type
+========================================================================= */
+.lp h2 {
+    color: var(--lp-head);
+    font-size: calc(69 * var(--s));
+    font-weight: 700;
+    line-height: 1.08;
+}
+
+.lp p {
+    font-size: calc(36 * var(--s));
+    line-height: calc(47 * var(--s));
+}
+
+.lp strong,
+.lp b {
+    color: #4d505f;
+    font-weight: 700;
+}
+
+.lp-lead {
+    max-width: calc(1050 * var(--s));
+}
+
+/* Buttons — the site's pill, repainted in the case's lavender. */
+.lp-btn {
+    align-items: center;
+    background: var(--lp-lav-solid);
+    border-radius: 999px;
+    box-shadow: 0 calc(10 * var(--s)) calc(26 * var(--s)) rgba(122, 106, 224, 0.28);
+    color: #ffffff;
+    display: inline-flex;
+    font-size: calc(38 * var(--s));
+    font-weight: 700;
+    justify-content: center;
+    padding: calc(23 * var(--s)) calc(80 * var(--s));
+    transition: background-color 200ms ease, color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.lp-btn:hover {
+    background: #ffffff;
+    box-shadow: 0 calc(14 * var(--s)) calc(32 * var(--s)) rgba(122, 106, 224, 0.2);
+    color: var(--lp-head);
+    transform: translateY(-3px);
+}
+
+/* Outline chips under the methodology steps. */
+.lp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(20 * var(--s));
+    margin-top: calc(26 * var(--s));
+}
+
+.lp-chip {
+    border: calc(3.9 * var(--s)) solid var(--lp-chip);
+    border-radius: 999px;
+    color: var(--lp-chip);
+    font-size: calc(23 * var(--s));
+    font-weight: 700;
+    letter-spacing: calc(1 * var(--s));
+    padding: calc(6 * var(--s)) calc(26 * var(--s));
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* =========================================================================
+   1 — Hero
+========================================================================= */
+.lp-hero {
+    padding-bottom: calc(47 * var(--s));
+    padding-top: calc(3.7rem + 19 * var(--s));
+    --lp-cell: calc(69.2 * var(--s));
+}
+
+.lp-hero-grid {
+    align-items: start;
+    display: grid;
+    grid-template-columns: calc(856 * var(--s)) calc(856 * var(--s));
+}
+
+.lp-hero-copy {
+    padding-top: calc(120 * var(--s));
+}
+
+.lp-hero-logo {
+    display: block;
+    height: auto;
+    width: calc(714 * var(--s));
+}
+
+.lp-hero-tags {
+    display: flex;
+    gap: calc(16 * var(--s));
+    margin-top: calc(52 * var(--s));
+}
+
+.lp-tag {
+    align-items: center;
+    border: calc(3.9 * var(--s)) solid var(--lp-tag, var(--lp-chip));
+    border-radius: 999px;
+    color: var(--lp-tag, var(--lp-chip));
+    display: inline-flex;
+    font-size: calc(24 * var(--s));
+    font-weight: 700;
+    height: calc(56 * var(--s));
+    justify-content: center;
+    letter-spacing: calc(1.1 * var(--s));
+    padding-inline: calc(30 * var(--s));
+    text-transform: uppercase;
+}
+
+.lp-tag--cyan { --lp-tag: var(--lp-cyan); }
+.lp-tag--violet { --lp-tag: var(--lp-chip); }
+.lp-tag--green { --lp-tag: var(--lp-green); }
+
+.lp-hero-lead {
+    font-size: calc(36 * var(--s));
+    line-height: calc(40 * var(--s));
+    margin-top: calc(44 * var(--s));
+    max-width: none;
+}
+
+.lp-jump {
+    align-items: center;
+    color: #adb0c4;
+    display: inline-flex;
+    font-size: calc(35 * var(--s));
+    font-weight: 500;
+    gap: calc(15 * var(--s));
+    letter-spacing: calc(0.5 * var(--s));
+    margin-top: calc(88 * var(--s));
+    text-transform: uppercase;
+}
+
+.lp-jump .material-symbols-outlined {
+    font-size: calc(46 * var(--s));
+    transition: transform 240ms ease;
+}
+
+.lp-jump:hover .material-symbols-outlined {
+    transform: translateY(calc(6 * var(--s)));
+}
+
+/* The two hero mockups overlap; both are placed against the same box so the
+   overlap holds at every scale. Box = the union of the two Figma frames. */
+.lp-hero-shot {
+    aspect-ratio: 707 / 757;
+    position: relative;
+    width: calc(707 * var(--s));
+}
+
+.lp-hero-shot img {
+    height: auto;
+    position: absolute;
+}
+
+.lp-shot-canvas {
+    left: 0;
+    top: 0;
+    width: 86.28%;
+    z-index: 2;
+}
+
+/* zipExported/iPhone 13 Pro.png — 304x543, opaque 24,12 → 288,540 */
+.lp-shot-team {
+    left: 58.84%;
+    top: 10.44%;
+    width: 43%;
+    z-index: 1;
+}
+
+/* Bento boards — exported whole out of Figma, so they only need placing.
+   The rail only does anything on narrow screens, where the boards would be
+   too dense to read scaled down; there they scroll sideways instead. */
+.lp-bento {
+    display: block;
+    height: auto;
+    margin-inline: auto;
+    max-width: none;
+    width: calc(1775 * var(--s));
+}
+
+.lp-bento--brand {
+    margin-top: calc(48 * var(--s));
+}
+
+.lp-bento--screens {
+    /* both exports carry ~40px of shadow padding; the boards themselves sit
+       25px apart, which is a negative margin between the files */
+    margin-top: calc(-51 * var(--s));
+    width: calc(1794 * var(--s));
+}
+
+/* =========================================================================
+   2 — Key responsibilities
+========================================================================= */
+.lp-resp {
+    padding-block: calc(70 * var(--s)) calc(101 * var(--s));
+}
+
+.lp-resp-grid {
+    display: grid;
+    gap: calc(60 * var(--s)) calc(72 * var(--s));
+    grid-template-columns: calc(660 * var(--s)) minmax(0, 1fr);
+    margin-top: calc(69 * var(--s));
+}
+
+.lp-resp-role {
+    font-size: calc(36 * var(--s));
+    font-weight: 700;
+    line-height: calc(47 * var(--s));
+}
+
+.lp-resp-note {
+    align-items: center;
+    display: flex;
+    gap: calc(24 * var(--s));
+    margin-top: calc(64 * var(--s));
+}
+
+.lp-resp-note img {
+    flex: none;
+    width: calc(80 * var(--s));
+}
+
+.lp-resp-note p {
+    line-height: calc(40 * var(--s));
+    margin: 0;
+}
+
+.lp-resp .lp-btn {
+    margin-top: calc(55 * var(--s));
+}
+
+.lp-duty + .lp-duty {
+    margin-top: calc(100 * var(--s));
+}
+
+.lp-duty {
+    border-left: calc(5 * var(--s)) solid var(--lp-lav-solid);
+    padding-left: calc(34 * var(--s));
+}
+
+.lp-duty h3 {
+    color: #4d505f;
+    font-size: calc(36 * var(--s));
+    font-weight: 700;
+    line-height: calc(47 * var(--s));
+}
+
+/* =========================================================================
+   3 — Methodology
+========================================================================= */
+.lp-method {
+    padding-block: calc(65 * var(--s)) calc(68 * var(--s));
+}
+
+.lp-method-intro {
+    margin-top: calc(25 * var(--s));
+}
+
+.lp-method-intro p {
+    line-height: calc(52 * var(--s));
+}
+
+.lp-method-intro strong {
+    display: block;
+}
+
+.lp-steps {
+    margin-top: calc(58 * var(--s));
+}
+
+.lp-step {
+    display: grid;
+    gap: calc(44 * var(--s));
+    grid-template-columns: calc(119 * var(--s)) minmax(0, 1fr);
+    /* the artboard steps the three discs 269px apart */
+    min-height: calc(269 * var(--s));
+    position: relative;
+}
+
+.lp-step:last-child {
+    min-height: 0;
+}
+
+/* dashed rail linking the three discs */
+.lp-step:not(:last-child)::before {
+    border-left: calc(3 * var(--s)) dashed var(--lp-lav-solid);
+    bottom: 0;
+    content: "";
+    left: calc(58 * var(--s));
+    position: absolute;
+    top: calc(119 * var(--s));
+}
+
+.lp-step img {
+    display: block;
+    width: calc(119 * var(--s));
+}
+
+.lp-step h3 {
+    color: var(--lp-violet);
+    font-size: calc(38 * var(--s));
+    font-weight: 700;
+    padding-top: calc(18 * var(--s));
+}
+
+.lp-step h3 span {
+    font-weight: 600;
+    opacity: 0.72;
+}
+
+.lp-step ul {
+    list-style: none;
+    margin-top: calc(14 * var(--s));
+}
+
+.lp-step li {
+    font-size: calc(36 * var(--s));
+    line-height: calc(47 * var(--s));
+    padding-left: calc(38 * var(--s));
+    position: relative;
+}
+
+.lp-step li::before {
+    content: "•";
+    left: calc(8 * var(--s));
+    position: absolute;
+}
+
+.lp-step p {
+    margin-top: calc(14 * var(--s));
+}
+
+/* =========================================================================
+   4 — Problem & audience
+========================================================================= */
+.lp-problem {
+    padding-block: calc(32 * var(--s)) calc(97 * var(--s));
+}
+
+.lp-problem-grid {
+    display: grid;
+    gap: calc(60 * var(--s));
+    grid-template-columns: minmax(0, 1fr) calc(600 * var(--s));
+}
+
+.lp-problem-copy {
+    max-width: calc(1030 * var(--s));
+    padding-top: calc(30 * var(--s));
+}
+
+.lp-problem-copy h2 {
+    margin-bottom: calc(60 * var(--s));
+}
+
+.lp-mascot {
+    align-self: start;
+    display: block;
+    height: auto;
+    justify-self: end;
+    margin-right: calc(66 * var(--s));
+    width: calc(510 * var(--s));
+}
+
+.lp-users {
+    display: grid;
+    gap: calc(44 * var(--s));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: calc(100 * var(--s));
+}
+
+.lp-user {
+    background: var(--lp-lav-card);
+    border-radius: calc(28 * var(--s));
+    padding: calc(50 * var(--s)) calc(44 * var(--s));
+}
+
+.lp-user p {
+    margin: 0;
+}
+
+/* =========================================================================
+   5 — Creating our solution / the key decision
+========================================================================= */
+.lp-solution {
+    padding-block: calc(91 * var(--s)) calc(75 * var(--s));
+}
+
+.lp-solution-grid {
+    display: grid;
+    gap: calc(60 * var(--s));
+    grid-template-columns: minmax(0, 1fr) calc(572 * var(--s));
+}
+
+.lp-solution-copy {
+    max-width: calc(985 * var(--s));
+}
+
+.lp-solution-copy > * + * {
+    margin-top: calc(46 * var(--s));
+}
+
+.lp-solution-copy h2 + p {
+    margin-top: calc(40 * var(--s));
+}
+
+.lp-solution-copy p + h2 {
+    margin-top: calc(94 * var(--s));
+}
+
+/* --- before / after ---------------------------------------------------
+   ba-device.png is the pre-redesign login inside its device frame; the
+   shipped screen is clipped in over the screen hole, whose rect is measured
+   off that export (43,48 → 468,956 of a 496x1003 file).
+------------------------------------------------------------------------ */
+.lp-ba {
+    padding-top: calc(16 * var(--s));
+}
+
+.lp-ba-device {
+    margin-inline: 0 auto;
+    position: relative;
+    /* scaled off the export's height so it matches the artboard's 972px device;
+       the export's frame is a hair narrower than the one in the frame */
+    width: calc(481 * var(--s));
+}
+
+.lp-ba-base {
+    display: block;
+    height: auto;
+    max-width: none;
+    width: 100%;
+}
+
+.lp-ba-screen {
+    border-radius: calc(34 * var(--s));
+    height: 90.528%;
+    left: 8.669%;
+    overflow: hidden;
+    position: absolute;
+    top: 4.786%;
+    width: 85.685%;
+}
+
+.lp-ba-screen img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* the shipped screen is revealed from the right as the handle travels left */
+.lp-ba-after {
+    clip-path: inset(0 0 0 var(--lp-ba, 73%));
+}
+
+.lp-ba-handle {
+    background: none;
+    border: 0;
+    cursor: ew-resize;
+    height: 90.528%;
+    left: calc(8.669% + var(--lp-ba, 73%) * 0.85685);
+    padding: 0;
+    position: absolute;
+    top: 4.786%;
+    touch-action: none;
+    transform: translateX(-50%);
+    width: calc(75 * var(--s));
+    z-index: 4;
+}
+
+.lp-ba-handle img {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.lp-ba-hint {
+    align-items: center;
+    color: #a9a5bd;
+    display: flex;
+    font-size: calc(30 * var(--s));
+    font-weight: 700;
+    gap: calc(14 * var(--s));
+    justify-content: center;
+    letter-spacing: calc(0.4 * var(--s));
+    margin-top: calc(36 * var(--s));
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.lp-ba-hint svg {
+    flex: none;
+    height: calc(26 * var(--s));
+    width: calc(52 * var(--s));
+}
+
+/* =========================================================================
+   6 — Screen carousel (full bleed)
+========================================================================= */
+.lp-carousel {
+    overflow-x: auto;
+    padding-block: calc(212 * var(--s)) calc(150 * var(--s));
+    scrollbar-width: none;
+}
+
+.lp-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.lp-carousel img {
+    display: block;
+    height: auto;
+    min-width: calc(1200 * var(--s));
+    width: 100%;
+}
+
+/* =========================================================================
+   7 — User validation
+========================================================================= */
+.lp-validation {
+    padding-block: calc(61 * var(--s)) calc(66 * var(--s));
+}
+
+.lp-validation h2 + p {
+    margin-top: calc(40 * var(--s));
+}
+
+.lp-findings {
+    display: grid;
+    gap: calc(33 * var(--s));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-block: calc(82 * var(--s)) calc(72 * var(--s));
+}
+
+.lp-finding {
+    background: var(--lp-lav-card);
+    border-radius: calc(28 * var(--s));
+    padding: calc(52 * var(--s)) calc(42 * var(--s)) calc(60 * var(--s));
+}
+
+.lp-finding b {
+    color: var(--lp-violet);
+    display: block;
+    font-size: calc(40 * var(--s));
+    font-weight: 700;
+    margin-bottom: calc(38 * var(--s));
+}
+
+.lp-finding h3 {
+    color: var(--lp-violet);
+    font-size: calc(36 * var(--s));
+    font-weight: 700;
+    line-height: calc(44 * var(--s));
+}
+
+.lp-finding p {
+    color: var(--lp-violet);
+    font-size: calc(36 * var(--s));
+    line-height: calc(44 * var(--s));
+}
+
+.lp-validation-close {
+    max-width: calc(1180 * var(--s));
+}
+
+.lp-validation .lp-btn {
+    margin-top: calc(63 * var(--s));
+}
+
+/* =========================================================================
+   8 — The solution in practice
+========================================================================= */
+.lp-practice {
+    padding-block: calc(82 * var(--s)) calc(96 * var(--s));
+}
+
+.lp-practice h2 + p {
+    margin-top: calc(40 * var(--s));
+}
+
+.lp-flow {
+    display: grid;
+    gap: calc(22 * var(--s));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: calc(79 * var(--s));
+}
+
+.lp-flow-card {
+    background: var(--lp-lav-bg);
+    border-radius: calc(30 * var(--s));
+    display: flex;
+    flex-direction: column;
+    padding: calc(20 * var(--s)) 0 calc(25 * var(--s));
+    text-align: center;
+}
+
+.lp-flow-card b {
+    color: var(--lp-violet);
+    font-size: calc(46 * var(--s));
+    font-weight: 700;
+    line-height: 1.2;
+    padding-left: calc(30 * var(--s));
+    text-align: left;
+}
+
+/* the export carries 6px of transparent margin around the device */
+.lp-flow-card img {
+    display: block;
+    height: auto;
+    margin-inline: auto;
+    width: calc(280 * var(--s));
+}
+
+.lp-flow-card figcaption {
+    color: var(--lp-head);
+    font-size: calc(34 * var(--s));
+    margin-top: calc(9 * var(--s));
+}
+
+/* =========================================================================
+   9 — Result & reflection
+========================================================================= */
+.lp-result {
+    padding-block: calc(56 * var(--s)) calc(77 * var(--s));
+}
+
+.lp-result-grid {
+    display: grid;
+    gap: calc(68 * var(--s));
+    grid-template-columns: calc(700 * var(--s)) minmax(0, 1fr);
+    margin-top: calc(76 * var(--s));
+}
+
+.lp-stat {
+    align-items: center;
+    color: var(--lp-violet);
+    display: flex;
+    gap: calc(46 * var(--s));
+}
+
+.lp-stat + .lp-stat {
+    margin-top: calc(146 * var(--s));
+}
+
+.lp-stat b {
+    color: var(--lp-violet);
+    flex: none;
+    font-size: calc(145 * var(--s));
+    font-weight: 500;
+    /* pinned to the label's two-line height so the rows step evenly */
+    line-height: calc(94 * var(--s));
+}
+
+.lp-stat span {
+    font-size: calc(40 * var(--s));
+    line-height: calc(47 * var(--s));
+}
+
+.lp-result-copy p + p {
+    margin-top: calc(44 * var(--s));
+}
+
+.lp-result-copy .lp-btn {
+    margin-top: calc(50 * var(--s));
+}
+
+/* =========================================================================
+   10 — Screen gallery
+========================================================================= */
+.lp-gallery {
+    padding-block: calc(124 * var(--s)) calc(122 * var(--s));
+}
+
+.lp-gallery-grid {
+    display: grid;
+    gap: calc(30 * var(--s));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.lp-gallery-grid img {
+    aspect-ratio: 318 / 695;
+    border-radius: calc(6 * var(--s));
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* =========================================================================
+   Narrow screens
+   Below the artboard's own proportions the linear scale stops being useful:
+   the columns collapse and --s is pinned to a readable band instead.
+========================================================================= */
+@media (max-width: 900px) {
+    .lp {
+        --s: clamp(0.42px, 0.125vw, 0.56px);
+        --lp-gutter: 1.25rem;
+    }
+
+    .lp-hero-grid,
+    .lp-resp-grid,
+    .lp-problem-grid,
+    .lp-solution-grid,
+    .lp-result-grid {
+        gap: calc(90 * var(--s));
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lp-hero-copy,
+    .lp-problem-copy {
+        padding-top: 0;
+    }
+
+    .lp-hero-shot {
+        margin-inline: auto;
+        max-width: calc(707 * var(--s));
+        width: 100%;
+    }
+
+    .lp-hero {
+        padding-top: calc(3.7rem + 2.5rem);
+    }
+
+    .lp-bento-rail {
+        margin-inline: calc(var(--lp-gutter) * -1);
+        overflow-x: auto;
+        padding-inline: var(--lp-gutter);
+        scrollbar-width: none;
+    }
+
+    .lp-bento-rail::-webkit-scrollbar {
+        display: none;
+    }
+
+    .lp-bento,
+    .lp-bento--screens {
+        /* a flat pixel width, not a scaled one: the point is to stay legible */
+        width: 46rem;
+    }
+
+    .lp-mascot {
+        justify-self: center;
+        width: calc(380 * var(--s));
+    }
+
+    .lp-users,
+    .lp-findings,
+    .lp-flow {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lp-ba-device {
+        margin-inline: auto;
+        max-width: calc(498 * var(--s));
+    }
+
+    .lp-gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lp-step {
+        grid-template-columns: calc(90 * var(--s)) minmax(0, 1fr);
+    }
+
+    .lp-step img {
+        width: calc(90 * var(--s));
+    }
+
+    .lp-step:not(:last-child)::before {
+        left: calc(44 * var(--s));
+        top: calc(90 * var(--s));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lp *,
+    .lp *::before,
+    .lp *::after {
+        transition-duration: 1ms !important;
+    }
+}

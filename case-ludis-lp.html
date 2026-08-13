@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LUDIS — Professional sports management, made accessible | Milena Caldas</title>
+<meta name="description" content="LUDIS: a sports management app taken from research to a shipped iOS product — 8 teams and 20 active users in the first week of launch."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="scripts/tailwind-theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
+<link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
+<link href="page-style.css" rel="stylesheet"/>
+<link href="case-ludis-lp.css" rel="stylesheet"/>
+</head>
+<body class="font-body lp">
+
+<!-- Site chrome, unchanged from the rest of the portfolio -->
+<nav class="site-nav">
+<div class="site-nav-inner">
+<div class="site-nav-brand">
+<a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
+<span class="status-tag status-tag-green">Available</span>
+</div>
+<div class="hidden md:flex items-center">
+<div class="site-nav-links">
+<a class="nav-link" href="index.html#work">work</a>
+<a class="nav-link" href="index.html#about">about</a>
+<a class="nav-link" href="about.html">resume</a>
+<a class="nav-link" href="index.html#contact">contact</a>
+</div>
+</div>
+<button class="md:hidden p-2" aria-label="Menu">
+<span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
+</button>
+</div>
+</nav>
+
+<main class="lp-main">
+
+<!-- ======================================================================
+     1 — Hero. Logo, framing, the two shipped screens, then the two bento
+     boards that stand in for a brand + component tour.
+====================================================================== -->
+<section class="lp-band lp-band--grid lp-hero">
+<div class="lp-wrap">
+<div class="lp-hero-grid">
+
+<div class="lp-hero-copy">
+<h1><img alt="LUDIS" class="lp-hero-logo" src="imagesProjects/ludis-lp/logo-ludis.png"/></h1>
+
+<div class="lp-hero-tags">
+<span class="lp-tag lp-tag--cyan">Product design</span>
+<span class="lp-tag lp-tag--violet">2022</span>
+<span class="lp-tag lp-tag--green">Shipped</span>
+</div>
+
+<p class="lp-hero-lead">Professional sports management tools,<br/>made accessible to any team.</p>
+
+<a class="lp-jump" href="#how"><span class="material-symbols-outlined">arrow_downward</span>How I did it</a>
+</div>
+
+<div class="lp-hero-shot">
+<img alt="The LUDIS play-drawing canvas with the player editor open" class="lp-shot-canvas" src="imagesProjects/ludis-lp/hero-phone-canvas.png"/>
+<img alt="The LUDIS new-team screen" class="lp-shot-team" src="imagesProjects/ludis-lp/hero-phone-team.png"/>
+</div>
+
+</div>
+
+<div class="lp-bento-rail">
+<img alt="LUDIS brand board — positioning, login screen, mascot, typeface, app icon, colour palette and buttons" class="lp-bento lp-bento--brand" src="imagesProjects/ludis-lp/bento-brand.png"/>
+<img alt="LUDIS component board — range of screens, event cards, the player editor, dense forms and the empty state" class="lp-bento lp-bento--screens" src="imagesProjects/ludis-lp/bento-screens.png"/>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     2 — Key responsibilities
+====================================================================== -->
+<section class="lp-band lp-band--lav lp-resp" id="how">
+<div class="lp-wrap">
+<h2>Key responsibilities</h2>
+
+<div class="lp-resp-grid">
+<div>
+<p class="lp-resp-role">Team of three · one developer, two designers.</p>
+<p style="margin-top: calc(46 * var(--s))">Owned research, wireframing, usability testing, and launch strategy.</p>
+
+<div class="lp-resp-note">
+<img alt="" aria-hidden="true" src="imagesProjects/ludis-lp/icon-handshake.png"/>
+<p>The design system was led<br/>by <strong>Natalia Da Rosa</strong></p>
+</div>
+
+<a class="lp-btn" href="#" rel="noopener noreferrer" target="_blank">view our design system</a>
+</div>
+
+<div>
+<div class="lp-duty">
+<h3>UX research</h3>
+<p>Benchmarking, interview scripts, usability testing.</p>
+</div>
+<div class="lp-duty">
+<h3>Design</h3>
+<p>Low-to-high fidelity wireframes and flows, in Figma, against Apple's HIG</p>
+</div>
+<div class="lp-duty">
+<h3>Go-to-market</h3>
+<p>Launch strategy, three paid campaigns, and promotional content</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     3 — Methodology
+====================================================================== -->
+<section class="lp-band lp-band--white lp-method">
+<div class="lp-wrap">
+<h2>Methodology</h2>
+
+<div class="lp-method-intro">
+<p><strong>Apple's CBL (Challenge Based Learning)</strong>A three-phase framework connecting problem definition, research, and execution.</p>
+</div>
+
+<div class="lp-steps">
+
+<div class="lp-step">
+<img alt="" aria-hidden="true" src="imagesProjects/ludis-lp/cbl-01.png"/>
+<div>
+<h3><span>01 ·</span> Engage</h3>
+<ul>
+<li>How to improve an athlete's experience with Sports Management?</li>
+<li>Seek to optimize and make professional Sports Management more accessible.</li>
+</ul>
+</div>
+</div>
+
+<div class="lp-step">
+<img alt="" aria-hidden="true" src="imagesProjects/ludis-lp/cbl-02.png"/>
+<div>
+<h3><span>02 ·</span> Investigate</h3>
+<p>Understanding who we were building for.</p>
+<div class="lp-chips">
+<span class="lp-chip">Audience</span>
+<span class="lp-chip">Interviews</span>
+<span class="lp-chip">Empathy map</span>
+<span class="lp-chip">Value prop canvas</span>
+<span class="lp-chip">Benchmarking</span>
+<span class="lp-chip">Persona</span>
+</div>
+</div>
+</div>
+
+<div class="lp-step">
+<img alt="" aria-hidden="true" src="imagesProjects/ludis-lp/cbl-03.png"/>
+<div>
+<h3><span>03 ·</span> Act</h3>
+<p>Turning insight into product.</p>
+<div class="lp-chips">
+<span class="lp-chip">Design system</span>
+<span class="lp-chip">Wireframes</span>
+<span class="lp-chip">Prototypes</span>
+<span class="lp-chip">Testing</span>
+<span class="lp-chip">Accessibility</span>
+<span class="lp-chip">HIG</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     4 — Problem & audience
+====================================================================== -->
+<section class="lp-band lp-band--grid lp-problem">
+<div class="lp-wrap">
+<div class="lp-problem-grid">
+<div class="lp-problem-copy">
+<h2>Problem &amp; Audience</h2>
+<p><strong>Youth and amateur sports teams</strong> struggle to organize training, matches, and team data — <strong>and the tools available don't fit them</strong>. Existing sports management apps tend to be <strong>inaccessible, expensive, or built for a narrow slice of the market</strong>, which leaves most coaches without a real option — especially the ones also acting as team managers, juggling both roles with <strong>no tooling built for that reality</strong>.</p>
+</div>
+<img alt="GOAT, the LUDIS mascot, waving" class="lp-mascot" src="imagesProjects/ludis-lp/mascot-hello.png"/>
+</div>
+
+<div class="lp-users">
+<div class="lp-user"><p><strong>Primary user:</strong> coaches and sports teachers, often with little to no formal management experience</p></div>
+<div class="lp-user"><p><strong>Secondary user:</strong> athletes and team members, typically younger.</p></div>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     5 — Creating our solution + the key decision.
+     The mockup on the right is the real before/after: drag the handle.
+====================================================================== -->
+<section class="lp-band lp-band--lav lp-solution">
+<div class="lp-wrap">
+<div class="lp-solution-grid">
+
+<div class="lp-solution-copy">
+<h2>Creating our solution</h2>
+<p><strong>UX shaped Ludis from day one</strong> — research fed directly into wireframes, taken from low to high fidelity, refined through user flows built jointly by designers and developers, and grounded throughout in <strong>Apple's Human Interface Guidelines</strong>.</p>
+
+<h2>The Key Decision</h2>
+<p>The original vision for Ludis was <strong>broad</strong> — scheduling, communication, and performance tracking across any sport. After our <strong>first round of validation</strong>, we decided that <strong>reducing our scope</strong> would be the best option given the time we had and the goals we still wanted to achieve.</p>
+<p><strong>We scoped the MVP down to one main feature: the play-drawing playbook</strong>.</p>
+</div>
+
+<div class="lp-ba">
+<div class="lp-ba-device" data-ba>
+<img alt="The LUDIS login screen before the redesign" class="lp-ba-base" src="imagesProjects/ludis-lp/ba-device.png"/>
+<div class="lp-ba-screen">
+<img alt="The shipped LUDIS login screen" class="lp-ba-after" src="imagesProjects/ludis-lp/ba-after.png"/>
+</div>
+<button aria-label="Drag to compare before and after" aria-valuemax="100" aria-valuemin="0" aria-valuenow="73" class="lp-ba-handle" role="slider" tabindex="0" type="button">
+<img alt="" aria-hidden="true" src="imagesProjects/ludis-lp/ba-handle.png"/>
+</button>
+</div>
+<p class="lp-ba-hint"><svg aria-hidden="true" fill="none" viewBox="0 0 52 26" xmlns="http://www.w3.org/2000/svg"><path d="M12 4 4 13l8 9M40 4l8 9-8 9M4 13h44" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/></svg>Slide for before and after</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     6 — The shipped screens, full bleed
+====================================================================== -->
+<section class="lp-band lp-band--grid">
+<div class="lp-carousel">
+<img alt="Five LUDIS screens: login, new team, the empty playbook, the June calendar and the profile form" src="imagesProjects/ludis-lp/carousel.png"/>
+</div>
+</section>
+
+<!-- ======================================================================
+     7 — User validation
+====================================================================== -->
+<section class="lp-band lp-band--lav lp-validation">
+<div class="lp-wrap">
+<h2>User validation</h2>
+<p>We ran a <strong>moderated usability test</strong> with the same initial users, then returned to that feedback for a <strong>second round of iteration</strong>. Ease of use scored 5/5, likelihood to recommend scored 5/5 — and the session surfaced real gaps we shipped before release:</p>
+
+<div class="lp-findings">
+<div class="lp-finding">
+<b>01</b>
+<h3>Multi-Sport Templates</h3>
+<p>Added soccer, volleyball, and basketball</p>
+</div>
+<div class="lp-finding">
+<b>02</b>
+<h3>Custom Backgrounds</h3>
+<p>Added the ability to upload images to serve as custom backgrounds</p>
+</div>
+<div class="lp-finding">
+<b>03</b>
+<h3>Offline &amp; Export</h3>
+<p>Allowed users to save locally, with shareable images or PDFs</p>
+</div>
+</div>
+
+<p class="lp-validation-close">This wasn't just fixing friction — it was expanding the product in the direction users actually asked for, based on evidence instead of assumption. <strong>Bellow, you can find the interview protocol we used for our validation process.</strong></p>
+
+<a class="lp-btn" href="#" rel="noopener noreferrer" target="_blank">view interview protocol</a>
+</div>
+</section>
+
+<!-- ======================================================================
+     8 — The solution in practice
+====================================================================== -->
+<section class="lp-band lp-band--white lp-practice">
+<div class="lp-wrap">
+<h2>The Solution in Practice</h2>
+<p><strong>Login &amp; team setup → Playbook list → Play-drawing canvas:</strong> choose a template for your sport (football, soccer, or volleyball) or a custom background, add players with role-based symbols (shape, not just color, for accessibility), draw routes with directional lines, and save to a reusable playbook — available offline, with export to image or PDF for sharing on the field.</p>
+
+<div class="lp-flow">
+<figure class="lp-flow-card">
+<b>01</b>
+<img alt="The LUDIS login screen" src="imagesProjects/ludis-lp/phone-01.png"/>
+<figcaption>Sign in, build team</figcaption>
+</figure>
+<figure class="lp-flow-card">
+<b>02</b>
+<img alt="The empty playbook, prompting the first play" src="imagesProjects/ludis-lp/phone-02.png"/>
+<figcaption>Every play, one place</figcaption>
+</figure>
+<figure class="lp-flow-card">
+<b>03</b>
+<img alt="The play-drawing canvas with a football formation" src="imagesProjects/ludis-lp/phone-03.png"/>
+<figcaption>Draw, save, share</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     9 — Result & reflection
+====================================================================== -->
+<section class="lp-band lp-band--grid lp-result">
+<div class="lp-wrap">
+<h2>Result &amp; Reflection</h2>
+
+<div class="lp-result-grid">
+<div>
+<div class="lp-stat"><b>8</b><span>new teams created<br/>in week one</span></div>
+<div class="lp-stat"><b>20</b><span>active users in week<br/>one</span></div>
+<div class="lp-stat"><b>3</b><span>paid campaigns,<br/>content produced<br/>in-house</span></div>
+</div>
+
+<div class="lp-result-copy">
+<p>LUDIS launched <strong>successfully and served its community goal, built through a user-focused, metric-driven process</strong>. But our research only ever confirmed us — it never pushed back. What looked like validation then reads now as a <strong>blind spot</strong>: research that can't contradict you isn't testing your assumptions, it's just recording them. Next time I'd design the study to be able to prove me wrong.</p>
+<p>To learn more about our marketing and launch campaign, view my separate project on LUDIS' social media design.</p>
+<a class="lp-btn" href="#">view LUDIS' marketing project</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     10 — Every screen that shipped
+====================================================================== -->
+<section class="lp-band lp-band--white lp-gallery">
+<div class="lp-wrap">
+<div class="lp-gallery-grid">
+<img alt="LUDIS login" loading="lazy" src="imagesProjects/ludis-lp/shot-01.png"/>
+<img alt="Account creation" loading="lazy" src="imagesProjects/ludis-lp/shot-02.png"/>
+<img alt="Mascot introduction" loading="lazy" src="imagesProjects/ludis-lp/shot-03.png"/>
+<img alt="Team code entry" loading="lazy" src="imagesProjects/ludis-lp/shot-04.png"/>
+<img alt="New team" loading="lazy" src="imagesProjects/ludis-lp/shot-05.png"/>
+<img alt="Empty playbook" loading="lazy" src="imagesProjects/ludis-lp/shot-06.png"/>
+<img alt="Playbook list in selection mode" loading="lazy" src="imagesProjects/ludis-lp/shot-07.png"/>
+<img alt="Player editor on a blank canvas" loading="lazy" src="imagesProjects/ludis-lp/shot-08.png"/>
+<img alt="Football formation on the canvas" loading="lazy" src="imagesProjects/ludis-lp/shot-09.png"/>
+<img alt="Player number picker" loading="lazy" src="imagesProjects/ludis-lp/shot-10.png"/>
+<img alt="Team area" loading="lazy" src="imagesProjects/ludis-lp/shot-11.png"/>
+<img alt="Team settings and members" loading="lazy" src="imagesProjects/ludis-lp/shot-12.png"/>
+<img alt="User profile" loading="lazy" src="imagesProjects/ludis-lp/shot-13.png"/>
+<img alt="Reset password dialog" loading="lazy" src="imagesProjects/ludis-lp/shot-14.png"/>
+<img alt="Leave without saving dialog" loading="lazy" src="imagesProjects/ludis-lp/shot-15.png"/>
+<img alt="Calendar empty state" loading="lazy" src="imagesProjects/ludis-lp/shot-16.png"/>
+<img alt="Upcoming events" loading="lazy" src="imagesProjects/ludis-lp/shot-17.png"/>
+<img alt="Month view with event labels" loading="lazy" src="imagesProjects/ludis-lp/shot-18.png"/>
+<img alt="Event filter menu" loading="lazy" src="imagesProjects/ludis-lp/shot-19.png"/>
+<img alt="Change attendance status" loading="lazy" src="imagesProjects/ludis-lp/shot-20.png"/>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+<div class="site-footer-links">
+<a href="#">Instagram</a>
+<a href="#">LinkedIn</a>
+<a href="#">Behance</a>
+<a href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+</div>
+<p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
+</footer>
+
+<script src="scripts/ludis-lp.js"></script>
+</body>
+</html>
