@@ -521,7 +521,7 @@ body::before {
 /* Home-only launch notice. Both graphics come from the supplied banner kit;
    the stripe tile moves by exactly one rendered tile width for a seamless loop. */
 .home-page {
-    --construction-banner-height: 1.75rem;
+    --construction-banner-height: 2.625rem;
     --nav-clearance: calc(5rem + var(--construction-banner-height));
 }
 
@@ -535,7 +535,7 @@ body::before {
     background-image: url("assets/ui/construction-stripes.png");
     background-position: 0 50%;
     background-repeat: repeat-x;
-    background-size: 46.0274rem var(--construction-banner-height);
+    background-size: 69.0411rem var(--construction-banner-height);
     display: flex;
     height: var(--construction-banner-height);
     justify-content: center;
@@ -547,15 +547,15 @@ body::before {
 .construction-banner-message {
     display: block;
     height: auto;
-    max-width: calc(100% - 2rem);
-    width: 36.1875rem;
+    max-width: calc(100% - 3rem);
+    width: 54.28125rem;
 }
 
 .construction-banner-message-mobile {
     align-items: center;
     color: #29234f;
     display: none;
-    font-size: 0.66rem;
+    font-size: clamp(0.66rem, 2.8vw, 0.9rem);
     font-weight: 600;
     gap: 0.45rem;
     line-height: 1;
@@ -563,16 +563,16 @@ body::before {
 }
 
 .construction-banner-icon {
-    background: url("assets/ui/construction-message.png") left center / 36.1875rem auto no-repeat;
+    background: url("assets/ui/construction-message.png") left center / 54.28125rem auto no-repeat;
     display: block;
-    flex: 0 0 1.65rem;
-    height: 1.45rem;
-    width: 1.65rem;
+    flex: 0 0 clamp(1.65rem, 6vw, 2.475rem);
+    height: clamp(1.45rem, 5.25vw, 2.175rem);
+    width: clamp(1.65rem, 6vw, 2.475rem);
 }
 
 @keyframes constructionStripeScroll {
     to {
-        background-position: -46.0274rem 50%;
+        background-position: -69.0411rem 50%;
     }
 }
 
