@@ -40,7 +40,12 @@ const boot = async () => {
         if (!host || !wordBox) {
             return;
         }
+        /* perf-lite is a verdict already reached on this visit — either by the
+           frame-time probe in scripts/perf-tier.js or by the hero itself on an
+           earlier page, which runs the same scene and knows better than any
+           capability flag can. */
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            || document.documentElement.classList.contains("perf-lite")
             || !supportsWebGL2()
             || !canAffordIt()) {
             return;

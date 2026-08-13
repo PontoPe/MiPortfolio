@@ -20,6 +20,26 @@ const WORD_VISIBILITY_LEAD_MS = 300;
 const WORD_REVEAL_DURATION_MS = 1400;
 const WORD_REVEAL_START_SCALE = 0.02;
 const NAV_SELECTOR = ".site-nav";
+/* Quality ladder. A dispersive transmission pass renders the scene three extra
+   times per frame, and the canvas is the width of the viewport — on a large
+   retina screen with an older GPU that is enough to miss 60fps by a lot, and no
+   check made before the scene exists can tell which machines those are. So the
+   scene measures itself: if the mean frame is late over a run of frames, it
+   drops a step. Resolution first (the cheapest thing to lose to a curved
+   refraction), then dispersion, which is what actually costs the extra passes. */
+const QUALITY_STEPS = [
+    { pixelRatio: RENDERER.maxPixelRatio, transmissionScale: RENDERER.transmissionResolutionScale, dispersion: GLASS.dispersion },
+    { pixelRatio: 1.5, transmissionScale: 0.35, dispersion: GLASS.dispersion },
+    { pixelRatio: 1, transmissionScale: 0.3, dispersion: 0 },
+];
+const QUALITY_SAMPLE_FRAMES = 90;
+/* 24ms is a frame and a half at 60Hz: comfortably past jitter, and low enough
+   that a scene sitting at 30fps is caught within two seconds. */
+const QUALITY_SLOW_FRAME_MS = 24;
+/* Nothing is measured until the zoom-in has finished — it is the most expensive
+   moment of the scene's life and the least representative of it. */
+const QUALITY_WARMUP_MS = WORD_REVEAL_DURATION_MS + 600;
+const PERF_TIER_KEY = "portfolio:perf-tier";
 /* The stage bleeds past the lettering so the glass has something to refract on
    every side, and the falling stickers live inside that bleed. It stops at the
    ticker: past that band the rain would be drifting over the about block and
@@ -69,6 +89,7 @@ export const mountHero = async ({ host, wordBox }) => {
 
     let fitWidth = 1;
     let glassBaseY = 0;
+    let qualityStep = 0;
 
     const resize = () => {
         /* The canvas is absolutely positioned, so a debug size increase would
@@ -93,7 +114,7 @@ export const mountHero = async ({ host, wordBox }) => {
         if (!width || !height) {
             return;
         }
-        stage.setSize(width, height, Math.min(window.devicePixelRatio, RENDERER.maxPixelRatio));
+        stage.setSize(width, height, Math.min(window.devicePixelRatio, QUALITY_STEPS[qualityStep].pixelRatio));
         background.setSize(width, height);
         stickers.setSize(width, height);
         const hostRect = host.getBoundingClientRect();
@@ -161,6 +182,78 @@ export const mountHero = async ({ host, wordBox }) => {
        hero is ready; this delay keeps the word hidden through its exit. */
     scheduleWordReveal();
 
+    let sampleFrames = 0;
+    let sampleSeconds = 0;
+
+    /* Last step reached and still late: the machine is not going to run this
+       scene. Nothing is torn down — mid-view the swap back to the PNG would be
+       a worse artefact than a slow hero — but the tier is recorded, so the next
+       page of the visit skips the WebGL hero and the expensive CSS with it.
+       See scripts/perf-tier.js, which owns this key. */
+    const recordSlowMachine = () => {
+        document.documentElement.classList.add("perf-lite");
+        try {
+            window.sessionStorage.setItem(PERF_TIER_KEY, "lite");
+        } catch (error) {
+            /* Storage unavailable: the class still applies to this page. */
+        }
+    };
+
+    const downgrade = () => {
+        qualityStep += 1;
+        const step = QUALITY_STEPS[qualityStep];
+        if ("transmissionResolutionScale" in stage.renderer) {
+            stage.renderer.transmissionResolutionScale = step.transmissionScale;
+        }
+        /* three compiles dispersion in behind a define (USE_DISPERSION), so
+           turning it off is a recompile rather than a uniform write. */
+        if (glass.material.dispersion !== step.dispersion) {
+            glass.material.dispersion = step.dispersion;
+            glass.material.needsUpdate = true;
+        }
+        /* Reapplies the step's pixel ratio, which is where most of the saving
+           is: the drawing buffer is the viewport's width. */
+        resize();
+    };
+
+    let qualitySettled = false;
+
+    /* Mean frame time over a run of frames, judged once the run is complete.
+       Mean rather than median because the delta is already clamped at 100ms
+       upstream, so a single stall cannot carry the average on its own. */
+    const sampleQuality = (dt) => {
+        if (qualitySettled
+            || wordRevealStartedAt === null
+            || performance.now() - wordRevealStartedAt < QUALITY_WARMUP_MS) {
+            return;
+        }
+
+        sampleFrames += 1;
+        sampleSeconds += dt;
+        if (sampleFrames < QUALITY_SAMPLE_FRAMES) {
+            return;
+        }
+
+        const meanFrameMs = (sampleSeconds / sampleFrames) * 1000;
+        sampleFrames = 0;
+        sampleSeconds = 0;
+
+        if (meanFrameMs <= QUALITY_SLOW_FRAME_MS) {
+            /* Holding the frame at this step: stop measuring. The ladder only
+               ever goes down, so there is nothing further to learn, and a
+               scroll or a resize should not be able to demote a scene that is
+               running fine. */
+            qualitySettled = true;
+            return;
+        }
+        if (qualityStep < QUALITY_STEPS.length - 1) {
+            downgrade();
+        } else {
+            qualitySettled = true;
+            recordSlowMachine();
+        }
+    };
+
     const render = () => {
         const dt = Math.min(clock.getDelta(), 0.1);
         const time = clock.getElapsedTime();
@@ -205,6 +298,7 @@ export const mountHero = async ({ host, wordBox }) => {
             : null);
 
         stage.renderer.render(stage.scene, stage.camera);
+        sampleQuality(dt);
     };
 
     const loop = () => {
@@ -289,5 +383,14 @@ export const mountHero = async ({ host, wordBox }) => {
         /* Unconditional, so the debug panel still updates the picture on a
            hero whose loop is parked. */
         redraw: render,
+        /* Exposed for ?glass: the ladder is the one part of the scene that
+           cannot be tried by looking at a fast machine, so __hero.downgrade()
+           is how the slow-machine picture gets checked on a quick one. */
+        downgrade: () => {
+            if (qualityStep < QUALITY_STEPS.length - 1) {
+                downgrade();
+            }
+            return { step: qualityStep, ...QUALITY_STEPS[qualityStep] };
+        },
     };
 };

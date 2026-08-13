@@ -1122,7 +1122,6 @@ main {
     border: 1px solid rgba(255, 255, 255, 0.9);
     box-shadow: 0 1rem 2.25rem rgba(73, 100, 219, 0.18);
     transition: box-shadow 520ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
-    will-change: transform;
 }
 
 .project-card:hover .project-frame {
@@ -1130,9 +1129,13 @@ main {
     transform: translateY(-4px);
 }
 
+/* No will-change on the cards, deliberately. There are dozens of them and the
+   hint is permanent: every card would hold its own compositing layer at 2x for
+   the whole session, which on a large retina screen is tens of megabytes of GPU
+   memory to save a promotion the browser does anyway when the transition
+   starts. */
 .project-visual {
     transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
-    will-change: transform;
 }
 
 .project-card:hover .project-visual {
@@ -1141,7 +1144,6 @@ main {
 
 .project-visual-centered {
     transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
-    will-change: transform;
 }
 
 .project-arrow {
@@ -1789,4 +1791,64 @@ main {
     box-shadow: 0 1rem 2.25rem rgba(73, 100, 219, 0.1);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced-cost tier (scripts/perf-tier.js adds .perf-lite to <html>)
+   ---------------------------------------------------------------------------
+   Everything switched off here is compositor cost, not layout: no box changes
+   size or moves, so the class can land mid-session without reflowing the page.
+
+   The two that matter, in order:
+     · The ambient layer never stops. Any backdrop-filter above a surface that
+       keeps changing has to be recomputed every frame, forever — so on a
+       machine that cannot afford the blur, the animation behind it is the thing
+       that keeps charging for it.
+     · blur() on the parallax blobs. They are soft gradients on soft gradients;
+       a 10-14px blur of that is close to invisible, and it costs a full-
+       viewport offscreen pass per layer.
+--------------------------------------------------------------------------- */
+.perf-lite .parallax-bg::before,
+.perf-lite .parallax-bg::after {
+    animation: none;
+}
+
+.perf-lite .parallax-layer {
+    filter: none;
+    will-change: auto;
+}
+
+/* The backdrop under all of these is the page's own gradient wash, which is
+   already smooth — blurring it changes almost nothing to look at and costs a
+   full re-blur of the region on every frame. The translucent background stays,
+   so the surfaces keep reading as glass. */
+.perf-lite .glass-card,
+.perf-lite .section-panel,
+.perf-lite .site-footer,
+.perf-lite .info-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* The nav keeps a blur — it is the one surface with real content scrolling
+   under it, where losing the blur is legible as a change — but a much cheaper
+   one. Blur cost grows with the radius, and this band is the full width of the
+   viewport. */
+.perf-lite .site-nav {
+    background: rgba(250, 250, 254, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* feTurbulence + feDisplacementMap as a backdrop-filter is the single most
+   expensive thing on the page: the noise is regenerated on the CPU whenever the
+   region is rasterized, and it sits over the hero. The blur/saturate line is
+   the same fallback non-Chromium browsers get. */
+.perf-lite .hero-welcome-glass {
+    backdrop-filter: blur(2px) saturate(1.2) brightness(1.04);
+    -webkit-backdrop-filter: blur(2px) saturate(1.2) brightness(1.04);
+}
+
+.perf-lite .emoji-rain {
+    display: none;
 }
