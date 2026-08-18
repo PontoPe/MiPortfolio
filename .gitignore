@@ -1,4 +1,9 @@
-.claude/
+# Config local do Claude Code fica de fora, mas a skill do portfólio é parte do
+# repositório: sem ela, quem clonar não tem o sistema de design.
+.claude/*
+!.claude/skills/
+
+*.zip
 
 # Design source material — Figma exports, zips, reference boards. Read locally
 # when building a page skin; nothing here is served, and it is heavy (~9 MB).

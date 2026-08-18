@@ -1,0 +1,535 @@
+/* ===========================================================================
+   tokens.css — fonte única da verdade
+   ---------------------------------------------------------------------------
+   Origem de cada bloco:
+     1–3  design-system.md (Figma, validado em WCAG 2.1 AA). Não alterar.
+     4–8  extraído de case-ludis-lp.css + page-style.css (valores de fonte,
+          repositório PontoPe/MiPortfolio). Números do artboard 1920.
+
+   Modelo de escala — HÍBRIDO (decisão fechada):
+     LAYOUT      → proporcional, em `--s`. Container, colunas, gaps, padding
+                   de seção, ritmo vertical, largura de imagem.
+     COMPONENTE  → fixo, em px/rem. Tipografia, tag, botão, alvo de toque,
+                   focus ring, raio de componente.
+
+   Carregar ANTES de page-style.css e de qualquer folha de página.
+=========================================================================== */
+
+:root {
+
+/* ===========================================================================
+   1. PALETA PRIMITIVA                                    [design-system.md]
+   Toda escala parte do 500. 100–400 = base + 80/60/40/20% branco.
+   600–900 = base + 20/40/60/80% preto. Cor nova entra pelo 500.
+   Nunca criar degrau na mão.
+=========================================================================== */
+
+    /* purple — primária */
+    --purple-100: #F1EFFF;
+    --purple-200: #E3E0FF;
+    --purple-300: #D5D0FF;
+    --purple-400: #C7C1FF;
+    --purple-500: #B9B1FF;
+    --purple-600: #948ECC;
+    --purple-700: #6F6A99;
+    --purple-800: #4A4766;
+    --purple-900: #121219;   /* exceção mantida: 90% preto, não 80% */
+
+    /* pink — secundária */
+    --pink-100: #F9EEFF;
+    --pink-200: #F3DDFE;
+    --pink-300: #EECCFE;
+    --pink-400: #E8BBFD;
+    --pink-500: #E2AAFD;
+    --pink-600: #B588CA;
+    --pink-700: #886698;
+    --pink-800: #5A4465;
+    --pink-900: #2D2233;
+
+    /* blue — secundária */
+    --blue-100: #E8F7FB;
+    --blue-200: #D2EFF8;
+    --blue-300: #BBE6F4;
+    --blue-400: #A5DEF1;
+    --blue-500: #8ED6ED;
+    --blue-600: #72ABBE;
+    --blue-700: #55808E;
+    --blue-800: #39565F;
+    --blue-900: #1C2B2F;
+
+    /* gray — neutra */
+    --gray-100: #EAEBF0;
+    --gray-200: #D6D7E1;
+    --gray-300: #C1C4D3;
+    --gray-400: #ADB0C4;
+    --gray-500: #989CB5;
+    --gray-600: #7A7D91;
+    --gray-700: #5B5E6D;
+    --gray-800: #3D3E48;
+    --gray-900: #1E1F24;
+
+    /* green — sucesso */
+    --green-100: #E6F7E1;
+    --green-200: #CCEFC4;
+    --green-300: #B3E7A6;
+    --green-400: #99DF88;
+    --green-500: #80D76A;
+    --green-600: #66AC55;
+    --green-700: #4D8140;
+    --green-800: #33562B;
+    --green-900: #1A2B15;
+
+    /* red — erro. NÃO USADA em nenhuma página do portfólio. */
+    --red-100: #FAD8D8;
+    --red-200: #F6B0B0;
+    --red-300: #F18989;
+    --red-400: #ED6161;
+    --red-500: #E83A3A;
+    --red-600: #BA2E2E;
+    --red-700: #8B2323;
+    --red-800: #5D1717;
+    --red-900: #2E0C0C;
+
+    /* Sem escala de warning — decidido. */
+
+
+/* ===========================================================================
+   2. CAMADA SEMÂNTICA — DOIS TEMAS            [design-system.md + dark mode]
+
+   Cada token abaixo é `light-dark(claro, escuro)`. O navegador escolhe pelo
+   `color-scheme` declarado no bloco 2.0. Isso mantém UMA declaração por token
+   em vez de dois blocos espelhados que dessincronizam com o tempo.
+
+   REGRA DO MODO ESCURO: a paleta primitiva do bloco 1 **não muda**. Nenhum
+   degrau novo, nenhuma cor nova. O escuro só reatribui qual degrau cumpre
+   qual papel — e onde a escada 100–900 não tem o passo de superfície que o
+   escuro precisa, ele é DERIVADO por `color-mix` de dois degraus existentes,
+   nunca inventado à mão.
+
+   O escuro não é o claro invertido. Três diferenças deliberadas:
+     · superfície sobe de escuro para claro conforme ELEVA (page → card),
+       o inverso do claro, que desce de branco para lavanda;
+     · o hover clareia em vez de escurecer;
+     · o rótulo do botão primário fica ESCURO sobre o roxo, não branco.
+=========================================================================== */
+
+/* --- 2.0 mecanismo de tema ------------------------------------------------
+   Sem atributo: segue o sistema operacional.
+   `data-theme` no <html> força um dos dois e vence o SO.
+   Só isto liga o `light-dark()` — não remova. */
+    color-scheme: light dark;
+
+    /* superfícies.
+       Claro: branco → lavanda, o card é o degrau mais saturado.
+       Escuro: quase-preto → cinza-roxo, o card é o degrau mais CLARO. */
+    /* Superfícies derivadas do escuro, já resolvidas — para conferência:
+         bg-page    #121219   purple-900 puro
+         bg-subtle  #1D1D28   88% p900 + 12% p700
+         bg-surface #21212A   80% p900 + 20% gray-700
+         bg-card    #2A293A   74% p900 + 26% p700           */
+    --color-bg-page:    light-dark(#FFFFFF, var(--purple-900));
+    --color-bg-surface: light-dark(var(--gray-100),
+                        color-mix(in srgb, var(--purple-900) 80%, var(--gray-700)));
+    --color-bg-subtle:  light-dark(var(--purple-100),
+                        color-mix(in srgb, var(--purple-900) 88%, var(--purple-700)));
+    --color-bg-card:    light-dark(var(--purple-200),
+                        color-mix(in srgb, var(--purple-900) 74%, var(--purple-700)));
+    --color-bg-inverse: light-dark(var(--purple-900), var(--gray-100));
+
+    /* texto — a escada inverte de ponta a ponta:
+       no claro `strong` é o mais ESCURO, no escuro é o mais CLARO. */
+    --color-text-heading: light-dark(var(--purple-700), var(--purple-300));
+    --color-text-body:    light-dark(var(--gray-700),   var(--gray-300));
+    --color-text-strong:  light-dark(var(--purple-800), var(--purple-200));
+    --color-text-inverse: light-dark(#FFFFFF, var(--purple-900));
+
+    /* Rótulo do botão primário.
+       CLARO — EXCEÇÃO DECLARADA pela Milena: branco puro sobre --purple-500
+       dá 1.95 e sobre --purple-600 (hover) dá 3.00, reprovando em texto
+       normal nos dois estados. A borda em --purple-600 dá 3.00 sobre branco,
+       então o LIMITE do componente passa; o que reprova é só o rótulo.
+       Para reverter, troque por var(--color-text-body) (8.46 sobre o 500).
+
+       ESCURO — a exceção NÃO se repete. O fundo do primário continua no
+       --purple-500, mas o rótulo vira --purple-900: 9.60. O modo escuro
+       resolve de graça o único par de texto que o claro não fecha. */
+    --color-text-on-accent: light-dark(#FFFFFF, var(--purple-900));
+
+    /* bordas */
+    --color-border:        light-dark(var(--gray-300), var(--gray-700));
+    --color-border-strong: light-dark(var(--gray-600), var(--gray-500));
+
+    /* marca — o acento é o mesmo degrau nos dois temas; só o hover troca de
+       direção, porque no escuro escurecer o hover o faria sumir no fundo. */
+    --color-accent:       var(--purple-500);
+    --color-accent-hover: light-dark(var(--purple-600), var(--purple-400));
+    --color-focus-ring:   light-dark(var(--purple-700), var(--purple-300));
+
+    /* estado */
+    --color-success: light-dark(var(--green-700), var(--green-400));
+    --color-error:   light-dark(var(--red-600),   var(--red-300));  /* sem uso */
+
+    /* tags — EXCEÇÃO DECLARADA pela Milena, e SÓ NO CLARO.
+       Degraus originais do Figma, mantidos por decisão de marca: pink no 500,
+       green e blue no 600. Sobre branco, texto 12px: pink 1.84 · green 2.76 ·
+       blue 2.53 — reprovam em texto (4.5) e em limite de componente (3.0).
+       Sobre --color-bg-subtle cai para 1.63 / 2.44 / 2.24.
+
+       No ESCURO os MESMOS três degraus passam com folga sobre a página:
+       pink 9.94 · green 6.28 · blue 7.19. Nada precisou mudar — é o fundo
+       que mudou. A tag é o único componente autorizado a usá-los.
+       Para tornar o claro acessível, troque por --pink-800/--green-800/
+       --blue-800; o escuro precisaria então dos degraus 300. */
+    --color-tag-pink:  var(--pink-500);    /* #E2AAFD */
+    --color-tag-green: var(--green-600);   /* #66AC55 */
+    --color-tag-blue:  var(--blue-600);    /* #72ABBE */
+
+    /* botão — o componente precisa de token próprio porque no escuro a escada
+       de fundo do secundário inverte: no claro sobe 200 → 300 → 400, no
+       escuro clareia a partir do card. */
+    --color-btn-primary-bg:          var(--color-accent);
+    --color-btn-primary-bg-hover:    var(--color-accent-hover);
+    --color-btn-secondary-bg:        light-dark(var(--purple-200), var(--color-bg-card));
+    --color-btn-secondary-bg-hover:  light-dark(var(--purple-300),
+                                     color-mix(in srgb, var(--purple-900) 62%, var(--purple-700)));
+    --color-btn-secondary-bg-active: light-dark(var(--purple-400),
+                                     color-mix(in srgb, var(--purple-900) 50%, var(--purple-700)));
+    --color-btn-disabled-bg:     light-dark(var(--gray-200), var(--gray-800));
+    --color-btn-disabled-border: light-dark(var(--gray-400), var(--gray-600));
+    --color-btn-disabled-text:   light-dark(var(--gray-600), var(--gray-500));
+
+
+/* ===========================================================================
+   3. TIPOGRAFIA                                          [design-system.md]
+   Família única: Poppins. Pesos 400, 500, 700.
+   500 é legítimo (uso medido em .lp-jump e .lp-stat).
+   Kalam foi REMOVIDA — era carregada e nunca usada.
+=========================================================================== */
+
+    --font-family:        'Poppins', system-ui, sans-serif;
+    --font-family-script: 'Caveat', cursive;   /* exclusivo do site-loader */
+
+    --font-weight-regular: 400;
+    --font-weight-medium:  500;
+    --font-weight-bold:    700;
+
+    /* Escala tipográfica. Substitui a escala C do design-system.md por
+       decisão da Milena. Títulos são fluidos dentro da faixa declarada;
+       corpo é fixo, sem clamp. */
+
+    /* display — acima da hierarquia de títulos, só numeral de métrica */
+    --font-size-display: clamp(3.5rem, 7.5vw, 5.4375rem);  /* 56 → 87px */
+
+    /* títulos */
+    --font-size-h1: clamp(3rem, 4.6vw, 3.5rem);        /* 48 → 56px */
+    --font-size-h2: clamp(2.5rem, 3.4vw, 2.625rem);    /* 40 → 42px */
+    --font-size-h3: clamp(2rem, 2.6vw, 2.25rem);       /* 32 → 36px */
+    --font-size-h4: 1.75rem;                           /* 28px      */
+    --font-size-h5: 1.5rem;                            /* 24px      */
+    --font-size-h6: clamp(1.125rem, 1.4vw, 1.25rem);   /* 18 → 20px */
+
+    /* corpo */
+    --font-size-body-lg: 1.125rem;   /* 18px — parágrafo de abertura        */
+    --font-size-body:    1rem;       /* 16px — padrão de texto, lista, campo*/
+    --font-size-body-sm: 0.875rem;   /* 14px — nota secundária, legenda     */
+    --font-size-caption: 0.75rem;    /* 12px — tag, rótulo, texto de apoio  */
+
+    --line-height-heading: 1.08;   /* medido no Figma, mantido */
+    --line-height-body:    1.5;
+    --line-height-body-sm: 1.4;
+    --line-height-caption: 1.3;
+    --line-height-tight:   1;      /* pílula de altura fixa: tag e botão */
+
+    --letter-spacing-caption: 0.04em;   /* bold uppercase 12px fecha sem ele */
+
+    --measure: 54ch;   /* medida de leitura; proporção do arquivo Figma */
+
+
+/* ===========================================================================
+   4. ESCALA DE LAYOUT `--s`                    [case-ludis-lp.css, medido]
+   1 px de design do artboard 1920. Redefinida nos media queries do fim.
+=========================================================================== */
+
+    --s: 0.0520833vw;
+
+
+/* ===========================================================================
+   5. CONTAINER E GRADE                                   [medido]
+=========================================================================== */
+
+    --container-wrap:   calc(1712 * var(--s));         /* miolo de case      */
+    --container-gutter: clamp(1rem, 5.4vw, 104px);     /* recuo do case      */
+    --container-max:    110rem;                        /* nav, footer, chrome*/
+    --page-gutter:      clamp(1.5rem, 4vw, 4.5rem);    /* recuo do chrome    */
+
+    /* gaps de grid — todos proporcionais */
+    --gap-column:       calc(60 * var(--s));   /* REGRA: banda de 2 colunas  */
+    --gap-cards:        calc(33 * var(--s));   /* grid de 2 ou 3 cards       */
+    --gap-gallery:      calc(30 * var(--s));   /* grid da galeria            */
+    --gap-stack:        calc(90 * var(--s));   /* empilhado, ≤900px          */
+    --gap-inline:       calc(16 * var(--s));   /* entre tags no hero         */
+
+
+/* ===========================================================================
+   6. RITMO VERTICAL                            [medido — substitui a tabela
+   derivada da seção 3 do design-system.md, como o próprio documento previa]
+=========================================================================== */
+
+    --rhythm-head-body:      calc(40 * var(--s));   /* h2 → 1º parágrafo. REGRA (3×) */
+    --rhythm-head-component: calc(76 * var(--s));   /* h2 → grid/componente. faixa medida 69–82 */
+    --rhythm-para:           calc(46 * var(--s));   /* parágrafo → parágrafo. dominante (2/3) */
+    --rhythm-block:          calc(94 * var(--s));   /* parágrafo → h2 seguinte */
+    --rhythm-action:         calc(55 * var(--s));   /* conteúdo → botão. medidos: 50/55/63 */
+
+    /* padding vertical de seção — dois pares fixos, ambos medidos */
+    --section-pad-tight-top:    calc(65 * var(--s));
+    --section-pad-tight-bottom: calc(68 * var(--s));
+    --section-pad-loose-top:    calc(124 * var(--s));
+    --section-pad-loose-bottom: calc(122 * var(--s));
+
+    /* clearance da nav fixa */
+    --nav-clearance: 5rem;
+
+
+/* ===========================================================================
+   7. ESPAÇAMENTO INTERNO DE COMPONENTE            [design-system.md, fixo]
+   Base 8pt (Apple HIG), sub-grade de 4pt.
+=========================================================================== */
+
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  24px;
+    --space-6:  32px;
+    --space-8:  48px;
+    --space-10: 64px;
+    --space-12: 96px;
+    --space-16: 128px;
+
+    --radius-pill: 999px;
+    --radius-card: 12px;
+    --radius-panel: 2rem;                      /* .section-panel, medido     */
+    --radius-band-card: calc(28 * var(--s));   /* card dentro de banda, medido */
+    --radius-image: calc(6 * var(--s));        /* imagem de galeria, medido  */
+
+    /* Sombra. Alfas do claro medidos do site; base RGB migrada para
+       --purple-800 (74,71,102).
+
+       No ESCURO uma sombra roxa translúcida some — não há luz para ela
+       ocultar. A base vira preto puro e o alfa quase dobra, que é o que
+       ainda lê como elevação sobre um fundo quase-preto. Elevação no escuro
+       também vem da superfície clarear (ver bg-page → bg-card), não só da
+       sombra: as duas coisas trabalham juntas. */
+    --shadow-300:        0px 4px 4px -1px light-dark(rgba(12, 12, 13, 0.15), rgba(0, 0, 0, 0.55));
+    --shadow-panel:      0 1.5rem 3rem   light-dark(rgba(74, 71, 102, 0.14), rgba(0, 0, 0, 0.55));
+    --shadow-card:       0 1rem 2.25rem  light-dark(rgba(74, 71, 102, 0.18), rgba(0, 0, 0, 0.60));
+    --shadow-card-hover: 0 1.5rem 3rem   light-dark(rgba(74, 71, 102, 0.28), rgba(0, 0, 0, 0.72));
+
+    --touch-target: 44px;   /* mínimo HIG */
+
+
+/* ===========================================================================
+   8. COMPONENTES — FIXO                                  [design-system.md]
+=========================================================================== */
+
+    --tag-height:       28px;
+    --tag-border:       2px;
+    --tag-padding-x:    var(--space-3);
+
+    --btn-height:       48px;
+    --btn-min-width:    120px;
+    --btn-padding-x:    var(--space-5);
+    --btn-border:       2px;
+
+    --focus-ring-width:  2px;
+    --focus-ring-offset: 2px;
+
+    --icon-size:      24px;   /* opsz do Material Symbols */
+    --icon-size-lg:   30px;
+    --icon-weight:    400;
+    --icon-fill:      0;
+    --icon-grade:     0;
+
+
+/* ===========================================================================
+   8.1 COMPONENTES COMPOSTOS                   [case-ludis-lp.css, artboard]
+   Geometria interna dos componentes que existiam só na folha do LUDIS e agora
+   moram em components.css. Vale o modelo híbrido do topo: o que é LAYOUT
+   (disco, trilho, largura de mídia) fica em `--s`; o que é COMPONENTE
+   (chip, borda de tabela) fica fixo.
+=========================================================================== */
+
+    /* chip — pílula de enumeração. Menor que a tag por decisão de hierarquia:
+       tag é metadado de página, chip é conteúdo dentro de um passo. */
+    --chip-height:      24px;
+    --chip-border:      2px;
+    --chip-padding-x:   var(--space-3);
+
+    /* passos numerados com trilho tracejado */
+    --steps-disc:        calc(119 * var(--s));   /* disco, desktop */
+    --steps-disc-narrow: calc(90 * var(--s));    /* disco, ≤900px  */
+    --steps-gap:         calc(44 * var(--s));    /* disco → texto  */
+    --steps-pitch:       calc(269 * var(--s));   /* distância entre discos */
+    --steps-rail:        calc(3 * var(--s));     /* espessura do trilho */
+
+    /* card de fluxo — numeral + mídia + legenda */
+    --flow-card-media:  calc(280 * var(--s));
+
+    /* comparador antes/depois.
+       O recorte da tela é geometria do PNG da moldura, não do design system:
+       estes são os valores do export do LUDIS (496x1003, buraco 43,48→468,956).
+       Uma moldura diferente sobrescreve os quatro no próprio elemento. */
+    --ba-device-width:  calc(481 * var(--s));
+    --ba-handle-width:  calc(75 * var(--s));
+    --ba-screen-top:    4.786%;
+    --ba-screen-left:   8.669%;
+    --ba-screen-width:  85.685%;
+    --ba-screen-height: 90.528%;
+    --ba-screen-radius: calc(34 * var(--s));
+    --ba-screen-scale:  0.85685;   /* --ba-screen-width como fração — o divisor
+                                      caminha dentro do recorte, não do elemento */
+    --ba-start:         73%;    /* posição inicial do divisor */
+
+    /* carrossel full-bleed */
+    --carousel-item-w:  calc(389 * var(--s));
+    --carousel-item-h:  calc(802 * var(--s));
+    --carousel-gap:     calc(80 * var(--s));
+    --carousel-cycle:   36s;
+
+    /* filete lateral — citação em destaque e card de contraste.
+       Medido em .lp-duty, o único uso do padrão na página do LUDIS. */
+    --rule-accent:      calc(5 * var(--s));
+
+    /* tabela de dados */
+    --table-border:     1px;
+
+
+/* ===========================================================================
+   9. MOVIMENTO                                           [medido]
+=========================================================================== */
+
+    --duration-fast:  120ms;   /* troca de cor de botão (design-system.md)  */
+    --duration-base:  200ms;   /* padrão do site: hover de link e botão     */
+    --duration-slow:  520ms;   /* card de projeto                           */
+    --easing-standard: ease;
+    --easing-emphasis: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --hover-lift: -3px;        /* botão. card usa -4px                      */
+
+
+/* ===========================================================================
+   10. BANDAS DE FUNDO                                    [medido]
+=========================================================================== */
+
+    /* O papel quadriculado. No claro é um branco levemente frio com régua
+       cinza-azulada; no escuro o fundo sobe um passo acima da página e a
+       régua vira lavanda clara com o mesmo alfa baixo — a grade tem que
+       continuar sendo textura, não desenho. */
+    --band-grid-bg:   light-dark(#FDFFFF,
+                      color-mix(in srgb, var(--purple-900) 95%, var(--purple-600)));
+    --band-grid-cell: calc(75 * var(--s));
+    --band-grid-line: light-dark(rgba(109, 124, 158, 0.08), rgba(199, 193, 255, 0.10));
+    --band-grid-void: light-dark(rgba(109, 124, 158, 0),    rgba(199, 193, 255, 0));
+}
+
+
+/* ===========================================================================
+   2.1 FORÇAR UM TEMA
+   Sem atributo, `color-scheme: light dark` faz o site seguir o sistema
+   operacional. Estes dois selectores deixam o usuário escolher e vencem o SO.
+   `only` é o que impede o navegador de reverter para a preferência do SO.
+=========================================================================== */
+
+:root[data-theme="light"] { color-scheme: only light; }
+:root[data-theme="dark"]  { color-scheme: only dark; }
+
+
+/* ===========================================================================
+   11. MIGRAÇÃO DO CHROME
+   page-style.css declara uma paleta própria que não existe no design system.
+   Estes overrides a redirecionam para os tokens acima sem tocar naquele
+   arquivo. Carregar tokens.css DEPOIS de page-style.css para que valham,
+   ou mover este bloco para o fim da cascata.
+=========================================================================== */
+
+:root {
+    --ink:             var(--color-text-body);     /* era #777c95, 4.28 */
+    --ink-soft:        var(--color-text-body);     /* era #9ca0b2, 2.62 — reprovava */
+    --periwinkle:      var(--color-accent);
+    --periwinkle-deep: var(--color-accent-hover);
+    --pill-soft:       var(--purple-200);
+    --violet:          var(--purple-500);
+    --violet-deep:     var(--purple-600);
+    --violet-soft:     var(--purple-200);
+    --ticker-bg:       var(--purple-300);
+    --page-max:        var(--container-max);
+
+    --glass-blue:    rgba(74, 71, 102, 0.11);
+    --panel:         rgba(74, 71, 102, 0.09);
+    --panel-strong:  rgba(74, 71, 102, 0.16);
+    --shadow-tint:   light-dark(rgba(74, 71, 102, 0.14), rgba(0, 0, 0, 0.55));
+
+    /* grade ambiente do chrome */
+    --grid-cell: 30px;
+    --grid-line: rgba(148, 142, 204, 0.14);   /* base migrada p/ purple-600 */
+}
+
+
+/* ===========================================================================
+   11.1 TOKENS DE TEXTO DO CHROME
+   `--periwinkle-deep` é usado em page-style.css como TEXTO (rodapé, nav-link
+   em hover e ativo, eyebrow de seção) e como FUNDO (pontos do loader, hover
+   do .nav-cta e do .cta-btn-primary). Escurecer o degrau consertaria o texto
+   e escureceria os fundos junto, então os usos de TEXTO ganharam token
+   próprio, declarado em page-style.css e redirecionado aqui.
+
+   ATENÇÃO: hoje só `case-mosaico-lp.html` carrega este arquivo. As outras
+   páginas leem os valores originais declarados em page-style.css, que já
+   passam em contraste. Este bloco só passa a valer quando a página carregar
+   tokens.css — ver migration.md, item S1.
+=========================================================================== */
+
+:root {
+    --chrome-link:        var(--color-text-heading);  /* 5.00 sobre o chrome */
+    --chrome-link-strong: var(--color-text-strong);   /* 8.81 — hover e painel tingido */
+    --chrome-link-rest:   var(--color-text-body);     /* 6.43 — repouso da nav */
+}
+
+
+/* ===========================================================================
+   12. BREAKPOINTS
+   Dois pontos de quebra reais. Não inventar um terceiro.
+=========================================================================== */
+
+/* Acima do artboard: a escala congela em 1:1. */
+@media (min-width: 1921px) {
+    :root { --s: 1px; }
+}
+
+/* Abaixo de 900px a escala linear deixa de ser legível: --s é fixada numa
+   faixa e todos os grids colapsam para uma coluna. */
+@media (max-width: 900px) {
+    :root {
+        --s: clamp(0.42px, 0.125vw, 0.56px);
+        --container-gutter: 1.25rem;
+    }
+}
+
+/* 768px é o único BP do chrome: abaixo dele a nav desktop some e o botão
+   de menu assume. */
+
+
+/* ===========================================================================
+   13. MOVIMENTO REDUZIDO
+=========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+    }
+}

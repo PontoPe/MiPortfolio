@@ -49,6 +49,21 @@
     --ink-soft: #9ca0b2;
     --periwinkle: #aab7ed;
     --periwinkle-deep: #8b9ae3;
+    /* Texto de link do chrome — rodapé, nav em hover e ativo, eyebrow.
+       Era --periwinkle-deep (#8b9ae3), que dá 2.73 sobre o branco do chrome e
+       reprova em texto normal. Estes dois são os degraus 700 e 800 do design
+       system: 5.00 e 8.81. Token separado porque --periwinkle-deep também
+       pinta FUNDO (pontos do loader, hover do .nav-cta e do .cta-btn-primary),
+       e escurecer o degrau mudaria esses fundos junto.
+       tokens.css §11.1 redireciona os dois quando a página o carrega. */
+    --chrome-link: #6F6A99;
+    /* degrau 800 — para hover e para texto sobre superfície tingida, onde o
+       700 não fecha 4.5 (o .section-panel tem um véu azul de 11%) */
+    --chrome-link-strong: #4A4766;
+    /* Repouso do link de nav. Era --ink-soft (#9ca0b2): 2.49, pior que o
+       hover. É o gray-700 do design system, 6.43. Só o link — os outros nove
+       usos de --ink-soft são texto corrido e não foram tocados. */
+    --chrome-link-rest: #5B5E6D;
     --pill-soft: #dae2ff;
     /* Violet family: the ticker band and the pill buttons */
     --violet: #c5baf7;
@@ -618,6 +633,7 @@ body::before {
 .nav-logo {
     display: inline-flex;
     align-items: center;
+    min-height: 44px;   /* alvo tocável: a imagem tem 32px */
     transition: opacity 200ms ease;
 }
 
@@ -679,23 +695,26 @@ body::before {
 }
 
 .nav-link {
-    color: var(--ink-soft);
+    align-items: center;
+    color: var(--chrome-link-rest);
+    display: inline-flex;
     font-size: 0.95rem;
     font-weight: 500;
+    min-height: 44px;   /* alvo tocável: tinha 23px */
     transition: color 200ms ease;
 }
 
 .nav-link:hover {
-    color: var(--periwinkle-deep);
+    color: var(--chrome-link);
 }
 
 .nav-link.is-active {
-    color: var(--periwinkle-deep);
+    color: var(--chrome-link);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 0.45em;
-    text-decoration-color: rgba(73, 100, 219, 0.6);
+    text-decoration-color: currentColor;
 }
 
 /* ---------------------------------------------------------------------------
@@ -1170,8 +1189,9 @@ html.has-reveal [data-reveal-group].is-revealed [data-reveal="3"] { transition-d
     padding: clamp(1.5rem, 3.5vw, 3rem);
 }
 
+/* o eyebrow vive sobre o .section-panel, não sobre branco: precisa do 800 */
 .section-eyebrow {
-    color: var(--periwinkle-deep);
+    color: var(--chrome-link-strong);
     font-size: 0.95rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
@@ -1796,7 +1816,8 @@ main {
     -webkit-backdrop-filter: blur(18px);
     border-top: 1px solid rgba(255, 255, 255, 0.7);
     box-shadow: 0 -0.5rem 1.75rem rgba(73, 100, 219, 0.08);
-    color: var(--ink-soft);
+    /* era --ink-soft (#9ca0b2): 2.45 no rodapé, reprova em texto normal */
+    color: var(--chrome-link-rest);
     font-size: 0.85rem;
     line-height: 1.7;
     padding: 2.25rem 2rem;
@@ -1804,12 +1825,13 @@ main {
 }
 
 .site-footer a {
-    color: var(--periwinkle-deep);
+    color: var(--chrome-link);
     transition: color 200ms ease;
 }
 
+/* o hover ia para --periwinkle, mais claro ainda: 2.09 */
 .site-footer a:hover {
-    color: var(--periwinkle);
+    color: var(--chrome-link-strong);
     text-decoration: underline;
     text-underline-offset: 0.3em;
 }
@@ -1819,6 +1841,13 @@ main {
     gap: 1.75rem;
     justify-content: center;
     margin-bottom: 0.85rem;
+}
+
+/* alvo tocável: os links do rodapé tinham 23px de altura */
+.site-footer-links a {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
 }
 
 /* ---------------------------------------------------------------------------
