@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOSAICO — A writing method that beginners actually finish | Milena Caldas</title>
+<meta name="description" content="Mosaico turns design methodology into a writing process. 4/4 first-time writers finished a story, and a teacher took it into her classroom.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+<link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256">
+<link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32">
+<link href="page-style.css" rel="stylesheet">
+<link href="tokens.css" rel="stylesheet">
+<link href="components.css" rel="stylesheet">
+<link href="case-mosaico-lp.css" rel="stylesheet">
+</head>
+<body class="case-page case-mosaico-lp">
+
+<!-- ==========================================================================
+     Chrome — nav variante case, idêntica ao resto do portfólio
+========================================================================== -->
+<nav class="site-nav">
+<div class="site-nav-inner">
+<div class="site-nav-brand">
+<a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"></a>
+<span class="status-tag status-tag-green">Available</span>
+</div>
+<div class="hidden md:flex items-center">
+<div class="site-nav-links">
+<a class="nav-link" href="index.html#work">work</a>
+<a class="nav-link" href="index.html#about">about</a>
+<a class="nav-link" href="about.html">resume</a>
+<a class="nav-link" href="index.html#contact">contact</a>
+</div>
+</div>
+<button class="md:hidden p-2" type="button" aria-label="Menu">
+<span class="material-symbols-outlined" aria-hidden="true">menu</span>
+</button>
+</div>
+</nav>
+
+<main class="case-main">
+
+<!-- ======================================================================
+     01 — HERO. Banda quadriculada.
+     Abre no resultado, não na pergunta de pesquisa: completion é a métrica
+     de edtech, e 4/4 em quem nunca concluiu nada é a primeira linha certa.
+====================================================================== -->
+<section class="band band--grid case-mosaico-lp__hero">
+<div class="wrap">
+<div class="case-mosaico-lp__hero-grid">
+
+<div class="text-block case-mosaico-lp__hero-copy">
+<div class="tag-group">
+<span class="tag tag--blue">Learning experience design</span>
+<span class="tag tag--pink">UX research</span>
+<span class="tag tag--green">2023 → ongoing</span>
+</div>
+<h1>Mosaico</h1>
+<h2 class="case-mosaico-lp__deck">A writing method that beginners actually finish</h2>
+<p class="lead">Four people who had never written a story finished one. A teacher in the study asked to take the method into her classroom — I hadn't designed for that, and it turned out to be the most important thing that happened.</p>
+</div>
+
+<!-- guide-hero — imagemProjects/mosaico-case/guide-hero.jpg (4:3) -->
+<div class="case-mosaico-lp__hero-shot">
+<div class="ph-image" data-placeholder="true">The printed Mosaico guide, open on a spread, photographed at scale — 4:3</div>
+</div>
+
+</div>
+
+<div class="stat-group--row case-mosaico-lp__hero-stats">
+<div class="stat"><b>4/4</b><span>completion,<br>first-time writers</span></div>
+<div class="stat"><b>4.7/5</b><span>satisfaction<br>(QUIS)</span></div>
+<div class="stat"><b>1</b><span>unsolicited<br>classroom adoption</span></div>
+</div>
+
+<a class="link-jump case-mosaico-lp__jump" href="#how-it-works">
+<span class="material-symbols-outlined" aria-hidden="true">arrow_downward</span>
+how it works
+</a>
+</div>
+</section>
+
+<!-- ======================================================================
+     02 — O OBJETO. Banda lavanda, respiro.
+     Sem texto dentro. Prova que o projeto virou coisa e compra os 60
+     segundos seguintes de leitura.
+====================================================================== -->
+<section class="band band--loose band--subtle case-mosaico-lp__object">
+<div class="wrap">
+<div class="case-mosaico-lp__object-grid">
+<!-- diagram-final.png -->
+<div class="ph-image case-mosaico-lp__obj--diagram" data-placeholder="true">The final Mosaico diagram, in colour, after the study's adjustments</div>
+<!-- guide-spread.jpg -->
+<div class="ph-image case-mosaico-lp__obj--spread" data-placeholder="true">A spread of the printed guide, showing an auxiliary tool beside its source</div>
+<!-- fanzine-cover.jpg -->
+<div class="ph-image case-mosaico-lp__obj--fanzine" data-placeholder="true">The printed fanzine cover</div>
+<!-- arcs-shapes.png -->
+<div class="ph-image case-mosaico-lp__obj--arcs" data-placeholder="true">The six emotional arcs drawn as graphic shapes</div>
+<!-- tools-filled.jpg -->
+<div class="ph-image case-mosaico-lp__obj--tools" data-placeholder="true">Adapted design tools, filled in by a participant</div>
+<!-- notebook-page.jpg -->
+<div class="ph-image case-mosaico-lp__obj--notebook" data-placeholder="true">A page from the structured field notebook</div>
+<!-- palette-type.png -->
+<div class="ph-image case-mosaico-lp__obj--palette" data-placeholder="true">The guide's colour palette and typography</div>
+</div>
+
+<div class="stat-group--row case-mosaico-lp__object-stats">
+<div class="stat"><b>3</b><span>phases</span></div>
+<div class="stat"><b>16</b><span>steps</span></div>
+<div class="stat"><b>10</b><span>auxiliary tools</span></div>
+<div class="stat"><b>6</b><span>stories written</span></div>
+<div class="stat"><b>1</b><span>printed fanzine</span></div>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     03 — O INSIGHT. Banda branca.
+     A pergunta de pesquisa vive aqui, não no hero.
+====================================================================== -->
+<section class="band band--white">
+<div class="wrap">
+<div class="text-block">
+<h2>The insight</h2>
+<p class="lead">Writing a story is a project. But unlike a design project, it arrives with no process — no steps, no checkpoints, no way to know you're doing it right. So beginners face the blank page and read their own paralysis as a lack of talent.</p>
+<p>Design methodologies exist to solve exactly that: they turn ambiguous creative work into navigable steps. The bet was that the scaffolding is transferable — that what helps a designer ship a product could help a writer finish a story.</p>
+</div>
+
+<blockquote class="pull-quote case-mosaico-lp__quote">
+The problem isn't that beginners can't write. It's that nobody hands them a process.
+</blockquote>
+
+<!-- Professor é usuário, não canal. Mapeado como público desde o começo,
+     a adoção do bloco 07 lê como previsão confirmada, não como sorte. -->
+<div class="grid-2 case-mosaico-lp__audience">
+<div class="band-card">
+<h3>Learner</h3>
+<p>Beginners who start stories and abandon them.</p>
+</div>
+<div class="band-card">
+<h3>Teacher</h3>
+<p>Educators who teach writing and have no process to hand a student.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     04 — COMO FUNCIONA. Banda quadriculada.
+     Comprime cinco seções da página antiga numa só. O rigor continua
+     visível sem cobrar leitura.
+====================================================================== -->
+<section class="band band--grid" id="how-it-works">
+<div class="wrap">
+<div class="text-block">
+<h2>How it works</h2>
+<p class="lead">Mosaico borrows its shape from the thing it teaches — three phases named after narrative structure itself.</p>
+</div>
+
+<div class="case-mosaico-lp__method">
+<!-- method-diagram.png (16:10) -->
+<div class="ph-image case-mosaico-lp__method-diagram" data-placeholder="true">The three phases and their sixteen steps, with the auxiliary tools attached to each — 16:10</div>
+
+<ol class="case-mosaico-lp__phases">
+<li>
+<b>Exposition</b>
+<p>Goal, arc, reader, references.</p>
+</li>
+<li>
+<b>Action</b>
+<p>Character, setting, constraints, internal checkpoint.</p>
+</li>
+<li>
+<b>Resolution</b>
+<p>Argument alternatives, timeline, writing, refinement.</p>
+</li>
+</ol>
+</div>
+
+<div class="text-block case-mosaico-lp__method-close">
+<p>Every step hands the writer a design tool with the abstraction removed. A persona turns "write for your reader" into a filled-in sheet. An empathy map turns "make the character believable" into six questions with answers. <strong>The method never asks for talent it can't scaffold.</strong></p>
+<p class="note">Built from 9 documented methodologies filtered by four criteria — documented, user-centered, iterative, outcome-driven — plus the six emotional arcs from Reagan et al. (2016), a computational study of 1,327 works of fiction.</p>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     05 — TRÊS DECISÕES. Banda lavanda.
+     contexto → decisão → trade-off assumido. É o bloco pelo qual ela é
+     triada: considerei A e B, escolhi B por X, e paguei Y por isso.
+====================================================================== -->
+<section class="band band--subtle">
+<div class="wrap">
+<div class="text-block">
+<h2>Three decisions</h2>
+</div>
+
+<div class="case-mosaico-lp__decisions">
+
+<!-- 05a -->
+<article class="band-card case-mosaico-lp__decision">
+<b>01</b>
+<h3>Where the six arcs came from</h3>
+<div class="case-mosaico-lp__decision-body">
+<div class="text-block">
+<p>Narrative structure has plenty of established taxonomies. I chose the six emotional arcs from Reagan et al. (2016) instead — a study from the University of Vermont's Computational Story Lab that classified the emotional trajectories of <strong>1,327 works of fiction</strong> from the Project Gutenberg corpus.</p>
+<p>What made it usable wasn't just that it was quantitative. It was that <strong>three independent methods — matrix decomposition, supervised and unsupervised learning — converged on the same six shapes.</strong> Convergence from separate methods is the same reason I trusted my own foundation analysis: nine methodologies, different authors, overlapping steps. Structure that survives being found more than once.</p>
+<p>There's a symmetry in the source, too. The hypothesis was Kurt Vonnegut's, in a master's thesis the University of Chicago rejected. The paper is a literary intuition finally tested against data — roughly what I was attempting with design methods and writing.</p>
+<p class="case-mosaico-lp__tradeoff"><strong>Trade-off:</strong> six shapes is a coarse instrument. It gives a beginner something choosable — pick the shape your story should trace — at the cost of nuance a literary taxonomy would preserve. For someone who has never finished a story, choosable beat precise.</p>
+</div>
+<!-- arcs-oedipus.png (16:9) -->
+<figure class="figure case-mosaico-lp__arcs">
+<div class="ph-image" data-placeholder="true">The six emotional arcs as shapes, with the Oedipus arc marked as the one used in the study — 16:9</div>
+<figcaption>Six shapes a beginner can choose between — the Oedipus arc is the one the study held constant.</figcaption>
+</figure>
+</div>
+<p class="note case-mosaico-lp__citation">Reagan, A. J.; Mitchell, L.; Kiley, D.; Danforth, C. M.; Dodds, P. S. The emotional arcs of stories are dominated by six basic shapes. EPJ Data Science, v. 5, n. 31, 2016. DOI: 10.1140/epjds/s13688-016-0093-1</p>
+</article>
+
+<!-- 05b -->
+<article class="band-card case-mosaico-lp__decision">
+<b>02</b>
+<h3>Designing for deviation</h3>
+<div class="text-block">
+<p>I wrote an explicit escape clause into the guide: adjust or simplify the process according to your project.</p>
+<p class="case-mosaico-lp__tradeoff"><strong>Trade-off:</strong> a method that permits deviation can't claim its results came from being followed exactly. That's why 2 of 8 participants reordering the steps counted as the tool working rather than as a protocol violation — but I gave up the cleaner claim to get it.</p>
+</div>
+</article>
+
+<!-- 05c — os 6 de 8 atravessam os dois grupos, sinal mais forte que 6 dentro de um só -->
+<article class="band-card case-mosaico-lp__decision case-mosaico-lp__decision--wide">
+<b>03</b>
+<h3>Removing the users from a user-centered tool</h3>
+<div class="case-mosaico-lp__decision-body">
+<div class="text-block">
+<p><strong>6 of 8 participants pushed back on the external validation steps</strong> — recruiting a focus group of readers mid-process. The friction was real: a solo writer will never assemble a focus group, and steps nobody runs aren't steps, they're decoration.</p>
+<p>So I cut external validation from a method whose entire philosophy was user-centered design, and replaced it with internal checkpoints — the writer reviewing their earlier decisions against the goal and audience they set in phase one.</p>
+<p class="case-mosaico-lp__tradeoff"><strong>Trade-off, unresolved:</strong> listening to users meant removing the users. The method got completed more and validated less. v2 puts real readers back in the loop by design — that's the whole reason it exists.</p>
+</div>
+
+<div class="case-mosaico-lp__ba">
+<!-- steps-before.png / steps-after.png (4:3) — o comparador compara dois
+     diagramas, não duas telas: geometria do recorte sobrescrita no CSS. -->
+<div class="ba-device case-mosaico-lp__ba-device">
+<div class="ph-image ba-base" data-placeholder="true">The step sequence before external validation was removed — 4:3</div>
+<div class="ba-screen">
+<div class="ph-image ba-after" data-placeholder="true">The step sequence after external validation was replaced by internal checkpoints — 4:3</div>
+</div>
+<button class="ba-handle case-mosaico-lp__ba-handle" type="button" role="slider"
+        aria-label="Compare the step sequence before and after"
+        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></button>
+</div>
+<p class="ba-hint">slide for before and after</p>
+</div>
+</div>
+</article>
+
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     06 — COMO EU SEI QUE FUNCIONOU. Banda branca.
+     Bloco maior que os outros, em quatro partes. É o que sustenta o case
+     inteiro e o que a maioria dos portfólios não tem.
+====================================================================== -->
+<section class="band band--white">
+<div class="wrap">
+<div class="text-block">
+<h2>How I know it worked</h2>
+</div>
+
+<!-- 6.1 -->
+<div class="case-mosaico-lp__evidence">
+<div class="text-block">
+<h3>The question the study had to be able to answer no to</h3>
+<p class="lead">I designed the study around one question: <strong>does the method reduce the experience gap?</strong></p>
+<p>That phrasing matters. It meant the study had to be able to answer no — that the method might do nothing for beginners, or work only for people who already knew how to write. A study designed to confirm a method isn't a study.</p>
+<p>Success was defined before anyone started writing. I operationalized each dimension using <strong>Goals-Signals-Metrics</strong> (Rodden, Hutchinson &amp; Fu, Google) — for every goal, the observable signal that would indicate it, and the metric that would capture the signal. Deciding what counts as working after seeing the data is where most method evaluations quietly fail.</p>
+</div>
+
+<!-- PENDÊNCIA: confirmar que estas são as linhas reais do TCC antes de publicar. -->
+<div class="data-table-scroll case-mosaico-lp__gsm">
+<table class="data-table">
+<thead>
+<tr><th scope="col">Goal</th><th scope="col">Signal</th><th scope="col">Metric</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Beginners can complete a story</td>
+<td>They reach the end without abandoning it</td>
+<td>Completion rate</td>
+</tr>
+<tr>
+<td>The method is learnable</td>
+<td>They recall and describe the steps unaided</td>
+<td>Unaided recall, one week later</td>
+</tr>
+<tr>
+<td>The method is usable alone</td>
+<td>They don't need to re-read the guide to proceed</td>
+<td>Number of consultations</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- 6.2 — a lógica do contraste explicitada: redundância vs. falta de clareza -->
+<div class="case-mosaico-lp__evidence">
+<div class="text-block">
+<h3>Two groups, one starting point</h3>
+</div>
+<div class="grid-2">
+<div class="band-card">
+<b>Group A</b>
+<h3>4 participants, Gen-Z, no writing experience</h3>
+<p>The people the method is for. If scaffolding works, it shows here first.</p>
+</div>
+<div class="band-card">
+<b>Group B</b>
+<h3>4 educators experienced in professional writing</h3>
+<p>The contrast group. Their friction with the method is a different signal from a beginner's: when an experienced writer resists a step, it usually means the step is redundant. When a beginner resists, it usually means it's unclear.</p>
+</div>
+</div>
+<div class="text-block case-mosaico-lp__evidence-close">
+<p><strong>One controlled prompt for everyone</strong> — horror genre, Oedipus arc — so variation between participants could be attributed to the method rather than to the assignment.</p>
+</div>
+</div>
+
+<!-- 6.3 — triangulação entre dois instrumentos com propósitos distintos -->
+<div class="case-mosaico-lp__evidence">
+<div class="text-block">
+<h3>The instruments</h3>
+</div>
+<div class="grid-2">
+<div class="band-card">
+<b>During</b>
+<h3>The field notebook</h3>
+<p>Each participant received a <strong>structured field notebook</strong> to fill as they wrote, over one week, on their own time. Not a free journal — a designed instrument, with prompts tied to each step of the method: what they did, what they decided, where they got stuck, what they skipped.</p>
+<p>Async and individual, by design. I wanted the friction recorded <strong>at the moment it happened</strong>, not reconstructed a week later in front of a researcher who would inevitably lead the answer. Nobody performs competence to a notebook the way they do to an interviewer.</p>
+<p>The notebook also produced something an interview can't: <strong>evidence of the order people actually worked in.</strong> The two participants who reordered steps didn't report reordering them — I found it in the logs.</p>
+</div>
+<div class="band-card">
+<b>After</b>
+<h3>The evaluation interview</h3>
+<p>Once the story was finished, each participant sat for an evaluation interview built on a fixed script, so the eight sessions would be comparable. It covered four things in the same order for everyone: what they did at each step, what they remembered of the method unaided, where they got stuck, and satisfaction — <strong>measured with QUIS</strong> (Chin, Diehl &amp; Norman, University of Maryland), a validated instrument, chosen so the satisfaction number wouldn't be one I'd invented.</p>
+<p>The notebook and the interview were designed to check each other. The notebook records what happened; the interview records what stayed. <strong>The gap between the two is where the most important finding of the study lives</strong> — people had written down the steps and could no longer say why they existed.</p>
+</div>
+</div>
+<!-- notebook-open.jpg (4:3) -->
+<figure class="figure case-mosaico-lp__notebook">
+<div class="ph-image" data-placeholder="true">The structured field notebook, open, showing the prompts tied to each step — 4:3</div>
+<figcaption>The notebook was built to catch friction at the moment it happened, not a week later in front of a researcher.</figcaption>
+</figure>
+<a class="btn btn--secondary case-mosaico-lp__script-cta" href="#">
+view the interview script
+<span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+</a>
+</div>
+
+<!-- 6.4 — o achado negativo com peso visual igual aos positivos, no meio do
+     bloco, lê como rigor; no fim da página, leria como confissão. -->
+<div class="case-mosaico-lp__evidence">
+<div class="text-block">
+<h3>The results</h3>
+</div>
+<div class="grid-3 case-mosaico-lp__results">
+<div class="band-card">
+<b>Completion</b>
+<h3>4/4</h3>
+<p>Every first-time writer finished a full story.</p>
+</div>
+<div class="band-card">
+<b>Self-efficacy</b>
+<h3>Inverted</h3>
+<p>Beginners reported <strong>more</strong> enthusiasm at the end than the experienced group. The people with least reason to feel capable finished feeling most capable.</p>
+</div>
+<div class="band-card">
+<b>Retention</b>
+<h3>7/8</h3>
+<p>Recalled the method's steps by name a week later. 5/8 needed the guide only once.</p>
+</div>
+<div class="band-card">
+<b>Flexibility</b>
+<h3>2/8</h3>
+<p>Reordered the steps to fit their own process, as the guide explicitly permits — visible in the notebooks, not in the interviews.</p>
+</div>
+<div class="band-card">
+<b>Satisfaction</b>
+<h3>4.7/5</h3>
+<p>Measured with QUIS.</p>
+</div>
+<div class="band-card band-card--flag">
+<b>Transfer — below target</b>
+<h3>4/8</h3>
+<p>Only half could explain why each step existed. They could run the process; they couldn't reason with it. That's the difference between a method someone follows and a method someone learns — and following doesn't survive contact with a project the method didn't anticipate.</p>
+</div>
+</div>
+<div class="text-block case-mosaico-lp__evidence-close">
+<p>The notebooks showed the steps being executed. The interviews showed the reasoning hadn't come with them. <strong>This is the finding the entire next version is built on.</strong></p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ======================================================================
+     07 — O SINAL QUE EU NÃO PROJETEI. Banda quadriculada, respiro.
+     Quase vazio, depois do bloco mais denso. Para edtech é o parágrafo
+     mais valioso da página.
+====================================================================== -->
+<section class="band band--loose band--grid case-mosaico-lp__signal">
+<div class="wrap">
+<div class="text-block case-mosaico-lp__signal-block">
+<p class="lead">During the evaluation interviews, something happened I hadn't designed for.</p>
+<h2 class="case-mosaico-lp__signal-line">One of the teachers asked permission to use Mosaico with her own students.</h2>
+<p>Nobody recruited her. In product terms: unsolicited adoption. In education specifically: <strong>teacher pull</strong> — a professional deciding, unprompted, that something is worth the scarcest resource she has, which is class time.</p>
+<p>At the time I filed it in a subsection of my thesis. It took me two years to understand it was the most important result in the study.</p>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     08 — O QUE SAIU. Banda lavanda.
+     Toda legenda explica uma decisão, não o objeto.
+====================================================================== -->
+<section class="band band--subtle">
+<div class="wrap">
+<div class="text-block">
+<h2>What came out</h2>
+<p class="lead">The study didn't produce opinions about writing. It produced writing — six complete stories, five of them published anonymously in a printed fanzine.</p>
+<p>The output of a method study should be the thing the method makes.</p>
+</div>
+
+<div class="grid-2 case-mosaico-lp__artefacts">
+<!-- fanzine-cover.jpg (4:5) -->
+<figure class="figure">
+<div class="ph-image" data-placeholder="true">The printed fanzine cover — 4:5</div>
+<figcaption>Publishing anonymously was the condition that let first-time writers agree to be read at all.</figcaption>
+</figure>
+<!-- fanzine-spread.jpg (4:5) -->
+<figure class="figure">
+<div class="ph-image" data-placeholder="true">An interior spread of the fanzine — 4:5</div>
+<figcaption>Print, not PDF — the artefact had to survive the end of the study to still count as an output.</figcaption>
+</figure>
+<!-- diary-01.jpg (4:5) -->
+<figure class="figure">
+<div class="ph-image" data-placeholder="true">A participant's notebook page, anonymized, used with permission — 4:5</div>
+<figcaption>A participant's notebook — where the friction with the validation steps first appeared.</figcaption>
+</figure>
+<!-- diary-02.jpg (4:5) -->
+<figure class="figure">
+<div class="ph-image" data-placeholder="true">A second notebook page, anonymized, used with permission — 4:5</div>
+<figcaption>[...] legenda pendente — precisa explicar uma decisão, não o objeto.</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     09 — LIMITES, E O QUE ELES VIRARAM. Banda branca.
+     Um bloco só, não dois: cada limitação vira requisito e a v2 deixa de
+     ser teaser para virar consequência.
+====================================================================== -->
+<section class="band band--white">
+<div class="wrap">
+<div class="text-block">
+<h2>Limits, and what they became</h2>
+<p><strong>What this study couldn't claim.</strong> n=8 is a qualitative signal, not statistical validation. I measured completion and satisfaction — not whether the stories were better than they'd have been without the tool: no control group, no quality rubric. And the notebooks produced thinner entries than I hoped from several participants.</p>
+<p>Each of those became a requirement for what came next.</p>
+<p><strong>Mosaico didn't end in 2023.</strong> The problem it was solving — scaffolding thinking instead of replacing it — is now the central problem in education, because students have AI that writes for them. I'm rebuilding Mosaico as an AI writing companion that refuses to write: it asks the questions the method used to ask, and never produces the sentence. Piloting with a real classroom, measured against Brazil's national essay rubric (ENEM) — a quality rubric, which the first study didn't have, and a control condition, which it also didn't have.</p>
+<a class="btn btn--primary" href="#">
+follow the v2 pilot
+<span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+
+<!-- ======================================================================
+     10 — GALERIA. Banda quadriculada, respiro.
+     Grid denso, sem texto. Onde vive tudo que saiu do corpo.
+====================================================================== -->
+<section class="band band--loose band--grid">
+<div class="wrap">
+<div class="grid-gallery">
+<div class="ph-image" data-placeholder="true">Guide, page 1</div>
+<div class="ph-image" data-placeholder="true">Guide, page 2</div>
+<div class="ph-image" data-placeholder="true">Guide, page 3</div>
+<div class="ph-image" data-placeholder="true">Diagram variation, early</div>
+<div class="ph-image" data-placeholder="true">Diagram variation, final</div>
+<div class="ph-image" data-placeholder="true">Fanzine, full spread 1</div>
+<div class="ph-image" data-placeholder="true">Fanzine, full spread 2</div>
+<div class="ph-image" data-placeholder="true">Notebook, anonymized</div>
+<div class="ph-image" data-placeholder="true">Auxiliary tool, filled in</div>
+<div class="ph-image" data-placeholder="true">Print run record</div>
+</div>
+
+<p class="note case-mosaico-lp__thesis-line">Mosaico began as my undergraduate thesis in Design, 2023.</p>
+</div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+<div class="site-footer-links">
+<a href="#">Instagram</a>
+<a href="#">LinkedIn</a>
+<a href="#">Behance</a>
+<a href="#" target="_blank" rel="noopener noreferrer">View CV</a>
+</div>
+<p>© 2026 Milena Caldas. All rights reserved.<br>
+   Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
+</footer>
+
+<script>
+/* Comparador antes/depois — arrasto, toque e setas do teclado.
+   Resolve a pendência A10 do migration.md para esta página. */
+document.querySelectorAll('.ba-device').forEach(function (device) {
+    var handle = device.querySelector('.ba-handle');
+    if (!handle) { return; }
+
+    function set(pct) {
+        var v = Math.max(0, Math.min(100, pct));
+        device.style.setProperty('--ba', v + '%');
+        handle.setAttribute('aria-valuenow', Math.round(v));
+    }
+
+    function fromPointer(e) {
+        var r = device.getBoundingClientRect();
+        set(((e.clientX - r.left) / r.width) * 100);
+    }
+
+    handle.addEventListener('pointerdown', function (e) {
+        handle.setPointerCapture(e.pointerId);
+        handle.addEventListener('pointermove', fromPointer);
+    });
+    handle.addEventListener('pointerup', function (e) {
+        handle.releasePointerCapture(e.pointerId);
+        handle.removeEventListener('pointermove', fromPointer);
+    });
+
+    handle.addEventListener('keydown', function (e) {
+        var now = parseFloat(handle.getAttribute('aria-valuenow')) || 50;
+        var step = e.shiftKey ? 10 : 2;
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { set(now - step); e.preventDefault(); }
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp')  { set(now + step); e.preventDefault(); }
+        if (e.key === 'Home') { set(0); e.preventDefault(); }
+        if (e.key === 'End')  { set(100); e.preventDefault(); }
+    });
+
+    set(50);
+});
+</script>
+
+</body>
+</html>

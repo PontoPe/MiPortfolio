@@ -1,0 +1,401 @@
+/* ===========================================================================
+   MOSAICO — folha da página
+   ---------------------------------------------------------------------------
+   SÓ o que é exclusivo desta página. Todo componente vem de components.css
+   pelo nome canônico e não se redeclara aqui.
+
+   Ordem de carga: page-style.css → tokens.css → components.css → esta folha.
+   Nenhum valor literal: tudo sai de tokens.css.
+=========================================================================== */
+
+
+/* ===========================================================================
+   01 — Hero
+   Texto à esquerda, guia impresso à direita. A foto é tratada como produto,
+   não como documento acadêmico: por isso ganha sombra e escala.
+=========================================================================== */
+
+.case-mosaico-lp__hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--gap-column);
+    align-items: center;
+}
+
+/* o bloco do hero é o único que passa da medida de leitura: o lead precisa
+   respirar ao lado da fotografia */
+.case-mosaico-lp__hero-copy {
+    max-width: none;
+}
+
+.case-mosaico-lp__deck {
+    margin-top: var(--rhythm-head-body);
+    color: var(--color-text-body);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+}
+
+.case-mosaico-lp__hero-copy .lead {
+    max-width: var(--measure);
+}
+
+.case-mosaico-lp__hero-shot {
+    box-shadow: var(--shadow-panel);
+    border-radius: var(--radius-image);
+    overflow: hidden;
+}
+
+.case-mosaico-lp__hero-stats {
+    margin-top: var(--rhythm-block);
+}
+
+.case-mosaico-lp__jump {
+    margin-top: var(--rhythm-action);
+}
+
+
+/* ===========================================================================
+   02 — O objeto
+   Mosaico de sete peças. O nome do projeto é o layout: peças de tamanhos
+   diferentes que só fazem sentido montadas.
+=========================================================================== */
+
+/* Áreas explícitas, não spans soltos: com span automático as sete peças
+   deixam buracos na grade e o mosaico lê como lista mal quebrada.
+   Aqui as 12 células são preenchidas exatamente, sem sobra.
+   As peças não declaram proporção própria — a altura de linha manda e as
+   imagens entram por object-fit: cover, então qualquer original serve. */
+.case-mosaico-lp__object-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: calc(300 * var(--s));
+    gap: var(--gap-cards);
+    grid-template-areas:
+        "diagram diagram spread  fanzine"
+        "diagram diagram arcs    arcs"
+        "tools   notebook palette palette";
+}
+
+.case-mosaico-lp__obj--diagram  { grid-area: diagram; }
+.case-mosaico-lp__obj--spread   { grid-area: spread; }
+.case-mosaico-lp__obj--fanzine  { grid-area: fanzine; }
+.case-mosaico-lp__obj--arcs     { grid-area: arcs; }
+.case-mosaico-lp__obj--tools    { grid-area: tools; }
+.case-mosaico-lp__obj--notebook { grid-area: notebook; }
+.case-mosaico-lp__obj--palette  { grid-area: palette; }
+
+/* a peça do mosaico preenche a célula que recebeu */
+.case-mosaico-lp__object-grid > * {
+    aspect-ratio: auto;
+    height: 100%;
+}
+
+.case-mosaico-lp__object-stats {
+    margin-top: var(--rhythm-block);
+}
+
+
+/* ===========================================================================
+   03 — O insight
+=========================================================================== */
+
+.case-mosaico-lp__quote {
+    margin-top: var(--rhythm-block);
+}
+
+.case-mosaico-lp__audience {
+    margin-top: var(--rhythm-block);
+    max-width: var(--container-wrap);
+}
+
+
+/* ===========================================================================
+   04 — Como funciona
+   Diagrama grande à esquerda, as três fases em coluna ao lado.
+=========================================================================== */
+
+.case-mosaico-lp__method {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--gap-column);
+    align-items: start;
+    margin-top: var(--rhythm-head-component);
+}
+
+.case-mosaico-lp__method-diagram {
+    aspect-ratio: 16 / 10;
+}
+
+.case-mosaico-lp__phases {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: phase;
+}
+
+.case-mosaico-lp__phases li {
+    counter-increment: phase;
+    padding-left: var(--space-5);
+    border-left: var(--rule-accent) solid var(--color-accent);
+}
+
+.case-mosaico-lp__phases li + li {
+    margin-top: var(--space-6);
+}
+
+.case-mosaico-lp__phases b {
+    display: block;
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+}
+
+/* o numeral da fase é rótulo, não conteúdo: entra por ::before */
+.case-mosaico-lp__phases b::before {
+    content: "0" counter(phase) " · ";
+    font-weight: var(--font-weight-medium);
+    opacity: 0.72;
+}
+
+.case-mosaico-lp__phases p {
+    margin-top: var(--space-2);
+}
+
+.case-mosaico-lp__method-close {
+    margin-top: var(--rhythm-block);
+}
+
+.case-mosaico-lp__method-close .note {
+    margin-top: var(--rhythm-para);
+}
+
+
+/* ===========================================================================
+   05 — Três decisões
+   Cards empilhados, não em grade: cada decisão é longa e o formato
+   contexto → decisão → trade-off precisa de largura para ser lido.
+=========================================================================== */
+
+.case-mosaico-lp__decisions {
+    display: grid;
+    gap: var(--gap-cards);
+    margin-top: var(--rhythm-head-component);
+}
+
+.case-mosaico-lp__decision {
+    padding: var(--space-8) var(--space-6);
+}
+
+.case-mosaico-lp__decision > h3 {
+    font-size: var(--font-size-h4);
+    margin-bottom: var(--rhythm-head-body);
+}
+
+.case-mosaico-lp__decision-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--gap-column);
+    align-items: start;
+}
+
+/* o trade-off fecha o card e é o que a triagem procura: separado por um
+   filete, para não se perder no corpo */
+.case-mosaico-lp__tradeoff {
+    margin-top: var(--rhythm-para);
+    padding-top: var(--space-5);
+    border-top: var(--table-border) solid var(--color-border-strong);
+}
+
+.case-mosaico-lp__citation {
+    margin-top: var(--space-6);
+}
+
+.case-mosaico-lp__arcs .ph-image {
+    aspect-ratio: 16 / 9;
+}
+
+.case-mosaico-lp__ba {
+    position: sticky;
+    top: var(--nav-clearance);
+}
+
+/* O comparador compara dois DIAGRAMAS, não duas telas de aparelho: não há
+   moldura, então o recorte é o elemento inteiro. */
+.case-mosaico-lp__ba-device {
+    --ba-screen-top:    0;
+    --ba-screen-left:   0;
+    --ba-screen-width:  100%;
+    --ba-screen-height: 100%;
+    --ba-screen-scale:  1;
+    --ba-screen-radius: var(--radius-image);
+    --ba-start:         50%;
+    width: 100%;
+}
+
+.case-mosaico-lp__ba-device .ph-image {
+    aspect-ratio: 4 / 3;
+    height: 100%;
+}
+
+/* sem imagem de puxador, o divisor é uma linha com alvo tocável em volta */
+.case-mosaico-lp__ba-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: ew-resize;
+}
+
+.case-mosaico-lp__ba-handle::before {
+    content: "";
+    width: var(--rule-accent);
+    height: 100%;
+    background: var(--color-accent-hover);
+    border-radius: var(--radius-pill);
+}
+
+
+/* ===========================================================================
+   06 — Como eu sei que funcionou
+   Quatro partes numa banda só. O espaço entre elas é o que as separa.
+=========================================================================== */
+
+.case-mosaico-lp__evidence + .case-mosaico-lp__evidence {
+    margin-top: var(--rhythm-block);
+}
+
+.case-mosaico-lp__evidence > .text-block + .grid-2,
+.case-mosaico-lp__evidence > .text-block + .grid-3,
+.case-mosaico-lp__evidence > .text-block + .data-table-scroll {
+    margin-top: var(--rhythm-head-component);
+}
+
+.case-mosaico-lp__evidence-close {
+    margin-top: var(--rhythm-para);
+}
+
+.case-mosaico-lp__gsm {
+    margin-top: var(--rhythm-head-component);
+}
+
+/* o card de grupo usa h3 como numeral descritivo, então o tamanho desce */
+.case-mosaico-lp__evidence .band-card h3 {
+    font-size: var(--font-size-h5);
+}
+
+.case-mosaico-lp__notebook {
+    margin-top: var(--rhythm-para);
+}
+
+.case-mosaico-lp__notebook .ph-image {
+    aspect-ratio: 16 / 9;
+}
+
+.case-mosaico-lp__script-cta {
+    margin-top: var(--rhythm-action);
+}
+
+/* os seis resultados têm alturas muito diferentes; o grid iguala */
+.case-mosaico-lp__results .band-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.case-mosaico-lp__results .band-card h3 {
+    font-size: var(--font-size-h3);
+}
+
+
+/* ===========================================================================
+   07 — O sinal que eu não projetei
+   Quase vazio. É o respiro depois do bloco mais denso, e a frase da
+   professora é a única coisa que a pessoa precisa levar embora.
+=========================================================================== */
+
+.case-mosaico-lp__signal-block {
+    max-width: none;
+    text-align: center;
+    margin-inline: auto;
+}
+
+.case-mosaico-lp__signal-block .lead,
+.case-mosaico-lp__signal-block p {
+    max-width: var(--measure);
+    margin-inline: auto;
+}
+
+/* única exceção de alinhamento centralizado da página, e é deliberada:
+   o bloco inteiro é uma pausa */
+.case-mosaico-lp__signal-line {
+    margin-block: var(--rhythm-block);
+    font-size: var(--font-size-h1);
+    max-width: none;
+}
+
+
+/* ===========================================================================
+   08 — O que saiu
+=========================================================================== */
+
+.case-mosaico-lp__artefacts {
+    margin-top: var(--rhythm-head-component);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.case-mosaico-lp__artefacts .ph-image {
+    aspect-ratio: 4 / 5;
+}
+
+
+/* ===========================================================================
+   10 — Galeria e linha acadêmica
+=========================================================================== */
+
+.case-mosaico-lp__thesis-line {
+    margin-top: var(--rhythm-block);
+    text-align: center;
+}
+
+
+/* ===========================================================================
+   Telas estreitas
+   Os dois breakpoints do site. Nada some.
+=========================================================================== */
+
+@media (max-width: 900px) {
+    .case-mosaico-lp__hero-grid,
+    .case-mosaico-lp__method,
+    .case-mosaico-lp__decision-body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--gap-stack);
+    }
+
+    /* o mosaico vai a duas colunas. As áreas são redesenhadas em vez de
+       herdadas: em 2 colunas a grade de 4 não tem tradução automática. */
+    .case-mosaico-lp__object-grid,
+    .case-mosaico-lp__artefacts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .case-mosaico-lp__object-grid {
+        grid-auto-rows: calc(340 * var(--s));
+        grid-template-areas:
+            "diagram  diagram"
+            "spread   fanzine"
+            "arcs     arcs"
+            "tools    notebook"
+            "palette  palette";
+    }
+
+    .case-mosaico-lp__ba {
+        position: static;
+    }
+
+    .case-mosaico-lp__signal-line {
+        font-size: var(--font-size-h2);
+    }
+
+    .case-mosaico-lp__decision {
+        padding: var(--space-6) var(--space-5);
+    }
+}

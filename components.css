@@ -1,0 +1,940 @@
+/* ===========================================================================
+   components.css — implementação canônica dos componentes
+   ---------------------------------------------------------------------------
+   Esta folha É o sistema. `styleguide.html` apenas a renderiza; página de case
+   apenas a consome. Se um componente muda, muda aqui e muda em toda parte.
+
+   Nenhum valor literal. Tudo vem de `tokens.css`.
+
+   Ordem de carga obrigatória:
+       page-style.css  →  tokens.css  →  components.css  →  case-[slug].css
+
+   tokens.css vem depois de page-style.css porque o bloco 11 dele sobrescreve a
+   paleta antiga do chrome. components.css vem depois dos dois porque redefine
+   o que page-style.css impõe no corpo da página.
+
+   O QUE NÃO ESTÁ AQUI, de propósito:
+     .site-nav, .site-footer, .status-tag  → chrome, vivem em page-style.css
+     .cta-block                            → já existe em page-style.css e só
+                                             aparece em home/categoria/sobre.
+                                             Case nunca leva. Duplicar aqui
+                                             criaria conflito de cascata.
+=========================================================================== */
+
+
+/* ===========================================================================
+   0. RAIZ DA PÁGINA DE CASE
+   page-style.css pinta um fundo lavanda e um wash ambiente pensados para a
+   home. As bandas chapadas do case brigam com os dois. Esta classe vai no
+   <body>, junto com a classe do slug.
+       <body class="case-page case-mosaico-lp">
+=========================================================================== */
+
+.case-page {
+    background: var(--color-bg-page);
+    color: var(--color-text-body);
+    font-family: var(--font-family);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+    overflow-x: hidden;
+}
+
+/* o wash radial de page-style.css */
+.case-page::before {
+    display: none;
+}
+
+/* page-style.css dá `padding-inline: var(--page-gutter)` a todo <main>.
+   A banda de case sangra até a borda; quem recua é o .wrap, por dentro. */
+.case-page .case-main {
+    margin: 0;
+    max-width: none;
+    padding: 0;
+    padding-top: var(--nav-clearance);   /* a nav é fixa */
+}
+
+
+/* ===========================================================================
+   1. BANDAS
+   Três fundos, e só três. Nunca dois iguais em seções consecutivas.
+=========================================================================== */
+
+.band {
+    position: relative;
+    padding-block: var(--section-pad-tight-top) var(--section-pad-tight-bottom);
+}
+
+/* respiro: galeria, carrossel, fechamento. Não crie um terceiro par. */
+.band--loose {
+    padding-block: var(--section-pad-loose-top) var(--section-pad-loose-bottom);
+}
+
+.band--white  { background: var(--color-bg-page); }
+.band--subtle { background: var(--color-bg-subtle); }
+
+.band--grid {
+    --cell: var(--band-grid-cell);
+    background:
+        repeating-linear-gradient(to right,
+            var(--band-grid-void) 0,
+            var(--band-grid-void) calc(var(--cell) - 10 * var(--s)),
+            var(--band-grid-line) calc(var(--cell) - 5 * var(--s)),
+            var(--band-grid-void) var(--cell)),
+        repeating-linear-gradient(to bottom,
+            var(--band-grid-void) 0,
+            var(--band-grid-void) calc(var(--cell) - 10 * var(--s)),
+            var(--band-grid-line) calc(var(--cell) - 5 * var(--s)),
+            var(--band-grid-void) var(--cell)),
+        var(--band-grid-bg);
+}
+
+
+/* ===========================================================================
+   2. CONTAINER
+=========================================================================== */
+
+.wrap {
+    width: var(--container-wrap);
+    max-width: calc(100% - 2 * var(--container-gutter));
+    margin-inline: auto;
+}
+
+
+/* ===========================================================================
+   3. BLOCO DE TÍTULO + TEXTO
+   A unidade de composição mais usada do site. SKILL §2.
+=========================================================================== */
+
+.text-block { max-width: var(--measure); }
+
+.text-block h1,
+.text-block h2,
+.text-block h3 {
+    color: var(--color-text-heading);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+}
+
+.text-block h1 { font-size: var(--font-size-h1); }
+.text-block h2 { font-size: var(--font-size-h2); }
+.text-block h3 { font-size: var(--font-size-h3); }
+
+/* papéis de corpo */
+.lead { font-size: var(--font-size-body-lg); }
+.note { font-size: var(--font-size-body-sm); line-height: var(--line-height-body-sm); }
+
+/* ritmo vertical — a ordem destas regras é a tabela do SKILL §2 */
+.text-block h1 + p,
+.text-block h2 + p            { margin-top: var(--rhythm-head-body); }
+.text-block p + p             { margin-top: var(--rhythm-para); }
+.text-block p + h2            { margin-top: var(--rhythm-block); }
+.text-block .tag-group + h1,
+.text-block .tag-group + h2   { margin-top: var(--rhythm-head-body); }
+.text-block > .btn            { margin-top: var(--rhythm-action); }
+
+/* título → grid ou componente, quando o irmão não é parágrafo */
+.text-block h2 + .grid-2,
+.text-block h2 + .grid-3,
+.text-block h2 + .grid-split,
+.text-block h2 + .steps       { margin-top: var(--rhythm-head-component); }
+
+.text-block strong {
+    color: var(--color-text-strong);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Link no corpo: nunca se distingue só por cor.
+   `:not(.btn, .link-jump)` não é detalhe — sem isso a regra tem
+   especificidade maior que `.btn--primary` e rouba a cor e o sublinhado de
+   todo botão que viva dentro de um bloco de texto. */
+.text-block a:not(.btn):not(.link-jump) {
+    color: var(--color-text-heading);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1px;
+}
+.text-block a:not(.btn):not(.link-jump):hover { color: var(--color-accent-hover); }
+
+
+/* ===========================================================================
+   4. TAG
+   Metadado de página. Sempre <span>, nunca interativa, grupo de 2 ou 3.
+   EXCEÇÃO DE CONTRASTE DECLARADA — ver tokens.css §2.
+=========================================================================== */
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    height: var(--tag-height);
+    padding: 0 var(--tag-padding-x);
+    border: var(--tag-border) solid currentColor;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-caption);
+    line-height: var(--line-height-tight);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-caption);
+    white-space: nowrap;
+}
+
+.tag--pink  { color: var(--color-tag-pink); }
+.tag--green { color: var(--color-tag-green); }
+.tag--blue  { color: var(--color-tag-blue); }
+
+.tag-group { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+
+/* ===========================================================================
+   5. CHIP
+   Enumeração de conteúdo dentro de um passo. Pode vir em grupo de seis.
+   Herda a cor da tag do bloco em que está, por `currentColor` no grupo.
+   Também não é interativo.
+=========================================================================== */
+
+.chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--color-tag-pink);   /* default; troque no .chip-group da página */
+}
+
+.chip-group--green { color: var(--color-tag-green); }
+.chip-group--blue  { color: var(--color-tag-blue); }
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    height: var(--chip-height);
+    padding: 0 var(--chip-padding-x);
+    border: var(--chip-border) solid currentColor;
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-caption);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+
+/* ===========================================================================
+   6. BOTÃO
+   Duas variações. Um primário por página. SKILL §5.
+=========================================================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    height: var(--btn-height);
+    min-width: var(--btn-min-width);
+    padding: 0 var(--btn-padding-x);
+    border: var(--btn-border) solid var(--color-accent-hover);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-300);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-body);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color var(--duration-fast) var(--easing-standard),
+        transform var(--duration-base) var(--easing-standard);
+}
+
+.btn:hover { transform: translateY(var(--hover-lift)); }
+
+/* :active tira a sombra em vez de escurecer o fundo */
+/* Os fundos vêm de token semântico, não de degrau cru: no escuro a escada do
+   secundário inverte (clareia em vez de escurecer) e o rótulo do primário
+   deixa de ser branco. Degrau cru aqui congelaria o botão no tema claro. */
+.btn--primary        { background: var(--color-btn-primary-bg); color: var(--color-text-on-accent); }
+.btn--primary:hover  { background: var(--color-btn-primary-bg-hover); }
+.btn--primary:active { background: var(--color-btn-primary-bg-hover); box-shadow: none; transform: none; }
+
+.btn--secondary        { background: var(--color-btn-secondary-bg); color: var(--color-text-body); }
+.btn--secondary:hover  { background: var(--color-btn-secondary-bg-hover); }
+.btn--secondary:active { background: var(--color-btn-secondary-bg-active); box-shadow: none; transform: none; }
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    background: var(--color-btn-disabled-bg);
+    border-color: var(--color-btn-disabled-border);
+    color: var(--color-btn-disabled-text);
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ===========================================================================
+   7. FOCO — uma regra, todo focável
+=========================================================================== */
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible,
+.btn:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+}
+
+
+/* ===========================================================================
+   8. GRIDS
+=========================================================================== */
+
+.grid-2       { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--gap-cards); }
+.grid-3       { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--gap-cards); }
+.grid-gallery { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: var(--gap-gallery); }
+.grid-split   { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--gap-column); }
+
+
+/* ===========================================================================
+   9. CARD DE BANDA
+   Numeral, título e texto. Só sobre banda lavanda ou branca — sobre a
+   quadriculada o card some.
+=========================================================================== */
+
+.band-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-band-card);
+    padding: var(--space-6) var(--space-5);
+}
+
+/* O rótulo é corpo, não título: em --color-text-heading dava 3.90 sobre
+   --color-bg-card, e 16px bold NÃO conta como texto grande (o piso da WCAG é
+   18.66px bold). Em --color-text-body dá 5.01 e ainda fica mais quieto que o
+   h3, que é o que um rótulo deve fazer. */
+.band-card b {
+    display: block;
+    color: var(--color-text-body);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-4);
+}
+
+.band-card h3 {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-weight-bold);
+}
+
+.band-card h3 + p { margin-top: var(--space-2); }
+
+/* --- modificador: card de contraste --------------------------------------
+   Para o achado que contraria os outros. O ponto é MARCAR sem hierarquizar:
+   mesmo fundo, mesmo raio, mesmo padding, mesmo tamanho de texto. Só o
+   filete lateral muda. Um card de contraste que parece mais importante lê
+   como confissão; um que parece menos, lê como rodapé.
+   O rótulo do estado tem que estar no texto também — o filete é cor, e cor
+   nunca é o único diferenciador.
+------------------------------------------------------------------------- */
+.band-card--flag {
+    border-left: var(--rule-accent) solid var(--color-accent);
+    padding-left: calc(var(--space-5) - var(--rule-accent));
+}
+
+
+/* ===========================================================================
+   10. PASSOS NUMERADOS COM TRILHO
+   Disco à esquerda, trilho tracejado ligando os discos. Numere apenas quando
+   a ordem carregar informação.
+=========================================================================== */
+
+.steps { display: block; }
+
+.step {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--steps-disc) minmax(0, 1fr);
+    gap: var(--steps-gap);
+    min-height: var(--steps-pitch);
+}
+
+.step:last-child { min-height: 0; }
+
+/* o trilho começa na base do disco e morre no passo seguinte */
+.step:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    top: var(--steps-disc);
+    bottom: 0;
+    left: calc(var(--steps-disc) / 2);
+    border-left: var(--steps-rail) dashed var(--color-accent);
+}
+
+.step > img,
+.step > .ph-image {
+    display: block;
+    width: var(--steps-disc);
+    aspect-ratio: 1;
+}
+
+.step h3 {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+}
+
+/* o numeral é rótulo, não conteúdo à parte */
+.step h3 span {
+    font-weight: var(--font-weight-medium);
+    opacity: 0.72;
+}
+
+.step ul { list-style: none; margin-top: var(--space-3); padding: 0; }
+
+.step li {
+    position: relative;
+    padding-left: var(--space-5);
+}
+
+.step li::before { content: "•"; position: absolute; left: var(--space-2); }
+
+.step h3 + p { margin-top: var(--space-3); }
+.step p + .chip-group,
+.step ul + .chip-group { margin-top: var(--space-4); }
+
+
+/* ===========================================================================
+   11. CARD DE FLUXO
+   Numeral + mídia centralizada + legenda. Sempre <figure>.
+=========================================================================== */
+
+.flow-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-subtle);
+    border-radius: var(--radius-band-card);
+    padding: var(--space-5) 0;
+    text-align: center;
+}
+
+.flow-card b {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    padding-left: var(--space-5);
+    text-align: left;
+}
+
+.flow-card img,
+.flow-card .ph-image {
+    display: block;
+    width: var(--flow-card-media);
+    height: auto;
+    margin-inline: auto;
+}
+
+.flow-card figcaption {
+    margin-top: var(--space-2);
+    padding-inline: var(--space-4);
+    color: var(--color-text-heading);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--line-height-body-sm);
+}
+
+
+/* ===========================================================================
+   12. MÉTRICA
+   Numeral grande + rótulo. Fecha o case, e também abre o hero quando o
+   resultado é o argumento.
+=========================================================================== */
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    color: var(--color-text-heading);
+}
+
+.stat + .stat { margin-top: var(--space-8); }
+
+.stat b {
+    flex: none;
+    font-size: var(--font-size-display);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+}
+
+/* O rótulo herda --color-text-heading do .stat, que dá 4.41 sobre a banda
+   lavanda — reprova em 16px normal. O numeral fica no roxo da marca (é texto
+   grande, passa em 3:1); o rótulo desce para o cinza de corpo. */
+.stat span {
+    color: var(--color-text-body);
+    font-size: var(--font-size-body);
+}
+
+/* variante em linha, para uma fileira de números sob o lead do hero */
+.stat-group--row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+}
+
+.stat-group--row .stat { display: block; }
+.stat-group--row .stat + .stat { margin-top: 0; }
+.stat-group--row .stat b { display: block; }
+.stat-group--row .stat span { display: block; margin-top: var(--space-2); }
+
+
+/* ===========================================================================
+   13. IMAGEM, LEGENDA E PLACEHOLDER
+=========================================================================== */
+
+.figure img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Legenda em --color-text-heading dava 3.90 sobre a banda lavanda — reprova
+   em 14px normal. --color-text-body dá 6.41 e mantém a legenda no papel de
+   apoio que o SKILL §7 descreve. */
+.figure figcaption {
+    margin-top: var(--space-2);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--line-height-body-sm);
+    color: var(--color-text-body);
+}
+
+/* Imagem que ainda não existe. Proporção declarada e o `alt` pretendido
+   visível dentro. Nunca invente caminho, nunca use imagem de banco, nunca
+   pule o bloco. Liste todos em tabela no fim da entrega. */
+.ph-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    padding: var(--space-5);
+    background: var(--color-bg-surface);
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-image);
+    color: var(--color-text-body);
+    font-size: var(--font-size-body-sm);
+    line-height: var(--line-height-body-sm);
+    text-align: center;
+}
+
+/* caixa vazia, para amostra de layout no styleguide */
+.ph {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--color-bg-surface);
+    border: 1px dashed var(--color-border);
+}
+
+.grid-gallery img,
+.grid-gallery .ph,
+.grid-gallery .ph-image {
+    aspect-ratio: 318 / 695;
+    border-radius: var(--radius-image);
+    object-fit: cover;
+}
+
+
+/* ===========================================================================
+   14. LINK COM ÍCONE — âncora interna
+=========================================================================== */
+
+.link-jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--touch-target);
+    color: var(--color-text-body);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.link-jump:hover { color: var(--color-accent-hover); }
+
+.link-jump .material-symbols-outlined {
+    transition: transform var(--duration-base) var(--easing-standard);
+}
+
+.link-jump:hover .material-symbols-outlined { transform: translateY(var(--space-1)); }
+
+
+/* ===========================================================================
+   15. COMPARADOR ANTES/DEPOIS
+   A geometria do recorte pertence ao PNG da moldura — ver tokens.css §8.1.
+   Uma moldura diferente sobrescreve as quatro variáveis no próprio elemento.
+
+   Sem JS, `--ba` fica no valor inicial e a tela aparece parcialmente
+   revelada. Nunca deixe a tela vazia.
+=========================================================================== */
+
+.ba-device {
+    position: relative;
+    width: var(--ba-device-width);
+    margin-inline: 0 auto;
+}
+
+.ba-base {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+}
+
+.ba-screen {
+    position: absolute;
+    top: var(--ba-screen-top);
+    left: var(--ba-screen-left);
+    width: var(--ba-screen-width);
+    height: var(--ba-screen-height);
+    border-radius: var(--ba-screen-radius);
+    overflow: hidden;
+}
+
+.ba-screen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* o estado "depois" é revelado da direita conforme o divisor caminha */
+.ba-after { clip-path: inset(0 0 0 var(--ba, var(--ba-start))); }
+
+.ba-handle {
+    position: absolute;
+    top: var(--ba-screen-top);
+    left: calc(var(--ba-screen-left) + var(--ba, var(--ba-start)) * var(--ba-screen-scale));
+    z-index: 4;
+    width: var(--ba-handle-width);
+    min-width: var(--touch-target);
+    height: var(--ba-screen-height);
+    padding: 0;
+    border: 0;
+    background: none;
+    transform: translateX(-50%);
+    cursor: ew-resize;
+    touch-action: none;
+}
+
+.ba-handle img { display: block; width: 100%; height: 100%; }
+
+.ba-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    color: var(--color-text-body);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-caption);
+    text-transform: uppercase;
+}
+
+
+/* ===========================================================================
+   16. CARROSSEL FULL-BLEED
+   Sangra até a borda — a única exceção à regra de imagem respeitar o gutter.
+
+   Sem JS: autore DOIS conjuntos idênticos no HTML, o segundo com
+   aria-hidden="true". O trilho anda exatamente 50% da própria largura, então
+   o loop não tem emenda. Cada conjunto carrega o próprio gap à direita.
+
+   O botão de pausa precisa de três linhas de script — WCAG 2.2.2 exige um
+   controle para movimento que dura mais de cinco segundos, e hover não serve
+   para teclado nem para toque. Markup e script em references/components.md.
+=========================================================================== */
+
+.carousel-fullbleed {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: carousel-loop var(--carousel-cycle) linear infinite;
+}
+
+.carousel-fullbleed.is-paused .carousel-track { animation-play-state: paused; }
+
+.carousel-set {
+    display: flex;
+    flex: none;
+    gap: var(--carousel-gap);
+    padding-right: var(--carousel-gap);
+}
+
+.carousel-item {
+    display: block;
+    flex: none;
+    width: var(--carousel-item-w);
+    height: var(--carousel-item-h);
+    max-width: none;
+    object-fit: cover;
+}
+
+.carousel-toggle {
+    position: absolute;
+    right: max(var(--container-gutter), var(--space-8));
+    bottom: var(--space-8);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--touch-target);
+    height: var(--touch-target);
+    border: var(--tag-border) solid var(--color-accent-hover);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-page);
+    color: var(--color-text-heading);
+    cursor: pointer;
+    transition:
+        background-color var(--duration-base) var(--easing-standard),
+        color var(--duration-base) var(--easing-standard);
+}
+
+.carousel-toggle:hover {
+    background: var(--color-accent);
+    color: var(--color-text-on-accent);
+}
+
+@keyframes carousel-loop {
+    to { transform: translate3d(-50%, 0, 0); }
+}
+
+
+/* ===========================================================================
+   17. CITAÇÃO EM DESTAQUE
+   Uma frase que carrega o argumento do bloco, tirada do corpo para respirar.
+   Sem itálico e sem aspas decorativas: o filete e o tamanho já marcam.
+   No máximo uma por bloco — duas viram decoração.
+=========================================================================== */
+
+.pull-quote {
+    max-width: var(--measure);
+    margin: 0;
+    padding-left: var(--space-5);
+    border-left: var(--rule-accent) solid var(--color-accent);
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-heading);
+}
+
+.pull-quote cite {
+    display: block;
+    margin-top: var(--space-4);
+    color: var(--color-text-body);
+    font-size: var(--font-size-body-sm);
+    font-style: normal;
+    font-weight: var(--font-weight-regular);
+}
+
+
+/* ===========================================================================
+   18. TABELA DE DADOS
+   Para dado que É tabular. Não use para layout, e não force em cards: uma
+   grade de três colunas com cabeçalho declara a estrutura que os cards
+   escondem.
+
+   Em tela estreita a tabela ROLA dentro do próprio container. Não colapsa
+   e não some — a relação entre as colunas é o conteúdo.
+=========================================================================== */
+
+.data-table-scroll { overflow-x: auto; }
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-body);
+    text-align: left;
+}
+
+.data-table th {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--table-border) solid var(--color-border-strong);
+    color: var(--color-text-heading);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-caption);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.data-table td {
+    padding: var(--space-4);
+    border-bottom: var(--table-border) solid var(--color-border);
+    vertical-align: top;
+}
+
+.data-table tbody tr:last-child td { border-bottom: 0; }
+
+.data-table caption {
+    margin-bottom: var(--space-3);
+    color: var(--color-text-body);
+    font-size: var(--font-size-body-sm);
+    text-align: left;
+}
+
+
+/* ===========================================================================
+   19. EXPANSÍVEL
+   <details>/<summary> nativo: sem JS, e o teclado e o leitor de tela já
+   funcionam de graça. Use para material de apoio que provaria rigor mas
+   custaria o leitor — tabela de fontes, exemplo trabalhado, anexo.
+
+   Nunca esconda aqui conteúdo de que o argumento da página depende.
+=========================================================================== */
+
+.disclosure {
+    border-top: var(--table-border) solid var(--color-border);
+    border-bottom: var(--table-border) solid var(--color-border);
+}
+
+.disclosure summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--touch-target);
+    padding-block: var(--space-3);
+    color: var(--color-text-heading);
+    font-weight: var(--font-weight-medium);
+    list-style: none;
+    cursor: pointer;
+}
+
+.disclosure summary::-webkit-details-marker { display: none; }
+
+.disclosure summary:hover { color: var(--color-accent-hover); }
+
+.disclosure summary .material-symbols-outlined {
+    margin-left: auto;
+    transition: transform var(--duration-base) var(--easing-standard);
+}
+
+.disclosure[open] summary .material-symbols-outlined { transform: rotate(180deg); }
+
+.disclosure > :not(summary) { padding-bottom: var(--space-5); }
+
+
+/* ===========================================================================
+   20. SELETOR DE TEMA
+   COMPONENTE NOVO — introduzido junto com o modo escuro, aguardando aprovação.
+
+   Três estados, não dois: "sistema" é o padrão e precisa ser alcançável de
+   volta depois que alguém escolhe. Um botão de duas posições esconde a opção
+   de devolver a decisão ao sistema operacional.
+
+   São `<input type=radio>` de verdade dentro de um `<fieldset>`: as setas do
+   teclado navegam entre as opções de graça, e o estado escolhido é anunciado
+   sem precisar de aria-*. O input fica visualmente oculto mas continua
+   focável — nunca use `display: none` aqui, isso o tira da ordem de foco.
+=========================================================================== */
+
+.theme-switch {
+    display: inline-flex;
+    gap: 0;
+    margin: 0;
+    padding: var(--space-1);
+    border: var(--tag-border) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-page);
+}
+
+.theme-switch legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.theme-switch label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--touch-target);
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-body);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-caption);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color var(--duration-base) var(--easing-standard),
+                color var(--duration-base) var(--easing-standard);
+}
+
+/* oculto para o olho, presente para o teclado e para o leitor de tela */
+.theme-switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.theme-switch label:hover { color: var(--color-text-heading); }
+
+.theme-switch label:has(input:checked) {
+    background: var(--color-accent);
+    color: var(--color-text-on-accent);
+}
+
+/* o anel de foco vai no rótulo, porque o input não é visível */
+.theme-switch label:has(input:focus-visible) {
+    outline: var(--focus-ring-width) solid var(--color-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+}
+
+
+/* ===========================================================================
+   21. TELAS ESTREITAS
+   Dois breakpoints no site inteiro. Não introduza um terceiro.
+   Nada some por breakpoint.
+=========================================================================== */
+
+@media (max-width: 900px) {
+    .grid-2,
+    .grid-3,
+    .grid-split   { grid-template-columns: minmax(0,1fr); gap: var(--gap-stack); }
+
+    .grid-gallery { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+    .steps        { --steps-disc: var(--steps-disc-narrow); }
+
+    .stat-group--row { gap: var(--space-6); }
+
+    .ba-device    { margin-inline: auto; }
+}
+
+
+/* ===========================================================================
+   22. MOVIMENTO REDUZIDO
+   tokens.css §13 já zera transições e animações globalmente. Aqui fica só o
+   que precisa de tratamento próprio: um carrossel com animação de 1ms
+   piscaria, então ele para de vez e o botão de pausa perde a função.
+=========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-track { animation: none; transform: none; }
+    .carousel-toggle { display: none; }
+}

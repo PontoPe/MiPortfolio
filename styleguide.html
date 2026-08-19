@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Styleguide — Portfólio Milena Caldas</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+<link href="tokens.css" rel="stylesheet">
+<link href="components.css" rel="stylesheet">
+<script>
+/* Aplica o tema salvo ANTES da primeira pintura. Sem isto a página pinta no
+   claro e pisca para o escuro — é a razão de este script ser inline no <head>
+   e não um arquivo externo: um <script src> adiaria a decisão. */
+(function () {
+    try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch (e) { /* localStorage bloqueado: cai no padrão, que é seguir o SO */ }
+})();
+</script>
+<style>
+/* ===========================================================================
+   ANDAIME DO STYLEGUIDE — não é sistema
+   O CSS canônico dos componentes mora em `components.css`, carregado acima.
+   Esta página apenas o renderiza; ela não define nenhum componente.
+   O que sobra aqui é o andaime (rótulos, amostras de cor) e as maquetes de
+   nav e footer, que na página real vêm de `page-style.css`.
+=========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--color-bg-page);
+    color: var(--color-text-body);
+    font-family: var(--font-family);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+}
+
+h1, h2, h3, p, ul, figure { margin: 0; }
+
+.material-symbols-outlined {
+    font-variation-settings: "FILL" var(--icon-fill), "wght" var(--icon-weight),
+                             "GRAD" var(--icon-grade), "opsz" 24;
+    font-size: var(--icon-size);
+}
+
+/* --- CTA — vive em page-style.css; repetido aqui só para a amostra render -- */
+.cta-block { text-align: center; }
+.cta-block .cta-lead { color: var(--color-text-body); font-weight: var(--font-weight-medium); }
+.cta-block h2 {
+    color: var(--color-text-heading);
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    margin-block: var(--space-2) var(--space-6);
+}
+
+/* --- chrome de amostra --------------------------------------------------- */
+.nav-demo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding: var(--space-3) var(--page-gutter);
+    background: var(--color-bg-page);
+    border-bottom: 1px solid var(--color-border);
+}
+.nav-demo .links { display: flex; gap: var(--space-6); }
+.nav-demo a { color: var(--color-text-body); text-decoration: none; font-size: var(--font-size-body-sm); font-weight: var(--font-weight-medium); }
+.nav-demo a:hover { color: var(--color-accent-hover); }
+.nav-demo a.is-active { color: var(--color-accent-hover); font-weight: var(--font-weight-bold); text-decoration: underline; text-underline-offset: 0.45em; }
+
+.status-tag {
+    display: inline-flex; align-items: center; gap: 0.62em;
+    border: var(--tag-border) solid var(--color-tag-green);
+    border-radius: var(--radius-pill);
+    color: var(--color-tag-green);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-caption);
+    line-height: var(--line-height-tight);
+    padding: 0.62em 1.05em;
+    text-transform: uppercase;
+}
+.status-tag::before { content: ""; width: 0.62em; height: 0.62em; border-radius: 50%; background: currentColor; }
+
+.footer-demo {
+    text-align: center;
+    padding: var(--space-6) var(--space-5);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--font-size-body-sm);
+}
+.footer-demo .links { display: flex; justify-content: center; gap: var(--space-5); margin-bottom: var(--space-3); }
+.footer-demo a { color: var(--color-text-heading); }
+
+/* --- andaime do styleguide ----------------------------------------------- */
+.sg-head { padding: var(--space-10) var(--page-gutter) var(--space-6); max-width: var(--container-max); margin-inline: auto; }
+.sg-title { font-size: var(--font-size-h1); font-weight: var(--font-weight-bold); color: var(--color-text-heading); line-height: var(--line-height-heading); }
+.sg-label {
+    font-family: ui-monospace, monospace;
+    font-size: var(--font-size-caption);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-caption);
+    color: var(--color-text-body);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-2);
+    margin-bottom: var(--space-5);
+}
+.sg-note { font-size: var(--font-size-body-sm); color: var(--color-text-body); margin-top: var(--space-4); }
+.sg-row { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+.swatches { display: grid; grid-template-columns: repeat(9, 1fr); gap: var(--space-1); }
+.swatch { aspect-ratio: 1; border-radius: var(--space-1); }
+.swatch-row { margin-bottom: var(--space-4); }
+.swatch-name { font-size: var(--font-size-caption); font-weight: var(--font-weight-bold); text-transform: uppercase; letter-spacing: var(--letter-spacing-caption); margin-bottom: var(--space-1); }
+
+/* amostras da escada de superfície: a borda é o que mantém os degraus
+   distinguíveis quando dois deles ficam próximos no escuro */
+.sg-surfaces { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: var(--space-3); }
+.sg-surface {
+    display: flex;
+    align-items: flex-end;
+    min-height: 7rem;
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+}
+.sg-surface span {
+    font-family: ui-monospace, monospace;
+    font-size: var(--font-size-caption);
+    color: var(--color-text-body);
+}
+
+@media (max-width: 900px) {
+    .nav-demo .links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="sg-head">
+    <p class="sg-label">styleguide</p>
+    <h1 class="sg-title">Portfólio Milena Caldas</h1>
+    <p class="sg-note">Render de referência. Todo valor vem de <code>tokens.css</code>. Copie o markup daqui.</p>
+
+    <div class="sg-row" style="margin-top:var(--space-6)">
+        <fieldset class="theme-switch">
+            <legend>Tema</legend>
+            <label><input type="radio" name="theme" value="system" checked> Sistema</label>
+            <label><input type="radio" name="theme" value="light"> Claro</label>
+            <label><input type="radio" name="theme" value="dark"> Escuro</label>
+        </fieldset>
+        <p class="sg-note" style="margin:0">Sem escolha, segue o sistema operacional. Toda seção abaixo responde ao seletor.</p>
+    </div>
+</header>
+
+<!-- ====================== CHROME ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">nav — variante case</p>
+    </div>
+    <nav class="nav-demo">
+        <div class="sg-row">
+            <strong>MC</strong>
+            <span class="status-tag">Available</span>
+        </div>
+        <div class="links">
+            <a href="#">work</a>
+            <a href="#">about</a>
+            <a href="#">resume</a>
+            <a href="#" class="is-active">contact</a>
+        </div>
+        <button type="button" aria-label="Menu" style="background:none;border:0;padding:var(--space-2)">
+            <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+        </button>
+    </nav>
+</section>
+
+<!-- ====================== CORES ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">paleta</p>
+
+        <div class="swatch-row">
+            <p class="swatch-name">purple — primária</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--purple-100)"></div>
+                <div class="swatch" style="background:var(--purple-200)"></div>
+                <div class="swatch" style="background:var(--purple-300)"></div>
+                <div class="swatch" style="background:var(--purple-400)"></div>
+                <div class="swatch" style="background:var(--purple-500)"></div>
+                <div class="swatch" style="background:var(--purple-600)"></div>
+                <div class="swatch" style="background:var(--purple-700)"></div>
+                <div class="swatch" style="background:var(--purple-800)"></div>
+                <div class="swatch" style="background:var(--purple-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">gray — neutra</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--gray-100)"></div>
+                <div class="swatch" style="background:var(--gray-200)"></div>
+                <div class="swatch" style="background:var(--gray-300)"></div>
+                <div class="swatch" style="background:var(--gray-400)"></div>
+                <div class="swatch" style="background:var(--gray-500)"></div>
+                <div class="swatch" style="background:var(--gray-600)"></div>
+                <div class="swatch" style="background:var(--gray-700)"></div>
+                <div class="swatch" style="background:var(--gray-800)"></div>
+                <div class="swatch" style="background:var(--gray-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">pink</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--pink-100)"></div>
+                <div class="swatch" style="background:var(--pink-200)"></div>
+                <div class="swatch" style="background:var(--pink-300)"></div>
+                <div class="swatch" style="background:var(--pink-400)"></div>
+                <div class="swatch" style="background:var(--pink-500)"></div>
+                <div class="swatch" style="background:var(--pink-600)"></div>
+                <div class="swatch" style="background:var(--pink-700)"></div>
+                <div class="swatch" style="background:var(--pink-800)"></div>
+                <div class="swatch" style="background:var(--pink-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">blue</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--blue-100)"></div>
+                <div class="swatch" style="background:var(--blue-200)"></div>
+                <div class="swatch" style="background:var(--blue-300)"></div>
+                <div class="swatch" style="background:var(--blue-400)"></div>
+                <div class="swatch" style="background:var(--blue-500)"></div>
+                <div class="swatch" style="background:var(--blue-600)"></div>
+                <div class="swatch" style="background:var(--blue-700)"></div>
+                <div class="swatch" style="background:var(--blue-800)"></div>
+                <div class="swatch" style="background:var(--blue-900)"></div>
+            </div>
+        </div>
+
+        <div class="swatch-row">
+            <p class="swatch-name">green</p>
+            <div class="swatches">
+                <div class="swatch" style="background:var(--green-100)"></div>
+                <div class="swatch" style="background:var(--green-200)"></div>
+                <div class="swatch" style="background:var(--green-300)"></div>
+                <div class="swatch" style="background:var(--green-400)"></div>
+                <div class="swatch" style="background:var(--green-500)"></div>
+                <div class="swatch" style="background:var(--green-600)"></div>
+                <div class="swatch" style="background:var(--green-700)"></div>
+                <div class="swatch" style="background:var(--green-800)"></div>
+                <div class="swatch" style="background:var(--green-900)"></div>
+            </div>
+        </div>
+
+        <p class="sg-note"><strong>red</strong> existe na paleta e não é usada em nenhuma página. Não introduza.</p>
+        <p class="sg-note">Os cinco degraus acima <strong>não mudam no modo escuro.</strong> A paleta primitiva é a mesma nos dois temas — o que muda é qual degrau cumpre qual papel.</p>
+    </div>
+</section>
+
+<!-- ====================== MODO ESCURO ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">modo escuro — o que muda e o que não muda</p>
+
+        <div class="text-block">
+            <h2>O escuro não é o claro invertido</h2>
+            <p class="lead">Cada token semântico é um par <code>light-dark(claro, escuro)</code>. Uma declaração por token, não dois blocos espelhados: blocos espelhados dessincronizam na primeira vez que alguém troca um valor e esquece o outro.</p>
+            <p>A paleta primitiva do bloco 1 do <code>tokens.css</code> <strong>não ganhou nenhum degrau novo.</strong> Onde o escuro precisava de um passo de superfície que a escala 100–900 não tem, ele foi <strong>derivado</strong> por <code>color-mix</code> de dois degraus existentes — nunca escolhido a olho.</p>
+        </div>
+
+        <div class="grid-3" style="margin-top:var(--space-8)">
+            <div class="band-card">
+                <b>01</b>
+                <h3>A superfície inverte de direção</h3>
+                <p>No claro ela desce de branco para lavanda conforme aproxima do conteúdo. No escuro ela <strong>sobe</strong>: quanto mais elevado o elemento, mais claro o fundo. Card escuro mais escuro que a página lê como buraco, não como card.</p>
+            </div>
+            <div class="band-card">
+                <b>02</b>
+                <h3>O hover clareia</h3>
+                <p>No claro o hover escurece o fundo. No escuro isso faria o botão sumir. <code>--color-accent-hover</code> é o degrau 600 no claro e o <strong>400</strong> no escuro.</p>
+            </div>
+            <div class="band-card">
+                <b>03</b>
+                <h3>A sombra troca de base</h3>
+                <p>Sombra roxa translúcida some sobre fundo quase-preto. No escuro a base vira preto puro e o alfa quase dobra — e parte da elevação passa a vir da superfície clarear, não só da sombra.</p>
+            </div>
+        </div>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">a escada de superfície, ao vivo — troque o tema no topo</p>
+        <div class="sg-surfaces">
+            <div class="sg-surface" style="background:var(--color-bg-page)"><span>bg-page</span></div>
+            <div class="sg-surface" style="background:var(--color-bg-subtle)"><span>bg-subtle</span></div>
+            <div class="sg-surface" style="background:var(--color-bg-surface)"><span>bg-surface</span></div>
+            <div class="sg-surface" style="background:var(--color-bg-card)"><span>bg-card</span></div>
+            <div class="sg-surface" style="background:var(--color-bg-inverse)"><span style="color:var(--color-text-inverse)">bg-inverse</span></div>
+        </div>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">a escada de texto inverte de ponta a ponta</p>
+        <div class="text-block">
+            <p style="color:var(--color-text-heading)">text-heading — purple-700 no claro, <strong style="color:var(--color-text-heading)">purple-300</strong> no escuro</p>
+            <p>text-body — gray-700 no claro, gray-300 no escuro</p>
+            <p><strong>text-strong</strong> — o mais escuro dos três no claro (purple-800), o mais <strong>claro</strong> no escuro (purple-200)</p>
+        </div>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">o modo escuro resolve uma das duas exceções de contraste</p>
+        <div class="data-table-scroll">
+            <table class="data-table">
+                <caption>Pares que reprovam em WCAG AA no tema claro, medidos nos dois temas.</caption>
+                <thead>
+                    <tr><th scope="col">Par</th><th scope="col">Claro</th><th scope="col">Escuro</th><th scope="col">Situação</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Rótulo do <code>.btn--primary</code> sobre o roxo</td>
+                        <td>1.95</td>
+                        <td>9.59</td>
+                        <td><strong>Resolvido no escuro.</strong> O rótulo deixa de ser branco e vira purple-900.</td>
+                    </tr>
+                    <tr>
+                        <td><code>.tag--pink</code> sobre a página</td>
+                        <td>1.84</td>
+                        <td>10.12</td>
+                        <td><strong>Resolvido no escuro</strong> sem trocar o degrau — foi o fundo que mudou.</td>
+                    </tr>
+                    <tr>
+                        <td><code>.tag--green</code> sobre a página</td>
+                        <td>2.76</td>
+                        <td>6.75</td>
+                        <td>Resolvido no escuro.</td>
+                    </tr>
+                    <tr>
+                        <td><code>.tag--blue</code> sobre a página</td>
+                        <td>2.53</td>
+                        <td>7.36</td>
+                        <td>Resolvido no escuro.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="sg-note">As duas exceções declaradas do sistema existem só no tema claro. No escuro os mesmos degraus pastel passam com folga, porque contraste é uma relação entre dois valores e só um deles mudou. <strong>Isso não autoriza usar os degraus 500 como texto no claro</strong> — a exceção continua valendo só para <code>.tag</code>.</p>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">regras fechadas do modo escuro</p>
+        <div class="text-block">
+            <p>Nunca escreva uma cor literal para o escuro. Se um token não tem par <code>light-dark()</code>, ele não muda de tema — e se precisava mudar, o lugar é o <code>tokens.css</code>.</p>
+            <p>Nunca use <code>@media (prefers-color-scheme)</code> numa folha de página. O tema é resolvido inteiramente na camada de token; página que testa a preferência do sistema ignora a escolha manual do usuário.</p>
+            <p>Nunca desligue o <code>color-scheme</code> do <code>:root</code>. É ele que liga o <code>light-dark()</code> e também o que faz o navegador pintar a barra de rolagem e os campos de formulário no tema certo.</p>
+            <p>Imagem com fundo branco chapado precisa de versão escura ou de um fundo próprio. O sistema não aplica filtro em imagem — <code>filter: invert()</code> em foto é proibido, como já era.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== ESCALA TIPOGRÁFICA ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">escala tipográfica</p>
+        <div style="display:grid;gap:var(--space-5)">
+            <div><p class="note">H1 · 48 → 56px</p><span style="font-size:var(--font-size-h1);font-weight:var(--font-weight-bold);line-height:var(--line-height-heading);color:var(--color-text-heading)">Título de página</span></div>
+            <div><p class="note">H2 · 40 → 42px</p><span style="font-size:var(--font-size-h2);font-weight:var(--font-weight-bold);line-height:var(--line-height-heading);color:var(--color-text-heading)">Título de seção</span></div>
+            <div><p class="note">H3 · 32 → 36px</p><span style="font-size:var(--font-size-h3);font-weight:var(--font-weight-bold);line-height:var(--line-height-heading);color:var(--color-text-heading)">Subtítulo</span></div>
+            <div><p class="note">H4 · 28px</p><span style="font-size:var(--font-size-h4);font-weight:var(--font-weight-bold);color:var(--color-text-heading)">Título de bloco</span></div>
+            <div><p class="note">H5 · 24px</p><span style="font-size:var(--font-size-h5);font-weight:var(--font-weight-bold);color:var(--color-text-heading)">Título de card</span></div>
+            <div><p class="note">H6 · 18 → 20px</p><span style="font-size:var(--font-size-h6);font-weight:var(--font-weight-bold);color:var(--color-text-heading)">Rótulo de grupo</span></div>
+            <div><p class="note">Body Large · 18px / 1.5</p><span class="lead">Parágrafo de abertura, um por bloco.</span></div>
+            <div><p class="note">Body Medium · 16px / 1.5</p><span>Texto padrão, lista e campo de formulário.</span></div>
+            <div><p class="note">Body Small · 14px / 1.4</p><span class="note">Nota secundária, legenda, descrição de interface.</span></div>
+            <div><p class="note">Caption · 12px / 1.3</p><span style="font-size:var(--font-size-caption);line-height:var(--line-height-caption);font-weight:var(--font-weight-bold);text-transform:uppercase;letter-spacing:var(--letter-spacing-caption)">Tag e rótulo</span></div>
+        </div>
+        <p class="sg-note">Pesos: 400 padrão, 500 rótulo e numeral, 700 título e destaque. Nada fora dos três.</p>
+    </div>
+</section>
+
+<!-- ====================== BLOCO DE TEXTO ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">bloco de título + texto — com tag</p>
+        <div class="text-block">
+            <div class="tag-group">
+                <span class="tag tag--blue">Product design</span>
+                <span class="tag tag--pink">2022</span>
+                <span class="tag tag--green">Shipped</span>
+            </div>
+            <h2>Título da seção</h2>
+            <p class="lead">Parágrafo de abertura, em Body Large. O espaço acima dele é <strong>--rhythm-head-body</strong>, a única relação de ritmo confirmada como regra na extração.</p>
+            <p>Parágrafo padrão, em Body Medium, separado por <strong>--rhythm-para</strong>. Um <a href="#">link no corpo</a> é sublinhado e nunca se distingue só por cor.</p>
+            <p class="note">Nota secundária, em Body Small. Use para observação de apoio, nunca para conteúdo principal.</p>
+            <a class="btn btn--primary" href="#">Ação principal</a>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== BOTÕES ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">botões</p>
+        <div class="sg-row">
+            <a class="btn btn--primary" href="#">Send a message</a>
+            <a class="btn btn--secondary" href="#">View CV</a>
+            <button class="btn btn--primary" type="button" disabled>Indisponível</button>
+        </div>
+        <div class="sg-row" style="margin-top:var(--space-5)">
+            <a class="btn btn--primary" href="#">
+                Continuar
+                <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </a>
+            <a class="link-jump" href="#">
+                <span class="material-symbols-outlined" aria-hidden="true">arrow_downward</span>
+                How I did it
+            </a>
+        </div>
+        <p class="sg-note">Um primário por página. O secundário só aparece à direita de um primário. Navegue com Tab para conferir o anel de foco.<br>
+        <strong>Exceção de contraste declarada:</strong> o rótulo do primário é branco puro sobre <code>--purple-500</code> (1.95) e sobre <code>--purple-600</code> no hover (3.00). A borda em <code>--purple-600</code> dá 3.00 sobre branco e é o que mantém o limite do componente perceptível — nunca remova a borda.</p>
+    </div>
+</section>
+
+<!-- ====================== TAGS ====================== -->
+<section class="band band--grid">
+    <div class="wrap">
+        <p class="sg-label">tags — sempre span, nunca interativas</p>
+        <div class="tag-group">
+            <span class="tag tag--pink">Pink</span>
+            <span class="tag tag--green">Green</span>
+            <span class="tag tag--blue">Blue</span>
+        </div>
+        <p class="sg-note">Grupo de 2 ou 3, cores diferentes entre si, sempre acima do título.<br>
+        <strong>Exceção de contraste declarada:</strong> os três tokens ficam nos degraus pastel do Figma e reprovam em WCAG AA (1.84 / 2.76 / 2.53 sobre branco). Decisão de marca. Nenhum outro componente herda estes degraus.</p>
+    </div>
+</section>
+
+<!-- ====================== CARDS ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">cards numerados</p>
+        <div class="grid-3">
+            <div class="band-card">
+                <b>01</b>
+                <h3>Multi-Sport Templates</h3>
+                <p>Added soccer, volleyball, and basketball.</p>
+            </div>
+            <div class="band-card">
+                <b>02</b>
+                <h3>Custom Backgrounds</h3>
+                <p>Upload images to serve as custom backgrounds.</p>
+            </div>
+            <div class="band-card">
+                <b>03</b>
+                <h3>Offline &amp; Export</h3>
+                <p>Save locally, with shareable images or PDFs.</p>
+            </div>
+        </div>
+        <p class="sg-note">Numere apenas quando a ordem carregar informação.</p>
+    </div>
+</section>
+
+<!-- ====================== BANDA DE 2 COLUNAS + MÉTRICAS ====================== -->
+<section class="band band--white">
+    <div class="wrap">
+        <p class="sg-label">banda de duas colunas — gap --gap-column</p>
+        <div class="grid-split">
+            <div>
+                <div class="stat"><b>8</b><span>new teams created<br>in week one</span></div>
+                <div class="stat"><b>20</b><span>active users<br>in week one</span></div>
+            </div>
+            <div class="text-block">
+                <h2>Result &amp; Reflection</h2>
+                <p>A coluna de texto respeita <strong>--measure</strong> mesmo dentro de um grid.</p>
+                <a class="btn btn--secondary" href="#">Ver projeto</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== IMAGENS ====================== -->
+<section class="band band--grid">
+    <div class="wrap">
+        <p class="sg-label">imagem com legenda — sem raio, sem overlay, sem filtro</p>
+        <figure class="figure">
+            <span class="ph"></span>
+            <figcaption>Legenda abaixo, em --font-size-body-sm.</figcaption>
+        </figure>
+        <p class="sg-label" style="margin-top:var(--space-8)">placeholder — imagem que ainda não existe</p>
+        <div class="ph-image" data-placeholder="true">Guia impresso aberto, fotografado em escala — 4:3</div>
+        <p class="sg-note">Use sempre que o asset não existir. Nunca invente caminho, nunca use imagem de banco. Liste todos no fim da entrega.</p>
+    </div>
+</section>
+
+<section class="band band--loose band--white">
+    <div class="wrap">
+        <p class="sg-label">galeria — 5 colunas, 2 em ≤900px</p>
+        <div class="grid-gallery">
+            <span class="ph"></span><span class="ph"></span><span class="ph"></span>
+            <span class="ph"></span><span class="ph"></span><span class="ph"></span>
+            <span class="ph"></span><span class="ph"></span><span class="ph"></span>
+            <span class="ph"></span>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== PASSOS + CHIPS ====================== -->
+<section class="band band--grid">
+    <div class="wrap">
+        <p class="sg-label">passos numerados com trilho — e chips dentro do passo</p>
+        <div class="steps">
+            <div class="step">
+                <img src="imagesProjects/ludis-lp/cbl-01.png" alt="" aria-hidden="true" loading="lazy">
+                <div>
+                    <h3><span>01 ·</span> Discover</h3>
+                    <ul>
+                        <li>Interviews with coaches who manage their own teams.</li>
+                        <li>Competitive teardown of the paid tools.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="step">
+                <img src="imagesProjects/ludis-lp/cbl-02.png" alt="" aria-hidden="true" loading="lazy">
+                <div>
+                    <h3><span>02 ·</span> Define</h3>
+                    <p>Os chips enumeram o que foi usado no passo. Grupo de seis é normal — é conteúdo, não metadado.</p>
+                    <div class="chip-group">
+                        <span class="chip">Personas</span>
+                        <span class="chip">Journey map</span>
+                        <span class="chip">Card sorting</span>
+                        <span class="chip">Benchmark</span>
+                        <span class="chip">Job stories</span>
+                    </div>
+                </div>
+            </div>
+            <div class="step">
+                <img src="imagesProjects/ludis-lp/cbl-03.png" alt="" aria-hidden="true" loading="lazy">
+                <div>
+                    <h3><span>03 ·</span> Deliver</h3>
+                    <p>O trilho tracejado morre no último passo. O numeral vive dentro do h3, num span — é rótulo, não conteúdo à parte.</p>
+                </div>
+            </div>
+        </div>
+        <p class="sg-note">Numere <strong>apenas quando a ordem carrega informação</strong>. Itens paralelos não se numeram.</p>
+    </div>
+</section>
+
+<!-- ====================== CARD DE FLUXO + MÉTRICA EM LINHA ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">cards de fluxo — numeral, mídia, legenda</p>
+        <div class="grid-3">
+            <figure class="flow-card">
+                <b>01</b>
+                <img src="imagesProjects/ludis-lp/phone-01.png" alt="" aria-hidden="true" loading="lazy">
+                <figcaption>Toda legenda explica uma decisão, não o objeto.</figcaption>
+            </figure>
+            <figure class="flow-card">
+                <b>02</b>
+                <img src="imagesProjects/ludis-lp/phone-02.png" alt="" aria-hidden="true" loading="lazy">
+                <figcaption>Errado: “a tela final”. Certo: por que ela ficou assim.</figcaption>
+            </figure>
+            <figure class="flow-card">
+                <b>03</b>
+                <img src="imagesProjects/ludis-lp/phone-03.png" alt="" aria-hidden="true" loading="lazy">
+                <figcaption>Sempre <code>&lt;figure&gt;</code> com <code>&lt;figcaption&gt;</code>.</figcaption>
+            </figure>
+        </div>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">métrica em linha — fileira de números no hero</p>
+        <div class="stat-group--row">
+            <div class="stat"><b>4/4</b><span>completion,<br>first-time writers</span></div>
+            <div class="stat"><b>4.7/5</b><span>satisfaction<br>(QUIS)</span></div>
+            <div class="stat"><b>1</b><span>unsolicited<br>classroom adoption</span></div>
+        </div>
+        <p class="sg-note">Mesmo componente da grade de métricas que fecha o case — só a direção muda. Números soltos numa linha do rundown são isto, nunca parágrafo.</p>
+    </div>
+</section>
+
+<!-- ====================== CITAÇÃO + TABELA ====================== -->
+<section class="band band--grid">
+    <div class="wrap">
+        <p class="sg-label">citação em destaque — no máximo uma por bloco</p>
+        <blockquote class="pull-quote">
+            The problem isn't that beginners can't write. It's that nobody hands them a process.
+        </blockquote>
+        <p class="sg-note">Sem itálico e sem aspas decorativas — o filete e o tamanho já marcam. Duas por bloco viram decoração.</p>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">tabela de dados — para dado que <em>é</em> tabular</p>
+        <div class="data-table-scroll">
+            <table class="data-table">
+                <thead>
+                    <tr><th scope="col">Goal</th><th scope="col">Signal</th><th scope="col">Metric</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Beginners can complete a story</td>
+                        <td>They reach the end without abandoning it</td>
+                        <td>Completion rate</td>
+                    </tr>
+                    <tr>
+                        <td>The method is learnable</td>
+                        <td>They recall and describe the steps unaided</td>
+                        <td>Unaided recall, one week later</td>
+                    </tr>
+                    <tr>
+                        <td>The method is usable alone</td>
+                        <td>They don't need to re-read the guide to proceed</td>
+                        <td>Number of consultations</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="sg-note">Em tela estreita a tabela <strong>rola dentro do próprio container</strong>. Não colapsa e não some: a relação entre as colunas é o conteúdo.</p>
+    </div>
+</section>
+
+<!-- ====================== EXPANSÍVEL + CARD DE CONTRASTE ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">expansível — &lt;details&gt; nativo, sem JS</p>
+        <details class="disclosure">
+            <summary>
+                the ten tools and where each came from
+                <span class="material-symbols-outlined" aria-hidden="true">expand_more</span>
+            </summary>
+            <p>Material de apoio que provaria rigor mas custaria o leitor: tabela de fontes, exemplo trabalhado, anexo.</p>
+        </details>
+        <p class="sg-note">Nunca esconda aqui conteúdo de que o argumento da página depende. Teclado e leitor de tela já funcionam de graça.</p>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">card de contraste — o achado que contraria os outros</p>
+        <div class="grid-3">
+            <div class="band-card">
+                <b>Retention</b>
+                <h3>7 of 8</h3>
+                <p>Recalled the method's steps by name a week later.</p>
+            </div>
+            <div class="band-card">
+                <b>Satisfaction</b>
+                <h3>4.7 / 5</h3>
+                <p>Measured with QUIS, a validated instrument.</p>
+            </div>
+            <div class="band-card band-card--flag">
+                <b>Transfer — below target</b>
+                <h3>4 of 8</h3>
+                <p>Only half could explain why each step existed.</p>
+            </div>
+        </div>
+        <p class="sg-note">Mesmo fundo, mesmo raio, mesmo tamanho de texto — só o filete muda. Um card de contraste que parece mais importante lê como confissão; um que parece menos, lê como rodapé.<br>
+        O rótulo do estado (<strong>“below target”</strong>) está no texto porque <strong>cor nunca é o único diferenciador</strong>.</p>
+    </div>
+</section>
+
+<!-- ====================== ANTES/DEPOIS + CARROSSEL ====================== -->
+<section class="band band--grid">
+    <div class="wrap">
+        <p class="sg-label">comparador antes/depois</p>
+        <div class="ba-device">
+            <img class="ba-base" src="imagesProjects/ludis-lp/ba-device.png" alt="Tela de login antes do redesenho, na moldura do aparelho">
+            <div class="ba-screen">
+                <img class="ba-after" src="imagesProjects/ludis-lp/ba-after.png" alt="A mesma tela depois do redesenho">
+            </div>
+            <button class="ba-handle" type="button" role="slider"
+                    aria-label="Comparar antes e depois"
+                    aria-valuenow="73" aria-valuemin="0" aria-valuemax="100">
+                <img src="imagesProjects/ludis-lp/ba-handle.png" alt="" aria-hidden="true">
+            </button>
+        </div>
+        <p class="ba-hint">← arraste para comparar</p>
+        <p class="sg-note">A geometria do recorte pertence ao PNG da moldura, não ao design system — as quatro variáveis <code>--ba-screen-*</code> se sobrescrevem no elemento quando a moldura muda. Sem JS o divisor fica na posição inicial: <strong>nunca deixe a tela vazia</strong>.<br>
+        <strong>Pendência de acessibilidade herdada do LUDIS:</strong> o <code>role="slider"</code> precisa responder às setas do teclado. O anel de foco já vem da regra global.</p>
+
+        <p class="sg-label" style="margin-top:var(--space-10)">carrossel full-bleed — dois conjuntos idênticos, sem JS para o loop</p>
+    </div>
+    <div class="carousel-fullbleed">
+        <div class="carousel-track">
+            <div class="carousel-set">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-1.png" alt="Tela do app: quadro tático" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-2.png" alt="Tela do app: playbook salvo" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-3.png" alt="Tela do app: elenco" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-4.png" alt="Tela do app: exportação em PDF" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-5.png" alt="Tela do app: modo offline" loading="lazy">
+            </div>
+            <div class="carousel-set" aria-hidden="true">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-1.png" alt="" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-2.png" alt="" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-3.png" alt="" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-4.png" alt="" loading="lazy">
+                <img class="carousel-item" src="imagesProjects/ludis-lp/carousel-5.png" alt="" loading="lazy">
+            </div>
+        </div>
+        <button class="carousel-toggle" type="button" aria-pressed="false" aria-label="Pausar carrossel">
+            <span class="material-symbols-outlined" aria-hidden="true">pause</span>
+        </button>
+    </div>
+    <div class="wrap">
+        <p class="sg-note">O segundo conjunto é idêntico e leva <code>aria-hidden</code>; o trilho anda 50% da própria largura, então o loop não tem emenda e <strong>não precisa de script</strong>. O único JS é o botão de pausa — três linhas, exigidas pela WCAG 2.2.2 para movimento que dura mais de cinco segundos. Markup e script em <code>references/components.md</code>.</p>
+    </div>
+</section>
+
+<!-- ====================== CTA ====================== -->
+<section class="band band--subtle">
+    <div class="wrap">
+        <p class="sg-label">bloco CTA — única composição centralizada</p>
+        <div class="cta-block">
+            <p class="cta-lead">Wanna work together?</p>
+            <h2>Let's build something<br>extraordinary!</h2>
+            <a class="btn btn--primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer-demo">
+    <div class="links">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Behance</a>
+        <a href="#">View CV</a>
+    </div>
+    <p>© 2026 Milena Caldas. All rights reserved.<br>
+       Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
+</footer>
+
+<script>
+/* Seletor de tema. "system" apaga o atributo e devolve a decisão ao SO —
+   por isso o valor é removido do localStorage em vez de gravado como 'system':
+   ausência é o estado padrão, e gravá-lo seria guardar "nenhuma escolha". */
+(function () {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    var current = (saved === 'light' || saved === 'dark') ? saved : 'system';
+    var chosen = document.querySelector('.theme-switch input[value="' + current + '"]');
+    if (chosen) chosen.checked = true;
+
+    document.querySelectorAll('.theme-switch input').forEach(function (input) {
+        input.addEventListener('change', function () {
+            if (input.value === 'system') {
+                delete document.documentElement.dataset.theme;
+                try { localStorage.removeItem('theme'); } catch (e) {}
+            } else {
+                document.documentElement.dataset.theme = input.value;
+                try { localStorage.setItem('theme', input.value); } catch (e) {}
+            }
+        });
+    });
+})();
+
+/* Botão de pausa do carrossel (WCAG 2.2.2). */
+document.querySelectorAll('.carousel-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        var paused = btn.closest('.carousel-fullbleed').classList.toggle('is-paused');
+        btn.setAttribute('aria-pressed', String(paused));
+        btn.setAttribute('aria-label', paused ? 'Retomar carrossel' : 'Pausar carrossel');
+        btn.querySelector('.material-symbols-outlined').textContent = paused ? 'play_arrow' : 'pause';
+    });
+});
+</script>
+
+</body>
+</html>
