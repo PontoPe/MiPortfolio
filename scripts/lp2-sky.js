@@ -175,8 +175,15 @@
         var leaving = ease(clamp01((vh * LEAVE_START - aboutBox.bottom) / Math.max(vh * LEAVE_SPAN, 1)));
 
         /* The hill. Comes up while the deck is still on screen — the design has
-           the cards floating over the ground, not arriving after it. */
-        var ground = ease(clamp01((vh * 1.25 - deckBox.bottom) / Math.max(vh * 0.7, 1)));
+           the cards floating over the ground, not arriving after it. Measured
+           against the deck's laid-out position rather than its drawn one: the
+           deck is offset while it is keeping up with the cloud, and a hill that
+           followed that offset would ride back down with it.
+
+           The window is short enough that the hill is fully up before the page
+           runs out of scroll — the deck is the last thing above the fold, so
+           there is no more scrolling left to finish anything with. */
+        var ground = ease(clamp01((vh * 1.25 - (deckBox.bottom - last.lead)) / Math.max(vh * 0.45, 1)));
 
         var rest = restTop(vh, plate);
         var top = mix(rest, 0, entering);
@@ -251,11 +258,18 @@
         /* The work section, keeping up with the cloud. Held down by whatever is
            left of the underside's journey, minus whatever is left of its own —
            so it travels on the cloud's curve rather than the page's, easing when
-           the cloud eases, and both terms reach zero at the same scroll
-           position. Nothing here reads the section's own box, so the transform
-           it produces can never feed back into itself. */
-        var settleAt = vh * (LEAVE_START - LEAVE_SPAN);
-        var lead = Math.max(0, (bottom + edge) - (aboutBox.bottom - settleAt)) * chase;
+           the cloud eases. Nothing here reads the section's own box, so the
+           transform it produces can never feed back into itself.
+
+           Both terms are floored at zero, and that is not tidiness: past the end
+           of the crossing the section's own term goes negative, and subtracting
+           a negative would grow the offset again — the section would settle,
+           then drift back down over the section below it for the rest of the
+           page. The cloud's term is the outer floor, so once there is no cloud
+           left to keep up with there is no offset either. */
+        var remaining = Math.max(0, bottom + edge);
+        var itsOwn = Math.max(0, aboutBox.bottom - vh * (LEAVE_START - LEAVE_SPAN));
+        var lead = Math.max(0, remaining - itsOwn) * chase;
 
         if (Math.abs(lead - last.lead) > 0.5) {
             root.style.setProperty("--lp2-work-lead", lead.toFixed(1) + "px");

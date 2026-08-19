@@ -43,6 +43,14 @@
        climb into the cloud's underside; at 0 it waits a full empty screen. */
     --lp2-work-lift: 113svh;
 
+    /* How soft the cloud's own edges are, on top of the softness baked into the
+       cut-out. Kept small now that the plate is exported at 2600px: this was
+       covering for a source that could not hold an edge, and covering for it
+       twice reads as a low-resolution photograph rather than as a cloud. Raise
+       --lp2-plate-overlap with it if you raise it much — the overlap has to
+       clear the blur. */
+    --lp2-plate-blur: 1.5px;
+
     /* How far each plate is pushed into the body it meets. It has to clear the
        plate's blur radius, not just the fractional pixel the body's height
        lands on: a blurred edge is semi-transparent for as many pixels as it is
@@ -93,13 +101,18 @@
         --lp2-cloud-band: url("assets/ui/sky/cloud3_dark_a.webp");
         --lp2-grass-img: url("assets/ui/sky/grass_night.webp");
 
-        --lp2-fog-color: 57, 62, 100;
+        /* The inside of a cloud at night, not a night sky: the plate's lit
+           areas sample at a neutral 45% grey, so the body it dissolves into is
+           the same grey a couple of stops down with only a trace of blue left
+           in it. A navy here made the about section read as sky seen through
+           glass rather than as weather stood inside of. */
+        --lp2-fog-color: 60, 65, 76;
         --lp2-ink: #d8dcf2;
         --lp2-ink-strong: #ffffff;
         --lp2-hero-ink: #eceefb;
         --lp2-title: #ffffff;
         --lp2-card-shadow: rgba(8, 10, 30, 0.5);
-        --lp2-nav-bg: rgba(46, 50, 84, 0.72);
+        --lp2-nav-bg: rgba(52, 56, 66, 0.72);
         --lp2-haze-strength: 0.52;
     }
 }
@@ -112,13 +125,13 @@
     --lp2-cloud-band: url("assets/ui/sky/cloud3_dark_a.webp");
     --lp2-grass-img: url("assets/ui/sky/grass_night.webp");
 
-    --lp2-fog-color: 57, 62, 100;
+    --lp2-fog-color: 60, 65, 76;
     --lp2-ink: #d8dcf2;
     --lp2-ink-strong: #ffffff;
     --lp2-hero-ink: #eceefb;
     --lp2-title: #ffffff;
     --lp2-card-shadow: rgba(8, 10, 30, 0.5);
-    --lp2-nav-bg: rgba(46, 50, 84, 0.72);
+    --lp2-nav-bg: rgba(52, 56, 66, 0.72);
     --lp2-haze-strength: 0.52;
 }
 
@@ -297,7 +310,7 @@
        per theme) because a brightness() here would apply to the fade below as
        well, and that fade has to arrive at exactly the body's colour — a
        twelve-percent lift on it is a ruled line across the joint. */
-    filter: blur(3px);
+    filter: blur(var(--lp2-plate-blur));
     left: 0;
     position: absolute;
     right: 0;
@@ -571,11 +584,30 @@
 }
 
 .lp2-available i {
+    animation: lp2AvailableBlink 2.4s ease-in-out infinite;
     background: #7cc47b;
     border-radius: 50%;
     box-shadow: 0 0 0 4px rgba(124, 196, 123, 0.22);
     height: 0.5rem;
     width: 0.5rem;
+}
+
+/* Soft breath: the dot dims and its halo swells, no hard on/off flash. */
+@keyframes lp2AvailableBlink {
+    0%, 100% {
+        box-shadow: 0 0 0 4px rgba(124, 196, 123, 0.22);
+        opacity: 1;
+    }
+    50% {
+        box-shadow: 0 0 0 7px rgba(124, 196, 123, 0.06);
+        opacity: 0.45;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lp2-available i {
+        animation: none;
+    }
 }
 
 .lp2-nav-toggle {
@@ -1152,9 +1184,9 @@ html[data-lp2-copy="off"] .lp2-about-stage {
    so the fade between states is flat rather than swimming.
 --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-    /* Nothing arrives faster than the page it is on. */
+    /* Nothing travels at anything other than the page's own speed. */
     :root {
-        --lp2-work-chase: 1;
+        --lp2-work-chase: 0;
     }
 
     .lp2-carousel-track {
