@@ -4,18 +4,18 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Milena Caldas | Product &amp; Graphic Design</title>
+<meta name="description" content="Milena Caldas — product designer from Curitiba, Brazil, working on learning experiences and playful, human interfaces."/>
 <script>document.documentElement.classList.add("is-loading");</script>
 <script src="scripts/page-loader.js"></script>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="scripts/perf-tier.js"></script>
-<script src="scripts/tailwind-theme.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Kalam:wght@400;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="scripts/lp2-theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
 <link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
 <link href="page-style.css" rel="stylesheet"/>
+<link href="lp2.css" rel="stylesheet"/>
 </head>
-<body class="home-page font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<body class="lp2-page">
 <div aria-live="polite" aria-label="Loading portfolio" class="site-loader" role="status">
 <div class="site-loader-inner">
 <span aria-hidden="true" class="site-loader-mark">MC</span>
@@ -23,31 +23,69 @@
 <span aria-hidden="true" class="site-loader-dots"><i></i><i></i><i></i></span>
 </div>
 </div>
-<!-- Parallax Background -->
-<div class="parallax-bg" aria-hidden="true">
-<div class="parallax-layer" data-depth="16"></div>
-<div class="parallax-layer" data-depth="-12"></div>
-<div class="parallax-layer" data-depth="7"></div>
-<div class="parallax-layer" data-depth="-20"></div>
+
+<!-- ---------------------------------------------------------------------------
+     The sky. One fixed stack behind the whole document, moved by
+     scripts/lp2-sky.js.
+
+     There is exactly one cloud, and the page flies up through it: .lp2-cloudwall
+     is its body, and the two edge plates are its top and its underside. The
+     script moves those two edges in viewport pixels — the top edge rises off the
+     bottom of the hero until the cloud covers the window (the about section is
+     *inside* it, which is why nothing here is layered over that section), and
+     later the underside rises past the top, letting the sky back in under it for
+     the work.
+---------------------------------------------------------------------------- -->
+<div class="lp2-sky" aria-hidden="true">
+    <div class="lp2-layer lp2-sky-base"></div>
+    <div class="lp2-layer lp2-sky-upper"></div>
+    <!-- The mist around the cloud. Comes up before the cloud has anything to
+         show and goes down after it has nothing left, so its surface is crossed
+         rather than swapped. -->
+    <div class="lp2-haze"></div>
+    <!-- The far strands. They sit under the cloud's body, so the moment it
+         closes over the window they are behind it, and on the way out they are
+         in the sky it has just uncovered. The same four serve both crossings —
+         the script points them at whichever edge is travelling. The near ones
+         are elsewhere: see .lp2-sky-front below the page. -->
+    <span class="lp2-wisp lp2-wisp-1"></span>
+    <span class="lp2-wisp lp2-wisp-2"></span>
+    <div class="lp2-cloudwall">
+        <span class="lp2-cloudwall-edge lp2-cloudwall-top"></span>
+        <span class="lp2-cloudwall-edge lp2-cloudwall-bottom"></span>
+    </div>
+    <div class="lp2-layer lp2-grass"></div>
 </div>
+
 <!-- Navigation -->
-<nav class="site-nav">
+<nav class="site-nav lp2-nav">
 <div class="site-nav-inner">
 <div class="site-nav-brand">
 <a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
-<span class="status-tag status-tag-green">Available</span>
+<span class="lp2-available"><i aria-hidden="true"></i>Available to work</span>
 </div>
-<div class="hidden md:flex items-center">
-<div class="site-nav-links" data-repel="soft">
+<!-- Everything on the right of the bar. The theme button lives outside
+     .lp2-nav-links on purpose: under 768px that list collapses into the menu
+     panel, and the theme is a page-wide control that should stay on the bar
+     next to the hamburger rather than hide behind it. On desktop it reads as
+     the item after "contact", which is where it belongs. -->
+<div class="lp2-nav-end">
+<div class="lp2-nav-links">
 <a class="nav-link" href="#work">work</a>
 <a class="nav-link" href="#about">about</a>
 <a class="nav-link" href="about.html">resume</a>
 <a class="nav-link" href="#contact">contact</a>
 </div>
-</div>
-<button class="md:hidden p-2">
-<span class="material-symbols-outlined text-on-surface text-3xl">menu</span>
+<!-- Label and pressed state are written by scripts/lp2-theme.js, which is the
+     only thing that knows which theme is actually resolved. -->
+<button class="lp2-theme-toggle" type="button" data-lp2-theme-toggle aria-label="Switch to dark mode">
+<svg class="lp2-theme-icon lp2-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.4M12 19.2v2.4M4.2 12H1.8M22.2 12h-2.4M6.5 6.5 4.8 4.8M19.2 19.2l-1.7-1.7M17.5 6.5l1.7-1.7M4.8 19.2l1.7-1.7"/></svg>
+<svg class="lp2-theme-icon lp2-theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
 </button>
+<button class="lp2-nav-toggle" type="button" aria-label="Menu">
+<span aria-hidden="true"></span><span aria-hidden="true"></span>
+</button>
+</div>
 </div>
 <!-- TODO: Remove this home-only construction banner when the portfolio is officially launched. -->
 <aside aria-label="This website is under construction — Real work. Pixels still in motion." class="construction-banner">
@@ -58,145 +96,128 @@
 </span>
 </aside>
 </nav>
-<main class="home-main pb-8 max-w-[110rem] mx-auto">
-<!-- Hero and about share one band so they can share one grid: it is a single
-     background on this element, which is the only way the lattice can be
-     guaranteed to line up across the two rather than being two grids that
-     happen to agree. -->
-<div class="hero-about-band">
-<!-- The shared grid. A real element rather than a pseudo one so the hero can
-     measure it: scripts/hero/stage.js reads this box to phase-lock the canvas's
-     own grid to it. -->
-<div aria-hidden="true" class="hero-grid"></div>
-<!-- Everything above the fold. Sized to the viewport in CSS; the hero copy and
-     the lettering absorb the difference. -->
-<div class="hero-block">
-<!-- Hero -->
-<header class="home-hero">
-<div class="hero-meta" data-repel="soft">
-<p class="hero-meta-left">Product Designer &amp; Learning Experience Designer</p>
-<p class="hero-meta-right">Hi, I'm Milena, a product designer from Curitiba, Brazil, drawn to learning experiences and playful, human interfaces.</p>
-</div>
-<div class="hero-welcome">
-<!-- Host for the WebGL hero (scripts/hero/). Stays empty and hidden unless
-     the 3D lettering actually loads; everything below is the fallback. -->
-<div aria-hidden="true" class="hero-stage"></div>
-<!-- Refraction filter for the glass lettering: displaces the backdrop with
-     soft noise so whatever scrolls behind the letters bends like real glass. -->
-<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
-<filter color-interpolation-filters="sRGB" height="120%" id="welcome-glass-filter" width="120%" x="-10%" y="-10%">
-<feTurbulence baseFrequency="0.012 0.02" numOctaves="2" result="noise" seed="7" type="fractalNoise"/>
-<feGaussianBlur in="SourceGraphic" result="soft" stdDeviation="1.2"/>
-<feDisplacementMap in="soft" in2="noise" scale="55" xChannelSelector="R" yChannelSelector="G"/>
-</filter>
-</svg>
-<div aria-hidden="true" class="hero-welcome-glass"></div>
-<img alt="Welcome" src="assets/ui/welcome.png" onerror="this.parentElement.classList.add('no-img')"/>
-<span class="hero-welcome-fallback" aria-hidden="true">Welcome</span>
-</div>
-</header>
-<!-- News ticker. The track holds the same list three times and slides by
-     exactly one third of its width, which puts copy 2 where copy 1 started —
-     the loop has no seam. Three copies rather than two so the band still spans
-     the viewport on ultrawide screens; the duplicates are aria-hidden. -->
-<div class="news-ticker">
-<div class="news-ticker-track">
-<ul class="news-ticker-group">
-<li class="news-ticker-item">to my portfolio</li>
-<li class="news-ticker-item">to my digital playground</li>
-<li class="news-ticker-item">to my creative corner</li>
-<li class="news-ticker-item">to my brain</li>
-<li class="news-ticker-item">to my mess</li>
-</ul>
-<ul aria-hidden="true" class="news-ticker-group">
-<li class="news-ticker-item">to my portfolio</li>
-<li class="news-ticker-item">to my digital playground</li>
-<li class="news-ticker-item">to my creative corner</li>
-<li class="news-ticker-item">to my brain</li>
-<li class="news-ticker-item">to my mess</li>
-</ul>
-<ul aria-hidden="true" class="news-ticker-group">
-<li class="news-ticker-item">to my portfolio</li>
-<li class="news-ticker-item">to my digital playground</li>
-<li class="news-ticker-item">to my creative corner</li>
-<li class="news-ticker-item">to my brain</li>
-<li class="news-ticker-item">to my mess</li>
-</ul>
-</div>
-</div>
-</div>
-<!-- About -->
-<section class="home-about portfolio-section" data-reveal-group id="about">
-<div aria-label="Portrait of Milena Caldas" class="home-about-portrait" data-reveal="0" role="img"></div>
-<div class="home-about-copy">
-<div class="home-about-tags" data-reveal="1">
-<span class="status-tag status-tag-cyan">Open to remote</span>
-<span class="status-tag status-tag-violet">Open to relocate</span>
-</div>
-<p class="home-about-text" data-repel="soft" data-reveal="2">Fiction writer first, designer second — or maybe the other way around, depending on the week. Either way, it's the same work: making something complicated land without making it smaller than it is. I do that with a team at Brazil's largest pediatric hospital, and on my own in Mosaico, a tool for building stories that began as my thesis and grew into an AI writing companion. My app “Dear Stars” won Apple's WWDC21 Swift Student Challenge — and learning experience design is where all of this is headed.</p>
-<div class="home-about-actions" data-reveal="3">
-<a class="btn-pill btn-pill-primary" href="mailto:milena.am.caldas@gmail.com">send a message</a>
-<a class="btn-pill btn-pill-soft" href="about.html">view my resume</a>
-</div>
-</div>
-</section>
-</div>
-<!-- Project Sections: one glass box, one subsection per category -->
-<section class="section-panel portfolio-section" id="work">
-<div class="panel-subsection portfolio-section" id="ux-ui">
-<div class="flex items-center justify-between mb-8">
-<h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="hover:text-primary-dim transition-colors" href="ux-ui.html">Product Design</a></h2>
-<a class="text-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-on-surface-variant/40" href="ux-ui.html">see all</a>
-</div>
-<div class="landing-project-grid" data-featured-projects="ux-ui"></div>
-</div>
-<div class="panel-subsection portfolio-section" id="design-grafico">
-<div class="flex items-center justify-between mb-8">
-<h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="hover:text-primary-dim transition-colors" href="design-grafico.html">Graphic Design</a></h2>
-<a class="text-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-on-surface-variant/40" href="design-grafico.html">see all</a>
-</div>
-<div class="landing-project-grid" data-featured-projects="design-grafico"></div>
-</div>
-<div class="panel-subsection portfolio-section" id="ilustracao">
-<div class="flex items-center justify-between mb-8">
-<h2 class="font-headline text-3xl font-bold text-on-surface" data-repel><a class="hover:text-primary-dim transition-colors" href="ilustracao.html">Illustration</a></h2>
-<a class="text-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4 decoration-on-surface-variant/40" href="ilustracao.html">see all</a>
-</div>
-<div class="landing-project-grid" data-featured-projects="ilustracao"></div>
-</div>
-</section>
-<!-- Call to Action -->
-<div class="cta-block portfolio-section" id="contact">
-<p class="cta-lead">Wanna work together?</p>
-<h2 class="font-headline text-4xl font-bold text-on-surface mb-8" data-repel>Let's build something <br/>extraordinary!</h2>
-<a class="cta-btn cta-btn-primary" href="mailto:milena.am.caldas@gmail.com">Send a message</a>
-</div>
+
+<main class="lp2-main">
+    <!-- ---------------------------------------------------------------------
+         1. Above the clouds. Open sky, the lettering, and a first cloud bank
+         sitting on the bottom edge — the thing the page is about to fly into.
+    ---------------------------------------------------------------------- -->
+    <header class="lp2-hero" id="top">
+        <p class="lp2-hero-name">Milena Caldas<br/>Product Design</p>
+        <!-- The glass lettering, same component as the home page: .hero-stage is
+             the host scripts/lp2-hero.js mounts the WebGL scene into, and
+             everything below it is the fallback that stays put on any device
+             that does not get the scene. -->
+        <div class="hero-welcome lp2-hero-word">
+            <div aria-hidden="true" class="hero-stage"></div>
+            <!-- Refraction filter for the flat fallback: displaces the backdrop
+                 with soft noise so the letters bend it like real glass. -->
+            <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
+            <filter color-interpolation-filters="sRGB" height="120%" id="welcome-glass-filter" width="120%" x="-10%" y="-10%">
+            <feTurbulence baseFrequency="0.012 0.02" numOctaves="2" result="noise" seed="7" type="fractalNoise"/>
+            <feGaussianBlur in="SourceGraphic" result="soft" stdDeviation="1.2"/>
+            <feDisplacementMap in="soft" in2="noise" scale="55" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            </svg>
+            <div aria-hidden="true" class="hero-welcome-glass"></div>
+            <img alt="Welcome" src="assets/ui/welcome.png" onerror="this.parentElement.classList.add('no-img')"/>
+            <span class="hero-welcome-fallback" aria-hidden="true">Welcome</span>
+        </div>
+        <p class="lp2-hero-caption" aria-hidden="true">Dreaming big</p>
+    </header>
+
+    <!-- ---------------------------------------------------------------------
+         2. Inside the cloud. The fog layer is at full strength across this
+         section, so the copy reads on flat white (or flat night blue).
+    ---------------------------------------------------------------------- -->
+    <section class="lp2-about" id="about">
+        <div class="lp2-about-stage">
+        <div class="lp2-about-inner">
+            <div class="lp2-about-portrait" role="img" aria-label="Portrait of Milena Caldas"></div>
+            <div class="lp2-about-copy">
+                <div class="lp2-about-tags">
+                    <span class="lp2-tag lp2-tag-cyan">Open to remote</span>
+                    <span class="lp2-tag lp2-tag-violet">Open to relocate</span>
+                </div>
+                <p class="lp2-about-text">Hello! My name is Milena. I'm based in Curitiba, Brazil, and am a designer by profession, and a fiction writer by heart. I mention this because I believe they serve a similar purpose, making complicated things land without making them smaller than they are. I apply this principle in my design work with a team at Brazil's largest pediatric hospital, and on my own with Mosaico — an undergraduate thesis growing into an AI writing companion for young learners. From very early on — as early as my winning project “Dear Stars” at Apple's WWDC21 Swift Student Challenge — I've known the intersection of learning, design and problem solving is where all of this is headed!</p>
+                <div class="lp2-about-actions">
+                    <a class="btn-pill btn-pill-primary" href="mailto:milena.am.caldas@gmail.com">send a message</a>
+                    <a class="btn-pill btn-pill-soft" href="about.html">view my resume</a>
+                </div>
+            </div>
+        </div>
+        <a class="lp2-scroll-cue" href="#work">
+            <span class="lp2-scroll-cue-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M5.5 12.5 12 19l6.5-6.5"/></svg>
+            </span>
+            Get to know my work
+        </a>
+        </div>
+        <!-- The runway. Empty scroll, and the only reason it is an element
+             rather than padding: a sticky child can only stay pinned for as
+             long as its parent's *content* box lasts, and padding is not part
+             of it. This is how long the page spends inside the cloud. -->
+        <div class="lp2-about-runway" aria-hidden="true"></div>
+    </section>
+
+    <!-- ---------------------------------------------------------------------
+         3. Out the bottom of the cloud. The deck hangs over the top of this
+         section, open sky returns, and the work floats in it until the ground
+         comes up under the call to action.
+    ---------------------------------------------------------------------- -->
+    <section class="lp2-work" id="work">
+        <div class="lp2-work-head">
+            <h2 class="lp2-work-title">My work</h2>
+            <div class="lp2-filters" data-lp2-filters role="tablist" aria-label="Project categories"></div>
+        </div>
+        <div class="lp2-carousel" data-lp2-carousel>
+            <button class="lp2-carousel-nav lp2-carousel-prev" type="button" data-lp2-prev aria-label="Previous project">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4.5 7.5 12l7.5 7.5"/></svg>
+            </button>
+            <div class="lp2-carousel-track" data-lp2-track tabindex="0" aria-label="Projects"></div>
+            <button class="lp2-carousel-nav lp2-carousel-next" type="button" data-lp2-next aria-label="Next project">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5 16.5 12 9 19.5"/></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------------
+         4. Back on the ground.
+    ---------------------------------------------------------------------- -->
+    <section class="lp2-cta" id="contact">
+        <div class="lp2-cta-inner">
+            <p class="lp2-cta-lead">wanna work together?</p>
+            <h2 class="lp2-cta-title">Let's build something extraordinary!</h2>
+            <a class="lp2-cta-btn" href="mailto:milena.am.caldas@gmail.com">send a message</a>
+        </div>
+        <p class="lp2-cta-caption" aria-hidden="true">Staying grounded</p>
+    </section>
 </main>
-<!-- Footer -->
-<footer class="site-footer">
-<div class="site-footer-links">
-<a href="#">Instagram</a>
-<a href="#">LinkedIn</a>
-<a href="#">Behance</a>
-<a href="https://drive.google.com/file/d/14kkeX-nYINI_yYW-FbwWHhMAFweyPZ78/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+
+<!-- The near strands, in front of everything except the navigation. This is the
+     whole difference between watching a cloud arrive and going into one: some
+     of it has to pass on this side of the window. Inert to the pointer, so what
+     is under them stays clickable while they cross. -->
+<div class="lp2-sky-front" aria-hidden="true">
+    <span class="lp2-wisp lp2-wisp-3"></span>
+    <span class="lp2-wisp lp2-wisp-4"></span>
 </div>
-<p>© 2026 Milena Caldas. All rights reserved.<br/>Designed by Milena Caldas. Developed by Pedro Gradowski.</p>
-</footer>
+
 <script src="data/projects-data.js"></script>
-<script src="scripts/portfolio-render.js"></script>
-<script src="scripts/repel-text.js"></script>
-<script src="scripts/page-motion.js"></script>
+<script src="scripts/lp2-nav.js"></script>
+<script src="scripts/lp2-projects.js"></script>
+<script src="scripts/lp2-sky.js"></script>
 <script src="scripts/reveal-on-scroll.js"></script>
 <!-- three r180: `dispersion` on MeshPhysicalMaterial needs r167+, and
-     renderer.transmissionResolutionScale (which the hero relies on to afford
-     that dispersion) needs r171+. The map only names the modules; nothing is
-     fetched unless scripts/hero/index.js decides the device can run it. -->
+     renderer.transmissionResolutionScale needs r171+. The map only names the
+     modules; nothing is fetched unless scripts/lp2-hero.js decides the device
+     can run the scene. -->
 <script type="importmap">
 {"imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
   "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
 }}
 </script>
-<script src="scripts/hero/index.js" type="module"></script>
+<script src="scripts/lp2-hero.js" type="module"></script>
 </body>
 </html>

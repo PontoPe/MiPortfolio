@@ -1,7 +1,7 @@
 /* ===========================================================================
    LP2 — the sky skin.
 
-   Loaded *after* page-style.css and only by lp2.html. Everything here is
+   Loaded *after* page-style.css and only by index.html (the home page). Everything here is
    namespaced under .lp2-page or an .lp2-* class, so the current home page is
    untouched: page-style.css still owns the nav shell, the loader, the pill
    buttons and the footer, and this file re-skins them for a page whose
@@ -92,6 +92,14 @@
     --lp2-title: #6f61ab;
     --lp2-card-shadow: rgba(73, 100, 219, 0.28);
     --lp2-nav-bg: rgba(244, 246, 253, 0.72);
+    /* The category pills. Four values rather than a rule per theme: the theme
+       blocks below are attribute selectors on :root, which outweigh a plain
+       .lp2-filter.is-active — the selected pill kept losing its colour to the
+       theme's resting one. Variables have no specificity to lose. */
+    --lp2-pill-bg: rgba(255, 255, 255, 0.55);
+    --lp2-pill-ink: #6b5fa8;
+    --lp2-pill-bg-on: #7d6bc4;
+    --lp2-pill-ink-on: #ffffff;
     /* How much light the inside of the cloud carries from above. */
     /* How thick the mist gets at its worst. */
     --lp2-haze-strength: 0.58;
@@ -119,6 +127,10 @@
         --lp2-title: #ffffff;
         --lp2-card-shadow: rgba(8, 10, 30, 0.5);
         --lp2-nav-bg: rgba(52, 56, 66, 0.72);
+        --lp2-pill-bg: rgba(216, 220, 242, 0.75);
+        --lp2-pill-ink: #3f3a68;
+        --lp2-pill-bg-on: #5b4aa8;
+        --lp2-pill-ink-on: #ffffff;
         --lp2-haze-strength: 0.52;
     }
 }
@@ -138,6 +150,10 @@
     --lp2-title: #ffffff;
     --lp2-card-shadow: rgba(8, 10, 30, 0.5);
     --lp2-nav-bg: rgba(52, 56, 66, 0.72);
+    --lp2-pill-bg: rgba(216, 220, 242, 0.75);
+    --lp2-pill-ink: #3f3a68;
+    --lp2-pill-bg-on: #5b4aa8;
+    --lp2-pill-ink-on: #ffffff;
     --lp2-haze-strength: 0.52;
 }
 
@@ -616,6 +632,61 @@
     }
 }
 
+/* The right-hand group: the links, the theme button, the hamburger. It exists
+   so the theme button sits beside "contact" on desktop and beside the hamburger
+   on mobile, without being inside the list that collapses. */
+.lp2-nav-end {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Light/dark. Two states, not three: the page still follows the operating
+   system until someone presses this, and the press is what turns the choice
+   into an explicit one (see scripts/lp2-theme.js). Sized past --touch-target
+   at every width — it is the one nav control that stays on the bar in mobile. */
+.lp2-theme-toggle {
+    align-items: center;
+    border-radius: 999px;
+    color: var(--lp2-ink);
+    display: inline-flex;
+    height: 44px;
+    justify-content: center;
+    margin-left: 0.75rem;
+    transition: background 200ms ease, color 200ms ease;
+    width: 44px;
+}
+
+.lp2-theme-toggle:hover {
+    background: var(--lp2-pill-bg);
+    color: var(--lp2-ink-strong);
+}
+
+.lp2-theme-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.lp2-theme-icon {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+/* One icon at a time, and it names the destination rather than the current
+   state: in the day sky the button offers the night one. The attribute is
+   written by the script from the theme that actually resolved, so this never
+   has to guess at the system preference. */
+.lp2-theme-toggle .lp2-theme-icon-sun { display: none; }
+.lp2-theme-toggle[data-lp2-shows="dark"] .lp2-theme-icon-moon { display: block; }
+.lp2-theme-toggle[data-lp2-shows="light"] .lp2-theme-icon-moon { display: none; }
+.lp2-theme-toggle[data-lp2-shows="light"] .lp2-theme-icon-sun { display: block; }
+
+@media (max-width: 767px) {
+    .lp2-theme-toggle {
+        margin-left: 0;
+    }
+}
+
 .lp2-nav-toggle {
     display: none;
     flex-direction: column;
@@ -923,9 +994,9 @@ html[data-lp2-copy="off"] .lp2-about-stage {
 }
 
 .lp2-filter {
-    background: rgba(255, 255, 255, 0.55);
+    background: var(--lp2-pill-bg);
     border-radius: 999px;
-    color: #6b5fa8;
+    color: var(--lp2-pill-ink);
     font-size: 0.98rem;
     font-weight: 600;
     padding: 0.7rem 1.6rem;
@@ -936,22 +1007,11 @@ html[data-lp2-copy="off"] .lp2-about-stage {
     transform: translateY(-2px);
 }
 
+/* Selected. Filled, not outlined — the row sits on a photograph, and a border
+   is the one thing a sky can swallow. */
 .lp2-filter.is-active {
-    background: #7d6bc4;
-    color: #ffffff;
-}
-
-:root[data-lp2-theme="dark"] .lp2-filter,
-:root:not([data-lp2-theme="light"]) .lp2-filter {
-    background: rgba(216, 220, 242, 0.75);
-    color: #3f3a68;
-}
-
-@media (prefers-color-scheme: light) {
-    :root:not([data-lp2-theme="dark"]) .lp2-filter {
-        background: rgba(255, 255, 255, 0.55);
-        color: #6b5fa8;
-    }
+    background: var(--lp2-pill-bg-on);
+    color: var(--lp2-pill-ink-on);
 }
 
 /* --- carousel ------------------------------------------------------------ */
