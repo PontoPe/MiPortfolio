@@ -204,11 +204,13 @@
         }).join("");
         cards = Array.prototype.slice.call(track.querySelectorAll(".lp2-card"));
 
-        // Open with a card *on* the middle rather than on the middle of the
-        // scroll range: with an even number of cards those are not the same
-        // place, and centring the range would park the gap between two cards
-        // where the focused one belongs.
-        var opening = cards[Math.floor((cards.length - 1) / 2)];
+        // Open on the first card, however many there are. The deck used to
+        // open in the middle of its own row, which reads as a carousel already
+        // scrolled — and it buried the lead: the order is the order the work is
+        // meant to be met in. Computed rather than scrolled to 0 so it stays
+        // correct if the track's leading air ever stops being exactly the half
+        // viewport that centres card one (see .lp2-carousel-track).
+        var opening = cards[0];
         if (opening) {
             var centre = opening.offsetLeft + opening.offsetWidth / 2 - track.clientWidth / 2;
             var behavior = track.scrollLeft === 0 ? "auto" : "smooth";

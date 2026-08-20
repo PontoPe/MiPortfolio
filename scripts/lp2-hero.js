@@ -52,13 +52,11 @@ const canAffordIt = () => window.matchMedia("(pointer: fine)").matches
     && (navigator.hardwareConcurrency || 4) >= 4
     && !(navigator.deviceMemory && navigator.deviceMemory < 4);
 
-const nightIsOn = () => {
-    const forced = document.documentElement.getAttribute("data-lp2-theme");
-    if (forced) {
-        return forced === "dark";
-    }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-};
+/* The page always says which theme it is in — scripts/lp2-theme.js writes the
+   attribute on the first line it runs, daylight included — so there is nothing
+   to infer from the operating system here. */
+const nightIsOn = () =>
+    document.documentElement.getAttribute("data-lp2-theme") === "dark";
 
 const boot = async () => {
     try {
@@ -98,6 +96,30 @@ const boot = async () => {
         hero.background.mesh.visible = false;
         hero.stickers.group.visible = false;
         hero.redraw();
+
+        /* Follow the theme switch. BACKGROUND is only read when the materials
+           are built, so changing it after mount changes nothing — the live
+           values are the uniforms, and both copies of the plate share the same
+           uniform objects, so writing them once recolours what the glass
+           refracts and what would be drawn beside it together. Without this the
+           lettering keeps the night plate on a page that has gone back to
+           daylight, and reads as a dark smear over a blue sky. */
+        window.addEventListener("portfolio:theme-change", () => {
+            const next = nightIsOn() ? SKY.dark : SKY.light;
+            const uniforms = hero.background.material.uniforms;
+
+            BACKGROUND.top = next.top;
+            BACKGROUND.bottom = next.bottom;
+            BACKGROUND.bloom = next.bloom;
+            BACKGROUND.lavender = next.lavender;
+
+            uniforms.uTop.value.setHex(next.top);
+            uniforms.uBottom.value.setHex(next.bottom);
+            uniforms.uBloom.value.setHex(next.bloom);
+            uniforms.uLavender.value.setHex(next.lavender);
+
+            hero.redraw();
+        });
 
         if (window.location.search.includes("glass")) {
             window.__hero = hero;

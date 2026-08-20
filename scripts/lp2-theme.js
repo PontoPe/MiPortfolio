@@ -1,15 +1,15 @@
 // LP2 theme resolution.
 //
-// The sky has a day version and a night version. Which one a visitor gets is
-// their operating system's business until they say otherwise: the default is
-// `prefers-color-scheme`, handled entirely in lp2.css. This file covers the
-// two cases the stylesheet cannot — asking for the other one on purpose, and
-// remembering that.
+// The page opens in daylight. That is a decision, not a fallback: the day sky
+// is the design, and `prefers-color-scheme` is deliberately not consulted —
+// a visitor whose laptop is dark all day should still meet this page the way
+// it was drawn. What IS honoured is their own choice, which the nav button
+// makes and this file remembers:
 //
-//     the nav button        toggle between the two, and keep the choice
-//     ?theme=dark           force the night sky
-//     ?theme=light          force the day sky
-//     ?theme=auto           hand it back to the system
+//     the nav button        toggle day/night, and keep it
+//     ?theme=dark           open at night
+//     ?theme=light          open in daylight
+//     ?theme=auto           forget the stored choice (back to daylight)
 //
 // The choice is kept in localStorage. It used to be sessionStorage, from when
 // the only way in was the query string and the choice was meant to last a look
@@ -20,18 +20,29 @@
 // so the page is never painted in one theme and corrected into the other. The
 // button itself does not exist yet at that point, which is why wiring it waits
 // for the document.
+//
+// Everything downstream reads the theme from the [data-lp2-theme] attribute,
+// which is why this always writes it rather than leaving daylight implicit:
+// lp2.css only has to answer one selector, and the WebGL hero — which cannot
+// re-read a stylesheet — gets told by the `portfolio:theme-change` event this
+// file dispatches on every change.
 (function () {
     "use strict";
 
     var KEY = "portfolio:lp2-theme";
+    var DEFAULT = "light";
     var root = document.documentElement;
+
+    var clean = function (theme) {
+        return theme === "dark" || theme === "light" ? theme : null;
+    };
 
     var read = function () {
         try {
             // The session key is what earlier visits wrote. Read it once so a
             // tab that is mid-visit does not lose its theme to the move.
-            return window.localStorage.getItem(KEY) ||
-                   window.sessionStorage.getItem(KEY);
+            return clean(window.localStorage.getItem(KEY))
+                || clean(window.sessionStorage.getItem(KEY));
         } catch (error) {
             return null;
         }
@@ -39,7 +50,7 @@
 
     var write = function (theme) {
         try {
-            if (theme === "dark" || theme === "light") {
+            if (clean(theme)) {
                 window.localStorage.setItem(KEY, theme);
             } else {
                 window.localStorage.removeItem(KEY);
@@ -50,37 +61,29 @@
         }
     };
 
-    var apply = function (theme) {
-        if (theme === "dark" || theme === "light") {
-            root.setAttribute("data-lp2-theme", theme);
-            root.style.colorScheme = theme;
-        } else {
-            root.removeAttribute("data-lp2-theme");
-            root.style.colorScheme = "light dark";
-        }
+    var current = function () {
+        return root.getAttribute("data-lp2-theme") === "dark" ? "dark" : "light";
     };
 
-    // What the visitor is actually looking at right now, chosen or inherited.
-    // The button offers the opposite of this, so it has to resolve the system
-    // preference too rather than only reading the attribute.
-    var resolved = function () {
-        var chosen = root.getAttribute("data-lp2-theme");
+    var apply = function (theme) {
+        var next = clean(theme) || DEFAULT;
 
-        if (chosen === "dark" || chosen === "light") {
-            return chosen;
+        if (next === current() && root.hasAttribute("data-lp2-theme")) {
+            return;
         }
 
-        return window.matchMedia &&
-               window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
+        root.setAttribute("data-lp2-theme", next);
+        root.style.colorScheme = next;
+        window.dispatchEvent(new CustomEvent("portfolio:theme-change", {
+            detail: { theme: next }
+        }));
     };
 
     var forced = /[?&]theme=(dark|light|auto)/.exec(window.location.search);
 
     if (forced) {
-        apply(forced[1] === "auto" ? null : forced[1]);
-        write(forced[1] === "auto" ? null : forced[1]);
+        apply(clean(forced[1]));
+        write(clean(forced[1]));
     } else {
         apply(read());
     }
@@ -97,7 +100,7 @@
         var label = function () {
             // Both the icon and the label name where the button goes, not where
             // the page is: a moon on a daylit page is an offer, not a status.
-            var next = resolved() === "dark" ? "light" : "dark";
+            var next = current() === "dark" ? "light" : "dark";
             button.setAttribute("data-lp2-shows", next);
             button.setAttribute(
                 "aria-label",
@@ -106,28 +109,11 @@
         };
 
         button.addEventListener("click", function () {
-            var next = resolved() === "dark" ? "light" : "dark";
+            var next = current() === "dark" ? "light" : "dark";
             apply(next);
             write(next);
             label();
         });
-
-        // Nothing is stored until the button is pressed, so a visitor still on
-        // the system's word follows it when the system changes under them.
-        if (window.matchMedia) {
-            var query = window.matchMedia("(prefers-color-scheme: dark)");
-            var onChange = function () {
-                if (!root.hasAttribute("data-lp2-theme")) {
-                    label();
-                }
-            };
-
-            if (query.addEventListener) {
-                query.addEventListener("change", onChange);
-            } else if (query.addListener) {
-                query.addListener(onChange);
-            }
-        }
 
         label();
     };

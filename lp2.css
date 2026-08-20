@@ -105,44 +105,25 @@
     --lp2-haze-strength: 0.58;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root:not([data-lp2-theme="light"]) {
-        --lp2-sky-a: url("assets/ui/sky/sky_night.webp");
-        --lp2-sky-b: url("assets/ui/sky/sky_night.webp");
-        /* The night photograph is a dim grey on black and disappears against
-           the starfield; this is the daylight cut-out, dimmed at export, which
-           reads as a moonlit cloud. */
-        --lp2-cloud-band: url("assets/ui/sky/cloud3_dark_a.webp");
-        --lp2-grass-img: url("assets/ui/sky/grass_night.webp");
-
-        /* The inside of a cloud at night, not a night sky: the plate's lit
-           areas sample at a neutral 45% grey, so the body it dissolves into is
-           the same grey a couple of stops down with only a trace of blue left
-           in it. A navy here made the about section read as sky seen through
-           glass rather than as weather stood inside of. */
-        --lp2-fog-color: 60, 65, 76;
-        --lp2-ink: #d8dcf2;
-        --lp2-ink-strong: #ffffff;
-        --lp2-hero-ink: #eceefb;
-        --lp2-title: #ffffff;
-        --lp2-card-shadow: rgba(8, 10, 30, 0.5);
-        --lp2-nav-bg: rgba(52, 56, 66, 0.72);
-        --lp2-pill-bg: rgba(216, 220, 242, 0.75);
-        --lp2-pill-ink: #3f3a68;
-        --lp2-pill-bg-on: #5b4aa8;
-        --lp2-pill-ink-on: #ffffff;
-        --lp2-haze-strength: 0.52;
-    }
-}
-
-/* Same overrides again for the explicit choice, so ?theme=dark (or a stored
-   one) wins over the system in both directions. */
+/* Night. The page opens in daylight for everyone — the operating system's
+   preference is deliberately not consulted, because this sky is the design and
+   the dark one is the alternative to it — so there is one dark block and one
+   way into it: [data-lp2-theme="dark"], written by scripts/lp2-theme.js from
+   the visitor's own choice, which it remembers. */
 :root[data-lp2-theme="dark"] {
     --lp2-sky-a: url("assets/ui/sky/sky_night.webp");
     --lp2-sky-b: url("assets/ui/sky/sky_night.webp");
+    /* The night photograph is a dim grey on black and disappears against the
+       starfield; this is the daylight cut-out, dimmed at export, which reads
+       as a moonlit cloud. */
     --lp2-cloud-band: url("assets/ui/sky/cloud3_dark_a.webp");
     --lp2-grass-img: url("assets/ui/sky/grass_night.webp");
 
+    /* The inside of a cloud at night, not a night sky: the plate's lit areas
+       sample at a neutral 45% grey, so the body it dissolves into is the same
+       grey a couple of stops down with only a trace of blue left in it. A navy
+       here made the about section read as sky seen through glass rather than
+       as weather stood inside of. */
     --lp2-fog-color: 60, 65, 76;
     --lp2-ink: #d8dcf2;
     --lp2-ink-strong: #ffffff;
@@ -248,6 +229,17 @@
     margin: 0 auto;
     max-width: var(--page-max);
     position: relative;
+    z-index: 1;
+}
+
+/* The falling stickers (page-style.css draws them, scripts/falling-emoji.js
+   fills them). Their own sheet parks them at z-index -2, which on a page with
+   no sky is behind the content and above the page's own background — but this
+   page's background is a photograph at z-index 0, and -2 would file them
+   behind the weather. Here they ride at the same level as .lp2-main and stay
+   under it on document order alone: the script prepends the container to
+   <body>, so every section paints over it while the sky stays below. */
+.lp2-page .emoji-rain {
     z-index: 1;
 }
 
@@ -538,15 +530,6 @@
         --lp2-grass-img: url("assets/ui/sky/grass_light@sm.webp");
     }
 
-    @media (prefers-color-scheme: dark) {
-        :root:not([data-lp2-theme="light"]) {
-            --lp2-sky-a: url("assets/ui/sky/sky_night@sm.webp");
-            --lp2-sky-b: url("assets/ui/sky/sky_night@sm.webp");
-            --lp2-cloud-band: url("assets/ui/sky/cloud3_dark_a@sm.webp");
-            --lp2-grass-img: url("assets/ui/sky/grass_night@sm.webp");
-        }
-    }
-
     :root[data-lp2-theme="dark"] {
         --lp2-sky-a: url("assets/ui/sky/sky_night@sm.webp");
         --lp2-sky-b: url("assets/ui/sky/sky_night@sm.webp");
@@ -563,15 +546,8 @@
     backdrop-filter: blur(6px);
 }
 
-:root[data-lp2-theme="dark"] .lp2-nav,
-:root:not([data-lp2-theme="light"]) .lp2-nav {
+:root[data-lp2-theme="dark"] .lp2-nav {
     background: linear-gradient(to bottom, var(--lp2-nav-bg), rgba(46, 50, 84, 0));
-}
-
-@media (prefers-color-scheme: light) {
-    :root:not([data-lp2-theme="dark"]) .lp2-nav {
-        background: linear-gradient(to bottom, var(--lp2-nav-bg), rgba(244, 246, 253, 0));
-    }
 }
 
 .lp2-nav .nav-link {
@@ -891,19 +867,12 @@ html[data-lp2-copy="off"] .lp2-about-stage {
     color: #b07fd0;
 }
 
-:root[data-lp2-theme="dark"] .lp2-tag-cyan,
-:root:not([data-lp2-theme="light"]) .lp2-tag-cyan {
+:root[data-lp2-theme="dark"] .lp2-tag-cyan {
     color: #7ed0ea;
 }
 
-:root[data-lp2-theme="dark"] .lp2-tag-violet,
-:root:not([data-lp2-theme="light"]) .lp2-tag-violet {
+:root[data-lp2-theme="dark"] .lp2-tag-violet {
     color: #e0a9f7;
-}
-
-@media (prefers-color-scheme: light) {
-    :root:not([data-lp2-theme="dark"]) .lp2-tag-cyan { color: #4fa3c4; }
-    :root:not([data-lp2-theme="dark"]) .lp2-tag-violet { color: #b07fd0; }
 }
 
 .lp2-about-text {
