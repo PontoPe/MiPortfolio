@@ -36,6 +36,12 @@
     --lp2-work-chase: 1.5;
     --lp2-work-lead: 0px;
 
+    /* How far behind the scrollbar the page's own content is drawn, in pixels,
+       written per frame by lp2-sky.js. The sections do not follow the scroll
+       directly — they follow a value chasing it, the same way the cloud and the
+       hill do. A transform, so nothing measured from these sections moves. */
+    --lp2-content-lag: 0px;
+
     /* How closely the work section follows the cloud out. It is a lift: the
        section is pulled up over the tail of the about section by this much, so
        BIGGER means the heading arrives sooner (closer behind the cloud) and
@@ -881,7 +887,7 @@ html[data-lp2-copy="off"] .lp2-about-stage {
     /* Arrives faster than the page and settles: see --lp2-work-chase. This is a
        transform, so the section's place in the flow — and everything measured
        from it — is exactly where the layout put it. */
-    transform: translateY(var(--lp2-work-lead));
+    transform: translate3d(0, calc(var(--lp2-work-lead) + var(--lp2-content-lag)), 0);
     will-change: transform;
 
     /* Pulled up over the tail of the about section. Once the cloud has opened,
@@ -1129,6 +1135,10 @@ html[data-lp2-copy="off"] .lp2-about-stage {
     min-height: 30svh;
     padding: 0 var(--page-gutter) clamp(3rem, 9svh, 6rem);
     position: relative;
+    /* Glides with the work section — see --lp2-content-lag. The hill behind it
+       is on its own, slower chase, so the two never move as one plate. */
+    transform: translate3d(0, var(--lp2-content-lag), 0);
+    will-change: transform;
 }
 
 .lp2-cta-inner {

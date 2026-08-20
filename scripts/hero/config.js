@@ -231,11 +231,20 @@ export const POINTER = {
        reaction to how fast the cursor is moving, nothing that triggers when it
        crosses the lettering: the word leans towards the cursor and that is the
        whole interaction. */
-    tilt: { x: 0.13, y: 0.25 },
+    tilt: { x: 0.2, y: 0.36 },
     /* Fraction of the remaining distance left after one second. The per-frame
        factor is derived from this, so the easing is identical at 60 and 144Hz. */
     smoothing: 0.001,
     /* Idle float, in pixels and seconds. The two axes are on deliberately
        unrelated periods so the word wanders instead of tracing a loop. */
     float: { amplitude: 7, period: 6.5, sway: 16, swayPeriod: 11.5 },
+    /* How far the word travels towards the cursor, in pixels, at the edge of
+       the viewport. Translation rather than more tilt: it reads as a much
+       bigger move than the lean does, and unlike rotation it never turns the
+       flat faces of the tube towards the camera. Y is the smaller of the two
+       because the viewport is shorter than it is wide. */
+    follow: { x: 72, y: 40 },
+    /* Roll, in radians, driven by how far the cursor is from centre
+       horizontally — the word banks into the direction it is being pulled. */
+    roll: 0.07,
 };

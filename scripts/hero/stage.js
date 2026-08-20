@@ -266,15 +266,20 @@ export const mountHero = async ({ host, wordBox }) => {
         /* The pointer's entire contribution: a lean towards the cursor, eased.
            Nothing keys off how fast it moves or whether it is over the word —
            no swell, no reaction as it crosses the lettering. */
+        const wave = (period) => Math.sin(time * ((Math.PI * 2) / period));
         glass.pivot.rotation.y = x * POINTER.tilt.y;
         glass.pivot.rotation.x = y * POINTER.tilt.x;
-        /* Idle float. Sideways as well as up and down, on a longer period, so
-           a hero nobody is touching drifts rather than bobs on the spot. */
+        /* Bank into the pull. Cheap, and it is what makes the lean read as the
+           word being dragged rather than pivoting on the spot. */
+        glass.pivot.rotation.z = -x * POINTER.roll;
+        /* Idle float, plus the travel towards the cursor. Both go on the same
+           axis: the drift is what the word does when nobody is there, the
+           follow is what the cursor adds on top. */
         glass.pivot.position.y = glassBaseY
-            + Math.sin(time * ((Math.PI * 2) / POINTER.float.period))
-            * POINTER.float.amplitude;
-        glass.pivot.position.x = Math.sin(time * ((Math.PI * 2) / POINTER.float.swayPeriod))
-            * POINTER.float.sway;
+            + wave(POINTER.float.period) * POINTER.float.amplitude
+            - y * POINTER.follow.y;
+        glass.pivot.position.x = wave(POINTER.float.swayPeriod) * POINTER.float.sway
+            + x * POINTER.follow.x;
 
         background.setMotion(x, y, time);
         /* Cursor in the scene's own space: pixels from the centre of the

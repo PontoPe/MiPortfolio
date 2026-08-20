@@ -109,8 +109,69 @@
         return from + (to - from) * t;
     };
 
+    /* Smoothing. The plates do not follow the scrollbar, they follow a value
+       that chases it: each frame a layer closes a fixed fraction of the gap
+       between where the page is and where that layer thinks it is. A wheel
+       notch is a step change in scroll, and a chased value turns it into a
+       short glide — which is the difference between a cloud being flown into
+       and a picture being dragged up the window.
+
+       What is smoothed is the gap, not the choreography, so everything
+       downstream of the two edges — the haze, the copy, the work section's
+       chase — inherits the easing for free.
+
+       The gap halves every SMOOTH_HALFLIFE seconds, so the feel is identical at
+       60 and 144Hz. Each layer gets its own half-life: settling at different
+       rates is parallax the same way travelling at different speeds is. */
+    var SMOOTH_HALFLIFE = 0.13;
+    /* Below this the chase is over: snap, and let the frame loop stop. Already
+       under what setPx would bother to write. */
+    var SMOOTH_SETTLE = 0.3;
+
+    var chaser = function (halflife) {
+        return { at: null, halflife: halflife };
+    };
+
+    /* Advances one chaser and returns the gap it is still carrying, in pixels —
+       which is exactly how much to add to a live rect to see the page from
+       where that layer thinks it is. Called with no elapsed time (a resize, the
+       first paint) it reports the gap without moving. */
+    /* Someone who has asked for less motion gets none of this: every layer is
+       pinned to the scrollbar, which is what the choreography did before the
+       chasing existed. The beats are unchanged — only the glide goes. */
+    var still = window.matchMedia
+        && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    var advance = function (c, y, dt) {
+        if (still) {
+            c.at = y;
+            return 0;
+        }
+        if (c.at === null) {
+            c.at = y;
+            return 0;
+        }
+        if (dt > 0) {
+            c.at = mix(c.at, y, 1 - Math.pow(0.5, dt / c.halflife));
+            if (Math.abs(y - c.at) < SMOOTH_SETTLE) {
+                c.at = y;
+            }
+        }
+        return y - c.at;
+    };
+
+    var cloudChase = chaser(SMOOTH_HALFLIFE);
+    /* The page's own content — the work section and the call to action — rides
+       the same idea at about half the half-life. It glides, but it is text:
+       lag it as much as the weather and reading it while scrolling turns into
+       chasing it. */
+    var contentChase = chaser(SMOOTH_HALFLIFE * 0.55);
+    /* The hill is the furthest thing in the picture, so it is the slowest to
+       settle. Same reason the far wisp is. */
+    var groundChase = chaser(SMOOTH_HALFLIFE * 1.2);
+
     var frame = null;
-    var last = { top: null, bottom: null, haze: -1, exit: -1, ground: -1, hold: null, out: -1, reveal: -1, lead: 0 };
+    var last = { top: null, bottom: null, haze: -1, exit: -1, ground: -1, hold: null, out: -1, reveal: -1, lead: 0, drag: 0 };
 
     /* How much faster than the page the work section arrives, and where it stops
        being faster. Read from CSS rather than written here so every knob in this
@@ -133,6 +194,14 @@
         { key: "4", speed: 2.40, lead: 0.16 }
     ];
 
+    /* Each strand chases the page on its own clock: the nearer it is, the
+       faster it settles, so the four never resolve as one plate. Half-life
+       falls with the square root of the speed — enough for the stagger to be
+       visible, not so much that the nearest one snaps. */
+    for (var w = 0; w < WISPS.length; w += 1) {
+        WISPS[w].lag = chaser(SMOOTH_HALFLIFE * Math.sqrt(WISPS[0].speed / WISPS[w].speed));
+    }
+
     /* Writes a pixel variable, but only when it has actually moved: three of
        these change on every frame of the flight and none of them is worth a
        style recalculation for a tenth of a pixel. */
@@ -143,8 +212,15 @@
         }
     };
 
-    var render = function () {
+    var render = function (dt) {
         frame = null;
+
+        var y = window.pageYOffset || 0;
+        /* Where the cloud thinks the page is, expressed as the gap it is still
+           carrying. Added to a live rect, it reads that rect from the smoothed
+           position instead of the real one — so every beat below is written
+           against the scrollbar and lands eased. */
+        var offset = advance(cloudChase, y, dt);
 
         var vh = window.innerHeight || 1;
         var heroBox = hero ? hero.getBoundingClientRect() : null;
@@ -166,38 +242,62 @@
            A screen and a half of travel, which is why .lp2-about carries so
            much padding above its copy: a crossing can only take as long as
            there is empty scroll for it to take. */
-        var entering = ease(clamp01((vh - aboutBox.top) / Math.max(vh * 1.55, 1)));
+        var rest = restTop(vh, plate);
+
+        /* The two edges, for one layer's idea of where the page is. Factored
+           because the strands ask the same question from further behind: a
+           plate that is still catching up is a plate at a different distance,
+           which is the whole trick. */
+        var edges = function (lag) {
+            var enter = ease(clamp01((vh - (aboutBox.top + lag)) / Math.max(vh * 1.55, 1)));
+            var leave = ease(clamp01((vh * LEAVE_START - (aboutBox.bottom + lag)) / Math.max(vh * LEAVE_SPAN, 1)));
+            var hi = mix(rest, 0, enter);
+            var lo = mix(vh, -edge, leave);
+
+            /* The two edges cross twice, and the body between them is empty
+               both times: at rest, with the whole cloud below the window, and
+               at the end of the flight, with the whole cloud above it. Only the
+               second needs correcting — a body left at the lower of the two
+               numbers would hang its underside back down into the window — and
+               correcting the first would drag the resting cloud up into the
+               hero. */
+            if (lo < hi && hi <= vh) {
+                hi = lo;
+            }
+            return { entering: enter, leaving: leave, top: hi, bottom: lo };
+        };
+
+        var cloud = edges(offset);
+        var entering = cloud.entering;
+        var leaving = cloud.leaving;
+        var top = cloud.top;
+        var bottom = cloud.bottom;
 
         /* Leaving. Measured from the section's end, and timed to finish while
            the copy is still pinned: everything the visitor is meant to see of
            the opening happens with the page still, and by the time the pin
            releases there is nothing left on it to watch scroll away. */
-        var leaving = ease(clamp01((vh * LEAVE_START - aboutBox.bottom) / Math.max(vh * LEAVE_SPAN, 1)));
+        /* The content's glide. A transform, so the sections stay exactly where
+           the layout put them and nothing measured from them moves; what the
+           visitor sees is the page arriving a beat after the scrollbar instead
+           of nailed to it. */
+        var drag = advance(contentChase, y, dt);
+        setPx("--lp2-content-lag", "drag", drag);
 
         /* The hill. Comes up while the deck is still on screen — the design has
-           the cards floating over the ground, not arriving after it. Measured
-           against the deck's laid-out position rather than its drawn one: the
-           deck is offset while it is keeping up with the cloud, and a hill that
-           followed that offset would ride back down with it.
+           the cards floating over the ground, not arriving after it.
+
+           Measured against the deck's laid-out position, never its drawn one,
+           which means undoing both transforms it is currently carrying — its
+           chase of the cloud and its glide — before reading it from where the
+           hill thinks the page is. A hill that followed those offsets would
+           ride back down with them.
 
            The window is short enough that the hill is fully up before the page
            runs out of scroll — the deck is the last thing above the fold, so
            there is no more scrolling left to finish anything with. */
-        var ground = ease(clamp01((vh * 1.25 - (deckBox.bottom - last.lead)) / Math.max(vh * 0.45, 1)));
-
-        var rest = restTop(vh, plate);
-        var top = mix(rest, 0, entering);
-        var bottom = mix(vh, -edge, leaving);
-
-        /* The two edges cross twice, and the body between them is empty both
-           times: at rest, with the whole cloud below the window, and at the end
-           of the flight, with the whole cloud above it. Only the second needs
-           correcting — a body left at the lower of the two numbers would hang
-           its underside back down into the window — and correcting the first
-           would drag the resting cloud up into the hero. */
-        if (bottom < top && top <= vh) {
-            top = bottom;
-        }
+        var deckBottom = deckBox.bottom - last.lead - drag + advance(groundChase, y, dt);
+        var ground = ease(clamp01((vh * 1.25 - deckBottom) / Math.max(vh * 0.45, 1)));
 
         /* The strands. A cloud has no single surface — it has an approach, made
            of pieces of itself that arrive first and, if you are really going
@@ -210,9 +310,9 @@
            window. The two distances are the same, both start with every strand
            below the fold, and the handover happens while all four are off the
            top of the screen — so there is nothing to see in it. */
-        var travelled = leaving > 0 ? (vh - bottom) : (rest - top);
-
         for (var i = 0; i < WISPS.length; i += 1) {
+            var plane = edges(advance(WISPS[i].lag, y, dt));
+            var travelled = plane.leaving > 0 ? (vh - plane.bottom) : (rest - plane.top);
             setPx(
                 "--lp2-wisp-" + WISPS[i].key,
                 WISPS[i].key,
@@ -268,7 +368,7 @@
            page. The cloud's term is the outer floor, so once there is no cloud
            left to keep up with there is no offset either. */
         var remaining = Math.max(0, bottom + edge);
-        var itsOwn = Math.max(0, aboutBox.bottom - vh * (LEAVE_START - LEAVE_SPAN));
+        var itsOwn = Math.max(0, aboutBox.bottom + offset - vh * (LEAVE_START - LEAVE_SPAN));
         var lead = Math.max(0, remaining - itsOwn) * chase;
 
         if (Math.abs(lead - last.lead) > 0.5) {
@@ -314,9 +414,40 @@
             : (leaving > 0.5 ? "under" : (entering > 0.6 ? "inside" : "above"));
     };
 
+    /* Every layer has caught up: nothing left to animate until the page moves
+       again, so the loop can stop instead of burning a frame a tick. */
+    var settled = function (y) {
+        if (cloudChase.at !== y || contentChase.at !== y || groundChase.at !== y) {
+            return false;
+        }
+        for (var i = 0; i < WISPS.length; i += 1) {
+            if (WISPS[i].lag.at !== y) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    var stamp = 0;
+
+    /* The loop. It runs while anything is still chasing, not while the wheel is
+       turning: the glide has to outlive the scroll event that started it, which
+       is the entire point of smoothing. */
+    var tick = function (now) {
+        var dt = stamp ? Math.min((now - stamp) / 1000, 0.05) : 0;
+        stamp = now;
+        render(dt);
+        if (!settled(window.pageYOffset || 0)) {
+            frame = window.requestAnimationFrame(tick);
+        }
+    };
+
     var queue = function () {
         if (!frame) {
-            frame = window.requestAnimationFrame(render);
+            /* A first frame after an idle stretch would otherwise be handed the
+               whole idle time as its step. */
+            stamp = 0;
+            frame = window.requestAnimationFrame(tick);
         }
     };
 
@@ -342,5 +473,5 @@
     }
 
     readChase();
-    render();
+    render(0);
 })();
