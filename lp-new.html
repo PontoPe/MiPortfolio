@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Milena Caldas | Product &amp; Graphic Design</title>
+<meta name="description" content="Milena Caldas — product designer from Curitiba, Brazil, working on learning experiences and playful, human interfaces."/>
+<script>document.documentElement.classList.add("is-loading");</script>
+<script src="scripts/page-loader.js"></script>
+<script src="scripts/perf-tier.js"></script>
+<script src="scripts/lp2-theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="assets/ui/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
+<link href="assets/ui/favicon-32.png" rel="icon" type="image/png" sizes="32x32"/>
+
+<!-- The cloud plates and the ground are what the whole scene is made of, and
+     the first frame needs them: without the preload the flight opens on an
+     empty sky and the bank pops in a beat late. -->
+<link rel="preload" as="image" href="assets/ui/scene/cloud-wisp.png"/>
+<link rel="preload" as="image" href="assets/ui/scene/cloud-soft.png"/>
+<link rel="preload" as="image" href="assets/ui/scene/cloud-dense.png"/>
+<link rel="preload" as="image" href="assets/ui/scene/cloud-edge.png"/>
+<link rel="preload" as="image" href="assets/ui/scene/ground-grass.png"/>
+
+<!-- Order matters, and it is the same one index.html uses: page-style.css owns
+     the nav, the loader, the pill buttons and the lettering component; lp2.css
+     re-skins them for a page standing in the sky and carries the About block
+     this page keeps unchanged; lp-new.css owns the scene and everything that
+     is only here. -->
+<link href="page-style.css" rel="stylesheet"/>
+<link href="lp2.css" rel="stylesheet"/>
+<link href="lp-new.css" rel="stylesheet"/>
+</head>
+<body class="lp-new-page">
+<div aria-live="polite" aria-label="Loading portfolio" class="site-loader" role="status">
+<div class="site-loader-inner">
+<span aria-hidden="true" class="site-loader-mark">MC</span>
+<span class="site-loader-label">Loading</span>
+<span aria-hidden="true" class="site-loader-dots"><i></i><i></i><i></i></span>
+</div>
+</div>
+
+<!-- Navigation. Fixed, exactly as on every other page — it is not part of the
+     stage. The scene only writes its opacity, so it dives into the cloud with
+     everything else and comes back over the About. -->
+<nav class="site-nav lp2-nav">
+<div class="site-nav-inner">
+<div class="site-nav-brand">
+<a class="nav-logo" href="index.html"><img alt="Milena Caldas" src="assets/ui/logoAMC.png"/></a>
+<span class="lp2-available"><i aria-hidden="true"></i>Available to work</span>
+</div>
+<div class="lp2-nav-end">
+<div class="lp2-nav-links">
+<a class="nav-link" href="#work">work</a>
+<a class="nav-link" href="#about">about</a>
+<a class="nav-link" href="about.html">resume</a>
+<a class="nav-link" href="#contact">contact</a>
+</div>
+<button class="lp2-theme-toggle" type="button" data-lp2-theme-toggle aria-label="Switch to dark mode">
+<svg class="lp2-theme-icon lp2-theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.4M12 19.2v2.4M4.2 12H1.8M22.2 12h-2.4M6.5 6.5 4.8 4.8M19.2 19.2l-1.7-1.7M17.5 6.5l1.7-1.7M4.8 19.2l1.7-1.7"/></svg>
+<svg class="lp2-theme-icon lp2-theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/></svg>
+</button>
+<button class="lp2-nav-toggle" type="button" aria-label="Menu">
+<span aria-hidden="true"></span><span aria-hidden="true"></span>
+</button>
+</div>
+</div>
+<!-- TODO: Remove this home-only construction banner when the portfolio is officially launched. -->
+<aside aria-label="This website is under construction — Real work. Pixels still in motion." class="construction-banner">
+<img alt="" aria-hidden="true" class="construction-banner-message" src="assets/ui/construction-message.png"/>
+<span aria-hidden="true" class="construction-banner-message-mobile">
+<span class="construction-banner-icon"></span>
+<span>Website in development — Pixels still in motion.</span>
+</span>
+</aside>
+</nav>
+
+<main class="lp-new-main">
+
+<!-- ===========================================================================
+     THE SCENE
+
+     One scroll, no seam:
+
+         hero (open sky)
+            └─ transition 1 — the bank rises and closes the window in white
+         about  (inside the cloud)
+            └─ transition 2 — the cloud opens → SKY → the ground comes up
+         my work (sky + a band of grass, the deck crossing the horizon)
+
+     .lp-new-scene is only the runway: its height is the scroll the flight
+     costs, written by the script. .lp-new-stage is sticky and is what stays on
+     the window while that runway passes. Everything below is a child of the
+     stage, absolutely positioned, and NOTHING here animates on its own —
+     scripts/lp-new-scene.js writes transform and opacity, once per frame,
+     off a single eased progress.
+=========================================================================== -->
+<section class="lp-new-scene" id="scene">
+    <div class="lp-new-stage" id="stage">
+
+        <!-- the sky, and the far mist in front of it -->
+        <div class="lp-new-sky" id="sky"></div>
+        <canvas class="lp-new-skywisp" id="skyWisp" aria-hidden="true"></canvas>
+
+        <!-- The falling stickers. Mounted here by scripts/lp-new-stickers.js
+             rather than on <body>, which is the whole point: inside the stage
+             they are under the cloud canvas, so the rising bank swallows them
+             instead of them floating over the weather. -->
+
+        <!-- 1. above the cloud -->
+        <div class="lp-new-hero" id="hero">
+            <p class="lp2-hero-name">Milena Caldas<br/>Product Design</p>
+            <!-- The lettering exactly as the site has it today: .hero-stage is
+                 what scripts/lp2-hero.js mounts the WebGL scene into, and
+                 everything under it is the flat fallback for a device that
+                 does not get the scene. -->
+            <div class="hero-welcome lp2-hero-word">
+                <div aria-hidden="true" class="hero-stage"></div>
+                <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
+                <filter color-interpolation-filters="sRGB" height="120%" id="welcome-glass-filter" width="120%" x="-10%" y="-10%">
+                <feTurbulence baseFrequency="0.012 0.02" numOctaves="2" result="noise" seed="7" type="fractalNoise"/>
+                <feGaussianBlur in="SourceGraphic" result="soft" stdDeviation="1.2"/>
+                <feDisplacementMap in="soft" in2="noise" scale="55" xChannelSelector="R" yChannelSelector="G"/>
+                </filter>
+                </svg>
+                <div aria-hidden="true" class="hero-welcome-glass"></div>
+                <img alt="Welcome" src="assets/ui/welcome.png" onerror="this.parentElement.classList.add('no-img')"/>
+                <span class="hero-welcome-fallback" aria-hidden="true">Welcome</span>
+            </div>
+            <p class="lp-new-hero-caption" aria-hidden="true">Dreaming big</p>
+        </div>
+
+        <!-- the rising bank -->
+        <canvas class="lp-new-clouds" id="clouds" aria-hidden="true"></canvas>
+
+        <!-- the two veils: pure white first, then the About's own tone -->
+        <div class="lp-new-veil lp-new-veil-white" id="veilWhite"></div>
+        <div class="lp-new-veil lp-new-veil-tint" id="veilTint"></div>
+
+        <!-- the cloud settling on the top edge of the About -->
+        <div class="lp-new-about-clouds" id="aboutClouds" aria-hidden="true"></div>
+
+        <!-- 2. inside the cloud — the About, unchanged from the current site -->
+        <div class="lp-new-about" id="about">
+            <div class="lp-new-about-inner">
+                <div class="lp2-about-inner">
+                    <div class="lp2-about-portrait" role="img" aria-label="Portrait of Milena Caldas"></div>
+                    <div class="lp2-about-copy">
+                        <div class="lp2-about-tags">
+                            <span class="lp2-tag lp2-tag-cyan">Open to remote</span>
+                            <span class="lp2-tag lp2-tag-violet">Open to relocate</span>
+                        </div>
+                        <p class="lp2-about-text">Hello! My name is Milena. I'm based in Curitiba, Brazil, and am a designer by profession, and a fiction writer by heart. I mention this because I believe they serve a similar purpose, making complicated things land without making them smaller than they are. I apply this principle in my design work with a team at Brazil's largest pediatric hospital, and on my own with Mosaico — an undergraduate thesis growing into an AI writing companion for young learners. From very early on — as early as my winning project “Dear Stars” at Apple's WWDC21 Swift Student Challenge — I've known the intersection of learning, design and problem solving is where all of this is headed!</p>
+                        <div class="lp2-about-actions">
+                            <a class="btn-pill btn-pill-primary" href="mailto:milena.am.caldas@gmail.com">send a message</a>
+                            <a class="btn-pill btn-pill-soft" href="about.html">view my resume</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Not an anchor to #work: inside a sticky scene there is no
+                     element at that offset to jump to. The script binds it to
+                     the scroll position where the work segment starts. -->
+                <button class="lp2-scroll-cue lp-new-cue" type="button" data-lp-new-jump="work">
+                    <span class="lp2-scroll-cue-arrow" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M5.5 12.5 12 19l6.5-6.5"/></svg>
+                    </span>
+                    Get to know my work
+                </button>
+            </div>
+        </div>
+
+        <!-- ---- phase 2: down through the cloud ---- -->
+
+        <!-- the low sky, uncovered as the About's white dissolves -->
+        <div class="lp-new-lower-sky" id="lowerSky"></div>
+
+        <!-- the same plates, choreography reversed: they open and pass over -->
+
+        <canvas class="lp-new-clouds-open" id="cloudsOpen" aria-hidden="true"></canvas>
+
+        <!-- 3. under the cloud — the work -->
+        <div class="lp-new-work" id="work">
+            <div class="lp-new-work-inner">
+                <div class="lp-new-work-head">
+                    <h2 class="lp-new-work-title">My work</h2>
+                    <div class="lp-new-filters" data-lp-new-filters role="tablist" aria-label="Project categories"></div>
+                </div>
+                <!-- Three across, the middle one leading. Filled by
+                     scripts/lp-new-work.js from data/projects-data.js. -->
+                <div class="lp-new-deck" data-lp-new-deck></div>
+                <div class="lp-new-pager" data-lp-new-pager hidden>
+                    <button class="lp-new-pager-btn" type="button" data-lp-new-prev aria-label="Previous projects">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4.5 7.5 12l7.5 7.5"/></svg>
+                    </button>
+                    <div class="lp-new-dots" data-lp-new-dots></div>
+                    <button class="lp-new-pager-btn" type="button" data-lp-new-next aria-label="More projects">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5 16.5 12 9 19.5"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- The ground. A band anchored to the footer of the stage, not a
+             full-screen layer: the reading is sighting the ground from above
+             while descending, not landing inside it.
+
+             Last in the stage on purpose. In the scene its place is decided by
+             z-index (7, under the work and under the rain), so the order here
+             makes no difference — but under prefers-reduced-motion the whole
+             stage collapses into ordinary flow and this order becomes the order
+             on the page. Anywhere earlier and the strip of grass turns up in the
+             middle of the page, between the About and the work. -->
+        <div class="lp-new-ground" id="ground" aria-hidden="true"></div>
+
+    </div>
+</section>
+
+<!-- ===========================================================================
+     4. On the ground.
+
+     A flat colour, not a second copy of the grass — repeating the photograph
+     here reads as "the lawn tiled". #77b53c is the image's real average at the
+     height the band ends, sampled from the PNG, so the joint does not show
+     when the stage lets go.
+=========================================================================== -->
+<section class="lp-new-after" id="contact">
+    <div class="lp2-cta-inner">
+        <p class="lp2-cta-lead">wanna work together?</p>
+        <h2 class="lp2-cta-title">Let's build something extraordinary!</h2>
+        <a class="lp2-cta-btn" href="mailto:milena.am.caldas@gmail.com">send a message</a>
+    </div>
+    <p class="lp-new-after-caption" aria-hidden="true">Staying grounded</p>
+</section>
+
+</main>
+
+<script src="data/projects-data.js"></script>
+<script src="scripts/lp2-nav.js"></script>
+<script src="scripts/lp-new-work.js"></script>
+<script src="scripts/lp-new-stickers.js"></script>
+<script src="scripts/lp-new-scene.js"></script>
+<script type="importmap">
+{"imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+}}
+</script>
+<script src="scripts/lp2-hero.js" type="module"></script>
+</body>
+</html>

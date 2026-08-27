@@ -1,0 +1,818 @@
+/* ===========================================================================
+   lp-new — the scene sheet.
+
+   Loaded after page-style.css and lp2.css, and only by lp-new.html. It owns
+   three things and nothing else:
+
+     1. the scene (stage, sky, cloud canvases, veils, ground)
+     2. the work deck — three cards across, the middle one leading
+     3. the handful of overrides the scene needs from the two sheets above
+
+   Everything the page borrows unchanged keeps its own class and its own sheet:
+   the nav and the lettering come from page-style.css, the About block and the
+   pill buttons from lp2.css. Nothing here redeclares them.
+
+   THE GOLDEN RULE OF THIS FILE: nothing the animation touches may cause layout
+   or paint. Only transform and opacity (and visibility, which causes neither).
+   Colour, shadow and blur live on static elements, and the cloud blur is baked
+   into the PNG's alpha rather than asked of the compositor.
+=========================================================================== */
+
+:root {
+    /* Daylight. The scene's own palette — deliberately not lp2's, because
+       these are the colours of a painted gradient sky rather than of the
+       photographs lp2 flies through. */
+    --lpn-sky-top: #6fb8e8;
+    --lpn-sky-mid: #9fd2f2;
+    --lpn-sky-bottom: #eaf3fb;
+    --lpn-fog: #eef0fb;
+    /* Multiplied over the cloud sprites on the canvas (see TINT in
+       scripts/lp-new-scene.js). White in daylight: no tint at all. */
+    --lpn-cloud-tint: #ffffff;
+    /* The seam at the bottom of the stage: the grass PNG's true average at the
+       height the band ends, so the flat colour under the stage meets it
+       without a line. */
+    --lpn-turf-near: #77b53c;
+    --lpn-turf-mid: #8ecb4e;
+    --lpn-turf-far: #a9d748;
+    --lpn-turf-ink: #ffffff;
+}
+
+/* Night. The theme lp2-theme.js writes. The clouds are one white cut-out in
+   both themes, so instead of shipping a second set they are multiplied down on
+   the canvas — a single fill per frame at the canvas's locked resolution,
+   which is cheaper than a CSS filter on a surface that redraws every frame. */
+:root[data-lp2-theme="dark"] {
+    --lpn-sky-top: #10152f;
+    --lpn-sky-mid: #202a52;
+    --lpn-sky-bottom: #3b4573;
+    --lpn-fog: #3c414c;
+    --lpn-cloud-tint: #7b839e;
+    --lpn-turf-near: #2c4a1c;
+    --lpn-turf-mid: #365a22;
+    --lpn-turf-far: #43682a;
+}
+
+/* ---------------------------------------------------------------------------
+   Reset.
+
+   page-style.css was written to sit on top of Tailwind's preflight, which the
+   rest of the site gets from the Play CDN. This page does not load Tailwind, and
+   it deliberately does not carry lp2.css's `.lp2-page` class either — that class
+   brings `overflow-x: hidden`, which is fatal here (see below) — so it does not
+   inherit lp2's copy of the preflight rules its shared components depend on
+   either. They are restated here, scoped to this page.
+
+   The margin is not cosmetic on this page: <body>'s default 8px pushes the
+   scene off the top of the document, and every scroll position the scene
+   computes is then eight pixels out.
+
+   Every selector is wrapped in :where(), which contributes no specificity — a
+   plain `.lp-new-page h2` would be *more* specific than `.lp-new-card-title`
+   and would quietly win, which is exactly the kind of bug a reset must not
+   introduce.
+--------------------------------------------------------------------------- */
+:where(.lp-new-page),
+:where(.lp-new-page) *,
+:where(.lp-new-page) *::before,
+:where(.lp-new-page) *::after {
+    box-sizing: border-box;
+}
+
+:where(.lp-new-page),
+:where(.lp-new-page) :where(h1, h2, h3, p, figure, ul) {
+    margin: 0;
+    padding: 0;
+}
+
+:where(.lp-new-page) :where(h1, h2, h3) {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+:where(.lp-new-page) :where(ul) {
+    list-style: none;
+}
+
+:where(.lp-new-page) :where(a) {
+    color: inherit;
+    text-decoration: none;
+}
+
+:where(.lp-new-page) :where(button) {
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+}
+
+:where(.lp-new-page) :where(img, svg) {
+    display: block;
+    max-width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Page shell
+--------------------------------------------------------------------------- */
+
+.lp-new-page {
+    color: var(--lp2-ink);
+    font-family: "Poppins", "Segoe UI", system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+
+    /* page-style.css declares these two on `.home-page`, and this page — like
+       index.html — carries the construction banner without carrying that class.
+       Without them the banner's own height resolves to `auto` and
+       --nav-clearance stays at the bare 5rem, which is about 16px short of the
+       bar the panels have to clear. Restated here rather than reached for by
+       adding .home-page, which would also pull in that page's hero layout. */
+    --construction-banner-height: 2.625rem;
+    --nav-clearance: calc(5rem + var(--construction-banner-height));
+}
+
+@media (max-width: 767px) {
+    /* The touch-sized menu button makes the mobile nav row slightly taller. */
+    .lp-new-page {
+        --nav-clearance: calc(5.25rem + var(--construction-banner-height));
+    }
+}
+
+/* page-style.css fades the bar in with `animation: pageFade 600ms both`, and
+   `both` means it keeps filling forever after it ends. A filling animation
+   outranks every declaration that is not !important — inline styles included —
+   so with it on, the scene's writes to the nav's opacity would be silently
+   dropped and the bar would never dive into the cloud. The bar arrives with the
+   loader on this page instead. */
+.lp-new-page .site-nav {
+    animation-name: none;
+}
+
+/* page-style.css puts `overflow-x: hidden` on <body>. On this page that single
+   declaration is fatal and silent: it makes overflow-y compute to `auto`, the
+   body becomes a scroll container, and .lp-new-stage's `position: sticky`
+   simply stops sticking — no error anywhere, the scene just scrolls away and
+   both transitions become hard cuts. The horizontal overflow it was there to
+   contain is already contained by the stage's own `overflow: clip`. */
+body.lp-new-page {
+    background: var(--lpn-fog);
+    overflow-x: visible;
+}
+
+/* page-style.css gives <main> a horizontal gutter. Every other page wants it;
+   this one cannot have it — the stage is a child of <main> and has to be the
+   full width of the window, or the sky stops short of both edges. The gutter is
+   carried by the panels inside the stage instead, from the same token. */
+.lp-new-main {
+    max-width: none;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* page-style.css fades every direct child of <main> up with a keyframe that
+   animates `transform` under `animation-fill-mode: both`. A filling animation
+   outranks every non-!important declaration, inline styles included — any
+   section it touches could never be transformed again. Same fix lp2.css makes:
+   swap in an entry that only touches opacity. */
+@media (prefers-reduced-motion: no-preference) {
+    .lp-new-page main > * {
+        animation-name: lpnSectionIn;
+    }
+}
+
+@keyframes lpnSectionIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ---------------------------------------------------------------------------
+   Scene + stage
+
+   .lp-new-scene is the runway; the script writes its height. The stage sticks
+   to the window while that runway passes, and is the only element on the page
+   that is one screen tall by contract.
+--------------------------------------------------------------------------- */
+.lp-new-scene {
+    position: relative;
+    /* Replaced on the first measure; this is only what the page is before the
+       script has run, so a scene with no JS is still one screen of hero. */
+    height: 320vh;
+}
+
+.lp-new-stage {
+    background: var(--lpn-fog);
+    height: 100vh;
+    height: 100svh;          /* no jump when the mobile URL bar retracts */
+    isolation: isolate;
+    overflow: hidden;
+    overflow: clip;
+    position: sticky;
+    top: 0;
+}
+
+.lp-new-sky,
+.lp-new-skywisp,
+.lp-new-hero,
+.lp-new-clouds,
+.lp-new-veil,
+.lp-new-about-clouds,
+.lp-new-about,
+.lp-new-lower-sky,
+.lp-new-ground,
+.lp-new-clouds-open,
+.lp-new-work {
+    inset: 0;
+    position: absolute;
+}
+
+/* --- the stack ------------------------------------------------------------
+   Read top to bottom, this is the whole scene:
+
+      0  sky, far mist
+      1  falling stickers          ← swallowed by the bank above them
+      2  hero
+      3  the rising bank
+      4  white veil
+      5  tinted veil
+      6  low sky (phase 2)
+      7  ground band
+      8  falling stickers, phase 2 ← the script moves the same container here
+      9  the cloud settling on the About
+     10  About
+     11  work
+
+   The nav is not in this list. It is fixed, outside the stage, and the script
+   only writes its opacity.
+-------------------------------------------------------------------------- */
+
+.lp-new-sky {
+    background: linear-gradient(to bottom,
+        var(--lpn-sky-top) 0%, var(--lpn-sky-mid) 42%, var(--lpn-sky-bottom) 100%);
+    transform-origin: 50% 30%;
+    will-change: transform, opacity;
+    z-index: 0;
+}
+
+/* The cloud canvases and the mist canvas. These are not divs composed by the
+   browser any more — they are sprites drawn into a backing store whose size is
+   capped (see CANVAS_BUDGET in the script) and stretched here by CSS. That is
+   the single change that made the scene hold 60fps on a large display: the
+   fill cost stops growing with the screen. */
+.lp-new-skywisp,
+.lp-new-clouds,
+.lp-new-clouds-open {
+    display: block;
+    height: 100%;
+    pointer-events: none;
+    width: 100%;
+}
+
+.lp-new-skywisp { z-index: 0; }
+.lp-new-clouds { z-index: 3; }
+.lp-new-clouds-open { z-index: 8; }
+
+/* --- hero ---------------------------------------------------------------- */
+.lp-new-hero {
+    align-content: center;
+    display: grid;
+    justify-items: center;
+    padding: calc(var(--nav-clearance) + 3rem) var(--page-gutter) 4rem;
+    transform-origin: 50% 40%;
+    will-change: transform, opacity;
+    z-index: 2;
+}
+
+/* lp2.css positions .lp2-hero-name against .lp2-hero; here the containing
+   block is the hero panel, so the offsets are restated for this stage. The
+   colour, size and weight are still lp2's. */
+.lp-new-hero .lp2-hero-name {
+    left: var(--page-gutter);
+    top: calc(var(--nav-clearance) + 2.5rem);
+}
+
+.lp-new-hero-caption {
+    bottom: clamp(2rem, 8svh, 6rem);
+    color: var(--lp2-hero-ink);
+    font-size: clamp(1.1rem, 2.2vw, 1.75rem);
+    letter-spacing: 0.01em;
+    margin: 0;
+    position: absolute;
+    right: var(--page-gutter);
+    text-transform: uppercase;
+}
+
+/* --- veils --------------------------------------------------------------- */
+
+/* The white one stops at 0.94 on purpose: the cloud texture keeps showing
+   through it instead of the window becoming a dead white rectangle. */
+.lp-new-veil {
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity;
+    z-index: 4;
+}
+
+.lp-new-veil-white { background: #ffffff; }
+
+:root[data-lp2-theme="dark"] .lp-new-veil-white { background: #6a7183; }
+
+.lp-new-veil-tint {
+    background: var(--lpn-fog);
+    z-index: 5;
+}
+
+/* The finish at the top of the About: a flat, fully opaque edge facing into
+   the section and a rounded base facing down. It uses its own plate because
+   the ordinary clouds fall off at their sides and base — flipped, that falloff
+   becomes a transparent TOP and the sky leaks through it as an arc cutting the
+   white. `100% 100%` covers the full width: no gap at either end. */
+.lp-new-about-clouds {
+    background: url("assets/ui/scene/cloud-edge.png") no-repeat center top / 100% 100%;
+    bottom: auto;
+    height: 58vh;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    z-index: 9;
+}
+
+/* --- about --------------------------------------------------------------- */
+
+/* The About block itself is lp2's, unchanged. This is only the panel that
+   holds it inside the stage. */
+/* `overflow-y: auto` is the safety valve, not the plan. On a desktop window the
+   copy fits and nothing scrolls; on a phone it cannot fit and the panel is read
+   by scrolling, which chains back to the document at either end — so the page
+   holds inside the cloud for exactly as long as there is copy left, and carries
+   on. Note this is the panel, NOT an ancestor of the stage: an overflow on an
+   ancestor would break the sticky (see the note on body, above). */
+.lp-new-about {
+    align-content: center;
+    display: grid;
+    opacity: 0;
+    overflow-y: auto;
+    pointer-events: none;
+    transform-origin: 50% 60%;
+    will-change: transform, opacity;
+    z-index: 10;
+}
+
+/* Inert until it has actually arrived — a transparent panel that still catches
+   clicks would sit over the hero for the whole first transition. */
+.lp-new-about.is-live { pointer-events: auto; }
+
+.lp-new-about-inner {
+    margin: 0 auto;
+    max-width: 76rem;
+    padding: calc(var(--nav-clearance) + 2rem) var(--page-gutter) 4rem;
+    width: 100%;
+}
+
+.lp-new-about .lp2-about-inner {
+    max-width: none;
+}
+
+/* The cue is a button here rather than an anchor (there is no element at the
+   work section's offset to jump to), so it needs the resets a .lp2-scroll-cue
+   anchor gets for free. */
+.lp-new-cue {
+    background: none;
+    border: 0;
+    display: flex;
+    font-family: inherit;
+    margin-inline: auto;
+    padding: 0;
+}
+
+/* --- phase 2: sky, ground -------------------------------------------------- */
+
+/* The same gradient as the hero, from the same tokens. This is what closes the
+   white gap between the clouds leaving and the ground arriving: we come back
+   out into the sky we came from, not into some new background. */
+.lp-new-lower-sky {
+    background: linear-gradient(to bottom,
+        var(--lpn-sky-top) 0%, var(--lpn-sky-mid) 42%, var(--lpn-sky-bottom) 100%);
+    opacity: 0;
+    will-change: opacity;
+    z-index: 6;
+}
+
+/* A band anchored to the bottom of the stage, not a full-screen layer.
+   `100% auto` keeps the file's aspect ratio — at a typical window width the
+   PNG is scaled DOWN, never up — and the band must never be taller than the
+   rendered image or a transparent gap opens under the grass, which is what the
+   min() is for. The script reads this height off the element (geo.band) rather
+   than repeating the number. */
+.lp-new-ground {
+    backface-visibility: hidden;
+    background: url("assets/ui/scene/ground-grass.png") no-repeat center top / 100% auto;
+    bottom: 0;
+    height: min(48vh, 67vw);
+    opacity: 0;
+    top: auto;
+    will-change: transform, opacity;
+    z-index: 7;
+}
+
+:root[data-lp2-theme="dark"] .lp-new-ground {
+    filter: brightness(0.42) saturate(0.75);
+}
+
+/* --- falling stickers ------------------------------------------------------
+
+   page-style.css draws them and scripts/lp-new-stickers.js fills them. Its
+   container is `position: fixed; z-index: -2` there, which is right for a page
+   whose background is a flat colour and wrong for this one: fixed would put it
+   outside the stage, and -2 would file it behind the sky.
+
+   Here it is a layer of the stage like any other, and the script moves it
+   between two of them: under the rising bank while the page is climbing, and
+   above the ground once the page is back under the weather. That is the whole
+   trick — the stickers vanish INTO the cloud instead of over it.
+--------------------------------------------------------------------------- */
+.lp-new-stage .emoji-rain {
+    inset: 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.lp-new-stage .emoji-rain[data-lp-new-phase="under"] {
+    z-index: 8;
+}
+
+/* --- work ----------------------------------------------------------------- */
+/* The panel is centred inside the stage minus the bar: without the padding the
+   heading centres against the whole window and, on a short viewport, comes up
+   underneath the nav. Padding rather than a margin on the inner box, so the
+   centring happens in what is left. */
+.lp-new-work {
+    align-content: center;
+    display: grid;
+    opacity: 0;
+    padding-top: var(--nav-clearance);
+    pointer-events: none;
+    transform-origin: 50% 55%;
+    will-change: transform, opacity;
+    z-index: 11;
+}
+
+.lp-new-work.is-live { pointer-events: auto; }
+
+.lp-new-work-inner {
+    margin: 0 auto;
+    max-width: var(--page-max);
+    padding: 0 var(--page-gutter);
+    width: 100%;
+}
+
+.lp-new-work-head {
+    margin-bottom: clamp(1.25rem, 3svh, 2.25rem);
+}
+
+.lp-new-work-title {
+    color: var(--lp2-title);
+    font-size: clamp(1.9rem, 3.4vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+}
+
+.lp-new-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+/* The pills are lp2's — same tokens, same selected/unselected pair — restated
+   here only because this page's row is smaller than the one under the LP2
+   heading and has to leave room for three full-height cards on one screen. */
+.lp-new-filter {
+    background: var(--lp2-pill-bg);
+    border: 0;
+    border-radius: 999px;
+    color: var(--lp2-pill-ink);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.55rem 1.4rem;
+    transition: background 200ms ease, color 200ms ease, transform 200ms ease;
+}
+
+.lp-new-filter:hover { transform: translateY(-2px); }
+
+/* Filled, not outlined: the row sits on a photograph of sky, and a border is
+   the one thing a sky can swallow. */
+.lp-new-filter.is-active {
+    background: var(--lp2-pill-bg-on);
+    color: var(--lp2-pill-ink-on);
+}
+
+/* --- the deck ------------------------------------------------------------
+
+   Three across, the middle one leading. The height is locked in vh rather than
+   set by aspect-ratio, and that is what makes the whole section fit one window
+   at any viewport: an aspect ratio would tie the card's height to the column
+   width and the row would grow itself off the screen on a wide display.
+-------------------------------------------------------------------------- */
+.lp-new-deck {
+    align-items: center;
+    display: grid;
+    gap: clamp(0.75rem, 1.8vw, 1.6rem);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Fewer than three on the last page: they stay card-sized and centred instead
+   of stretching to fill the row. */
+.lp-new-deck[data-count="1"] { grid-template-columns: minmax(0, 1fr); justify-content: center; }
+.lp-new-deck[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.lp-new-deck[data-count="1"] .lp-new-card,
+.lp-new-deck[data-count="2"] .lp-new-card {
+    margin-inline: auto;
+    max-width: 26rem;
+    width: 100%;
+}
+
+.lp-new-card {
+    background: linear-gradient(165deg, #a98ef0, #8b6fe4);
+    border-radius: clamp(1rem, 1.8vw, 1.65rem);
+    box-shadow: 0 22px 44px rgba(96, 74, 168, 0.28);
+    display: flex;
+    flex-direction: column;
+    height: min(40vh, 420px);
+    isolation: isolate;
+    overflow: hidden;
+    position: relative;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+/* The middle card is the lead, as in the design. */
+.lp-new-card.is-lead {
+    box-shadow: 0 30px 60px rgba(96, 74, 168, 0.34);
+    transform: scale(1.09);
+    z-index: 1;
+}
+
+.lp-new-card:hover { transform: translateY(-4px); }
+.lp-new-card.is-lead:hover { transform: scale(1.09) translateY(-4px); }
+
+/* The soft shape behind the mockup: two radial gradients rather than another
+   photograph — cheaper, and it scales with the card. */
+.lp-new-card::before {
+    background:
+        radial-gradient(closest-side at 50% 42%, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 100%),
+        radial-gradient(closest-side at 26% 55%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 100%),
+        radial-gradient(closest-side at 74% 55%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 100%);
+    content: "";
+    inset: 5% 4% 30%;
+    position: absolute;
+    z-index: 0;
+}
+
+.lp-new-card-visual {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 0;
+    padding: clamp(1rem, 2vw, 2rem) clamp(1rem, 2vw, 2rem) 0;
+    position: relative;
+    z-index: 1;
+}
+
+.lp-new-card-visual img {
+    filter: drop-shadow(0 18px 28px rgba(30, 20, 70, 0.35));
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.lp-new-card-foot {
+    flex: 0 0 auto;
+    padding: clamp(0.75rem, 1.6vw, 1.25rem) clamp(1rem, 2vw, 1.75rem) clamp(1rem, 2vw, 1.6rem);
+    position: relative;
+    z-index: 1;
+}
+
+.lp-new-card-meta {
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(0.62rem, 0.85vw, 0.78rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.25rem;
+    text-transform: uppercase;
+}
+
+.lp-new-card-title {
+    color: #ffffff;
+    font-size: clamp(0.95rem, 1.7vw, 1.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+    padding-right: clamp(2.25rem, 3.5vw, 3.25rem);
+    text-transform: uppercase;
+}
+
+.lp-new-card-arrow {
+    align-items: center;
+    background: #ffffff;
+    border-radius: 50%;
+    bottom: clamp(0.9rem, 1.8vw, 1.5rem);
+    color: #7f5fe4;
+    display: flex;
+    height: clamp(1.9rem, 3vw, 2.6rem);
+    justify-content: center;
+    position: absolute;
+    right: clamp(1rem, 2vw, 1.75rem);
+    transition: transform 200ms ease;
+    width: clamp(1.9rem, 3vw, 2.6rem);
+    z-index: 2;
+}
+
+.lp-new-card-arrow svg { height: 55%; width: 55%; }
+
+.lp-new-card:hover .lp-new-card-arrow { transform: translateX(3px); }
+
+/* --- pager ---------------------------------------------------------------
+   Only rendered when a category has more than one page of three. The deck is
+   allowed to page; it is not allowed to scroll, which is the constraint the
+   whole section's geometry exists to keep.
+-------------------------------------------------------------------------- */
+.lp-new-pager {
+    align-items: center;
+    display: flex;
+    gap: 0.9rem;
+    justify-content: center;
+    margin-top: clamp(1rem, 2.5svh, 1.75rem);
+}
+
+.lp-new-pager[hidden] { display: none; }
+
+.lp-new-pager-btn {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 8px 18px var(--lp2-card-shadow);
+    color: #6b5fa8;
+    cursor: pointer;
+    display: flex;
+    height: 2.4rem;
+    justify-content: center;
+    transition: opacity 200ms ease, transform 200ms ease;
+    width: 2.4rem;
+}
+
+.lp-new-pager-btn svg { height: 1.1rem; width: 1.1rem; }
+
+.lp-new-pager-btn:disabled { cursor: default; opacity: 0.3; }
+
+.lp-new-dots { display: flex; gap: 0.5rem; }
+
+.lp-new-dot {
+    background: var(--lp2-pill-bg);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    height: 0.55rem;
+    padding: 0;
+    transition: background 200ms ease, width 200ms ease;
+    width: 0.55rem;
+}
+
+.lp-new-dot.is-active {
+    background: var(--lp2-pill-bg-on);
+    width: 1.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+   After the scene — on the ground.
+
+   Flat colour on purpose. A second copy of the grass PNG here reads as "the
+   lawn tiled"; the stage's band meets this colour, so the joint does not show
+   when the sticky releases.
+--------------------------------------------------------------------------- */
+.lp-new-after {
+    background: linear-gradient(to bottom,
+        var(--lpn-turf-near) 0%, var(--lpn-turf-mid) 34%, var(--lpn-turf-far) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 42svh;
+    padding: 12svh var(--page-gutter) clamp(3rem, 9svh, 6rem);
+    position: relative;
+}
+
+.lp-new-after-caption {
+    bottom: clamp(3rem, 10svh, 7rem);
+    color: var(--lpn-turf-ink);
+    font-size: clamp(1.1rem, 2.2vw, 1.75rem);
+    line-height: 1.15;
+    margin: 0;
+    position: absolute;
+    right: var(--page-gutter);
+    text-align: right;
+    text-shadow: 0 2px 18px rgba(20, 40, 20, 0.35);
+    text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile
+--------------------------------------------------------------------------- */
+@media (max-width: 820px) {
+    .lp-new-about { align-content: start; }
+
+    /* The About copy is a full paragraph and it does not fit a phone screen —
+       nowhere near. The panel keeps `overflow-y: auto` (see .lp-new-about) and
+       is read by scrolling, which chains back to the page at either end, so the
+       flight carries on from where the copy stops. These two only buy back the
+       easy space so that less of it has to be scrolled for. */
+    .lp-new-about .lp2-about-portrait { max-width: 11rem; }
+    .lp-new-about .lp2-about-inner { gap: 1.5rem; }
+    .lp-new-about-inner { padding-bottom: 2rem; }
+
+    .lp-new-work { align-content: start; }
+    .lp-new-work-inner { padding-top: calc(var(--nav-clearance) + 2rem); }
+
+    .lp-new-deck { gap: 0.5rem; }
+    .lp-new-card { height: min(26vh, 210px); border-radius: 0.85rem; }
+    .lp-new-card.is-lead { transform: none; }
+    .lp-new-card.is-lead:hover { transform: translateY(-4px); }
+    .lp-new-card-arrow { display: none; }
+    .lp-new-card-title { padding-right: 0; }
+
+    /* At 100% the PNG would fall to about a fifth of its size and the blades
+       would disappear; 220% shows a crop of the field at a legible scale. */
+    .lp-new-ground {
+        background-size: 220% auto;
+        height: 48vh;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion.
+
+   The whole loop is off — no rAF, no parallax, no sticky. The scene becomes
+   ordinary flow (hero, about, work, a band of grass) and each block fades in
+   from an IntersectionObserver. The class is set by the script as well as by
+   the media query, so this has to be a class rather than only a query.
+--------------------------------------------------------------------------- */
+.lpn-reduced .lp-new-scene { height: auto; }
+
+.lpn-reduced .lp-new-stage {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    position: relative;
+}
+
+.lpn-reduced .lp-new-clouds,
+.lpn-reduced .lp-new-clouds-open,
+.lpn-reduced .lp-new-skywisp,
+.lpn-reduced .lp-new-lower-sky,
+.lpn-reduced .lp-new-about-clouds,
+.lpn-reduced .lp-new-veil { display: none; }
+
+.lpn-reduced .lp-new-sky,
+.lpn-reduced .lp-new-hero {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.lpn-reduced .lp-new-hero {
+    min-height: 100vh;
+    position: relative;
+}
+
+.lpn-reduced .lp-new-sky { position: absolute; }
+
+.lpn-reduced .lp-new-about,
+.lpn-reduced .lp-new-work {
+    background: var(--lpn-fog);
+    inset: auto;
+    opacity: 0;
+    padding: 10vh 0 12vh;
+    pointer-events: auto;
+    position: relative;
+    transform: none !important;
+    transition: opacity 600ms ease;
+}
+
+.lpn-reduced .lp-new-about.is-in,
+.lpn-reduced .lp-new-work.is-in { opacity: 1; }
+
+.lpn-reduced .lp-new-card { height: auto; aspect-ratio: 3 / 4; }
+.lpn-reduced .lp-new-card.is-lead { transform: none; }
+
+.lpn-reduced .lp-new-ground {
+    background-position: center bottom;
+    height: 40vh;
+    inset: auto;
+    opacity: 1 !important;
+    position: relative;
+    transform: none !important;
+}
