@@ -1,4 +1,11 @@
-// Falling stickers, mounted inside the scene.
+// Falling stickers, mounted inside the scene — THE FALLBACK SET.
+//
+// The stickers this page is meant to show are the ones inside the WebGL hero
+// (scripts/hero/stickers.js): they lean away from the cursor and the glass
+// lettering refracts them, which is the whole reason the scene is there. They
+// only exist on a machine that can afford the scene, so these stay as the set
+// for every machine that cannot — and stand down the moment the scene reports
+// itself up, so the two never fall at once.
 //
 // Same drops as scripts/falling-emoji.js — same artwork, same tinted glow,
 // same one-pass-then-relaunch loop — with one difference that is the entire
@@ -30,25 +37,23 @@
         return;
     }
 
-    // [image URL, dominant glow colour]
     var STICKERS = [
-        ["assets/ui/stickers/claude.png", "rgba(183, 157, 240, 0.8)"],
-        ["assets/ui/stickers/accidents.png", "rgba(143, 211, 244, 0.8)"],
-        ["assets/ui/stickers/ai.png", "rgba(210, 143, 239, 0.75)"],
-        ["assets/ui/stickers/human.png", "rgba(183, 157, 240, 0.8)"],
-        ["assets/ui/stickers/figma.png", "rgba(218, 154, 240, 0.75)"],
-        ["assets/ui/stickers/star_pink.png", "rgba(244, 168, 224, 0.8)"],
-        ["assets/ui/stickers/fine.png", "rgba(247, 215, 116, 0.8)"],
-        ["assets/ui/stickers/star_blue.png", "rgba(143, 195, 240, 0.8)"],
-        ["assets/ui/stickers/cmd_z.png", "rgba(210, 143, 239, 0.75)"],
-        ["assets/ui/stickers/passion.png", "rgba(159, 180, 240, 0.8)"],
-        ["assets/ui/stickers/pixel.png", "rgba(143, 195, 240, 0.8)"],
-        ["assets/ui/stickers/nerd.png", "rgba(247, 215, 116, 0.8)"],
-        ["assets/ui/stickers/pen.png", "rgba(183, 157, 240, 0.8)"],
-        ["assets/ui/stickers/heart.png", "rgba(143, 205, 153, 0.8)"],
-        ["assets/ui/stickers/buddy.png", "rgba(159, 180, 240, 0.8)"],
-        ["assets/ui/stickers/nilsen.png", "rgba(143, 205, 153, 0.8)"],
-        ["assets/ui/stickers/best.png", "rgba(247, 215, 116, 0.8)"]
+        "assets/ui/stickers/claude.png",
+        "assets/ui/stickers/accidents.png",
+        "assets/ui/stickers/human.png",
+        "assets/ui/stickers/figma.png",
+        "assets/ui/stickers/star_pink.png",
+        "assets/ui/stickers/fine.png",
+        "assets/ui/stickers/star_blue.png",
+        "assets/ui/stickers/cmd_z.png",
+        "assets/ui/stickers/passion.png",
+        "assets/ui/stickers/pixel.png",
+        "assets/ui/stickers/nerd.png",
+        "assets/ui/stickers/pen.png",
+        "assets/ui/stickers/heart.png",
+        "assets/ui/stickers/buddy.png",
+        "assets/ui/stickers/nilsen.png",
+        "assets/ui/stickers/best.png"
     ];
 
     // Three fewer than the home page's fourteen. The scene already keeps two
@@ -60,7 +65,7 @@
     var random = function (min, max) { return min + Math.random() * (max - min); };
 
     var container = document.createElement("div");
-    container.className = "emoji-rain";
+    container.className = "emoji-rain emoji-rain--flat";
     container.setAttribute("aria-hidden", "true");
     container.setAttribute("data-lp-new-phase", "over");
 
@@ -73,13 +78,12 @@
         drop.style.animation = "none";
 
         drop.style.left = random(-2, 98) + "vw";
-        drop.style.fontSize = random(1.7, 1.92) + "rem";
-        drop.style.setProperty("--glow", pick[1]);
+        drop.style.fontSize = random(2.6, 3.1) + "rem";
         drop.style.setProperty("--tilt-from", random(-14, 6) + "deg");
         drop.style.setProperty("--tilt-to", random(-6, 14) + "deg");
         drop.style.setProperty("--sway", random(0.5, 1.8) + "rem");
         inner.style.animationDuration = random(2.4, 4.6) + "s";
-        inner.querySelector("img").src = pick[0];
+        inner.querySelector("img").src = pick;
 
         void drop.offsetWidth;
 
@@ -125,6 +129,25 @@
        small random rotation, and keep a bounded pile (oldest out first) so the
        count cannot grow without limit while someone sits at the bottom of the
        page. Deliberately not built yet. */
+    /* The scene reports in once, whether or not it managed to mount, and
+       `.is-3d` on the word is what says it actually did. If it did, these come
+       out: the WebGL set is already falling, and two sets of the same artwork
+       reads as a bug rather than as weather. */
+    var standDown = function () {
+        var word = document.querySelector(".hero-welcome");
+        if (!word || !word.classList.contains("is-3d")) {
+            return;
+        }
+        container.remove();
+        window.lpNewStickers = null;
+    };
+
+    if (window.__portfolioHeroReady) {
+        standDown();
+    } else {
+        window.addEventListener("portfolio:hero-ready", standDown, { once: true });
+    }
+
     window.lpNewStickers = {
         container: container,
         phase: function (name) {

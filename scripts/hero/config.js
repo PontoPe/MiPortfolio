@@ -133,7 +133,6 @@ export const STICKERS = {
     images: [
         { src: "assets/ui/stickers/claude.png", family: "scalloped" },
         { src: "assets/ui/stickers/accidents.png", family: "wide" },
-        { src: "assets/ui/stickers/ai.png", family: "vertical" },
         { src: "assets/ui/stickers/human.png", family: "scalloped" },
         { src: "assets/ui/stickers/figma.png", family: "wide" },
         { src: "assets/ui/stickers/star_pink.png", family: "star" },

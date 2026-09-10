@@ -100,19 +100,40 @@
        still and readable, t2 the second, holdW the closing breath. */
     var SEG = { t1: 176, holdA: 80, t2: 176, holdW: 56 };
 
-    var small = matchMedia("(max-width: 820px)");
+    var small = matchMedia("(max-width: 900px)");
     var lite = document.documentElement.classList.contains("perf-lite");
+
+    /* A big window is not a fast one. The canvas fill is already constant (see
+       CANVAS_BUDGET), but everything OFF the canvas still scales with area: the
+       two full-screen veils, the sky ramp, the About's cloud plate and the
+       compositing of every promoted layer all cost width x height x dpr^2. At
+       1440p and above that is where the frames go, so the scene runs one cloud
+       lighter there and gives the drift up beyond 4K. */
+    var area = function () {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        return window.innerWidth * window.innerHeight * dpr * dpr;
+    };
+
+    var wide = area() > 2560 * 1440;
+    var huge = area() > 3840 * 2160;
 
     var cfg = {
         damping: 0.10,
         /* The per-resolution layer budget was removed when the clouds moved to
            canvas — a cloud now costs the same at 1366x768 and at 5K. Three on a
-           phone, five everywhere else; the fps governor below stays as a safety
-           net for weak machines. */
-        layers: small.matches || lite ? 3 : 5,
+           phone, four on a large display, five everywhere else; the fps governor
+           below stays as a safety net for weak machines. */
+        layers: small.matches || lite ? 3 : (wide ? 4 : 5),
         auto: true,
-        length: small.matches ? 0.73 : 1,   // multiplier over the segments
-        drift: !lite
+        /* Multiplier over the segments: how much scroll the same choreography
+           is given. Above one the flight is SLOWER — every transition is spread
+           over more of the wheel, which is what the review asked for: at the
+           old rate the cloud opened and closed faster than it could be read. */
+        length: small.matches ? 0.95 : 1.35,
+        /* The per-frame sine and cosine per cloud are cheap; what is not cheap
+           is that a drifting layer invalidates its own tile every frame at the
+           screen's real resolution. */
+        drift: !lite && !huge
     };
 
     var geo = {

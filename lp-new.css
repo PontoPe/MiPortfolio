@@ -33,9 +33,15 @@
        height the band ends, so the flat colour under the stage meets it
        without a line. */
     --lpn-turf-near: #77b53c;
-    --lpn-turf-mid: #8ecb4e;
-    --lpn-turf-far: #a9d748;
-    --lpn-turf-ink: #ffffff;
+    /* The hero sits over the pale bottom of the sky ramp, so white on its own
+       would be white on near-white. The tone is the requested white; the
+       shadow is what makes it a colour rather than a hole. */
+    --lpn-hero-ink: #ffffff;
+    --lpn-hero-shadow: 0 2px 20px rgba(28, 62, 104, 0.45);
+    /* The thread. Width, and the glass it is made of. */
+    --lpn-thread-w: clamp(3px, 0.34vw, 6px);
+    --lpn-thread-tint: rgba(255, 255, 255, 0.55);
+    --lpn-thread-edge: rgba(255, 255, 255, 0.9);
 }
 
 /* Night. The theme lp2-theme.js writes. The clouds are one white cut-out in
@@ -49,8 +55,9 @@
     --lpn-fog: #3c414c;
     --lpn-cloud-tint: #7b839e;
     --lpn-turf-near: #2c4a1c;
-    --lpn-turf-mid: #365a22;
-    --lpn-turf-far: #43682a;
+    --lpn-hero-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
+    --lpn-thread-tint: rgba(255, 255, 255, 0.3);
+    --lpn-thread-edge: rgba(255, 255, 255, 0.62);
 }
 
 /* ---------------------------------------------------------------------------
@@ -222,6 +229,7 @@ body.lp-new-page {
 .lp-new-lower-sky,
 .lp-new-ground,
 .lp-new-clouds-open,
+.lp-new-thread,
 .lp-new-work {
     inset: 0;
     position: absolute;
@@ -238,7 +246,8 @@ body.lp-new-page {
       5  tinted veil
       6  low sky (phase 2)
       7  ground band
-      8  falling stickers, phase 2 ← the script moves the same container here
+      8  the thread, and the falling stickers in phase 2
+        ← the script moves the rain between 1 and 8; the thread never moves
       9  the cloud settling on the About
      10  About
      11  work
@@ -285,22 +294,66 @@ body.lp-new-page {
 }
 
 /* lp2.css positions .lp2-hero-name against .lp2-hero; here the containing
-   block is the hero panel, so the offsets are restated for this stage. The
-   colour, size and weight are still lp2's. */
+   block is the hero panel, so the offsets are restated for this stage. Size and
+   weight are still lp2's; the colour is not — lp2's ink is a grey for a
+   photograph, and this hero stands on a painted ramp that ends almost white. */
 .lp-new-hero .lp2-hero-name {
+    color: var(--lpn-hero-ink);
     left: var(--page-gutter);
+    text-shadow: var(--lpn-hero-shadow);
     top: calc(var(--nav-clearance) + 2.5rem);
 }
 
+/* The near end of the thread. The right offset clears the line so the words
+   stop beside it rather than on it. */
 .lp-new-hero-caption {
     bottom: clamp(2rem, 8svh, 6rem);
-    color: var(--lp2-hero-ink);
+    color: var(--lpn-hero-ink);
     font-size: clamp(1.1rem, 2.2vw, 1.75rem);
     letter-spacing: 0.01em;
     margin: 0;
     position: absolute;
-    right: var(--page-gutter);
+    right: calc(var(--page-gutter) + var(--lpn-thread-w) + 1.15rem);
+    text-shadow: var(--lpn-hero-shadow);
     text-transform: uppercase;
+}
+
+/* --- the thread ----------------------------------------------------------
+
+   One line of glass down the right gutter, from the hero caption to the one
+   under the deck. Static: the scene flies past it, it does not move, and it
+   writes neither transform nor opacity per frame.
+
+   The glass is done in two layers because a backdrop-filter on a 6px column is
+   nearly invisible on its own — the filtered strip is too narrow to show what
+   it bent. The filter gives the refraction, the gradient over it gives the
+   body, and the bright edge is what reads as a lit rim.
+-------------------------------------------------------------------------- */
+.lp-new-thread {
+    bottom: 0;
+    left: auto;
+    pointer-events: none;
+    right: var(--page-gutter);
+    top: 0;
+    width: var(--lpn-thread-w);
+    z-index: 8;
+}
+
+.lp-new-thread-core {
+    backdrop-filter: blur(6px) saturate(1.5) brightness(1.06);
+    -webkit-backdrop-filter: blur(6px) saturate(1.5) brightness(1.06);
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        var(--lpn-thread-tint) 9%,
+        var(--lpn-thread-tint) 91%,
+        rgba(255, 255, 255, 0) 100%);
+    border-radius: 999px;
+    box-shadow:
+        inset 0 0 0 0.5px var(--lpn-thread-edge),
+        0 0 12px rgba(255, 255, 255, 0.28);
+    display: block;
+    height: 100%;
+    width: 100%;
 }
 
 /* --- veils --------------------------------------------------------------- */
@@ -343,17 +396,28 @@ body.lp-new-page {
 /* The About block itself is lp2's, unchanged. This is only the panel that
    holds it inside the stage. */
 /* `overflow-y: auto` is the safety valve, not the plan. On a desktop window the
-   copy fits and nothing scrolls; on a phone it cannot fit and the panel is read
-   by scrolling, which chains back to the document at either end — so the page
-   holds inside the cloud for exactly as long as there is copy left, and carries
-   on. Note this is the panel, NOT an ancestor of the stage: an overflow on an
-   ancestor would break the sticky (see the note on body, above). */
+   copy fits and nothing scrolls; on a narrow one it cannot fit and the panel is
+   read by scrolling, which chains back to the document at either end — so the
+   page holds inside the cloud for exactly as long as there is copy left, and
+   carries on. Note this is the panel, NOT an ancestor of the stage: an overflow
+   on an ancestor would break the sticky (see the note on body, above).
+
+   `safe center` is load-bearing, and plain `center` was the bug behind "part of
+   the About is unreachable at some screen sizes". Content taller than a centred
+   box overflows BOTH ends of it, and the half that goes off the TOP cannot be
+   scrolled back to — a scroll container has no negative scroll. `safe` says:
+   centre while it fits, fall back to `start` the moment it does not, which puts
+   the whole overflow below the fold where scrolling can reach it.
+
+   `scrollbar-gutter` is the other half of that report: on a platform that draws
+   a classic scrollbar, the bar was being laid over the last inch of the copy. */
 .lp-new-about {
-    align-content: center;
+    align-content: safe center;
     display: grid;
     opacity: 0;
     overflow-y: auto;
     pointer-events: none;
+    scrollbar-gutter: stable;
     transform-origin: 50% 60%;
     will-change: transform, opacity;
     z-index: 10;
@@ -446,11 +510,19 @@ body.lp-new-page {
 /* The panel is centred inside the stage minus the bar: without the padding the
    heading centres against the whole window and, on a short viewport, comes up
    underneath the nav. Padding rather than a margin on the inner box, so the
-   centring happens in what is left. */
+   centring happens in what is left.
+
+   `start`, not `center`, and that is the fix for "the section sits too low".
+   Centring the block in the height BELOW the nav put its title a third of the
+   way down the window — 266px on a 900px screen, with the whole of that empty.
+   Starting it under the nav spends that on the cards instead, which is where
+   the room was wanted. The deck still crosses the horizon: the grass band is
+   the bottom half of the stage and the cards are meant to stand against it. */
 .lp-new-work {
-    align-content: center;
+    align-content: start;
     display: grid;
     opacity: 0;
+    padding-bottom: clamp(1rem, 3svh, 2.5rem);
     padding-top: var(--nav-clearance);
     pointer-events: none;
     transform-origin: 50% 55%;
@@ -468,7 +540,7 @@ body.lp-new-page {
 }
 
 .lp-new-work-head {
-    margin-bottom: clamp(1.25rem, 3svh, 2.25rem);
+    margin-bottom: clamp(1rem, 2.4svh, 1.75rem);
 }
 
 .lp-new-work-title {
@@ -513,40 +585,84 @@ body.lp-new-page {
 
 /* --- the deck ------------------------------------------------------------
 
-   Three across, the middle one leading. The height is locked in vh rather than
-   set by aspect-ratio, and that is what makes the whole section fit one window
-   at any viewport: an aspect ratio would tie the card's height to the column
-   width and the row would grow itself off the screen on a wide display.
+   A row of cards that scrolls sideways. Three fit the window at a time and the
+   rest are one drag away; the whole category is in the row, so nothing is
+   behind a page the reader has to discover.
+
+   The height is locked in vh rather than set by aspect-ratio, and that is what
+   makes the section fit one window at any viewport: an aspect ratio would tie
+   the card's height to the column width and the row would grow itself off the
+   screen on a wide display.
+
+   `overflow-x: auto` and nothing that captures the wheel. A vertical wheel over
+   this row scrolls the PAGE, which is what flies the scene — see the note in
+   scripts/lp-new-work.js. `overscroll-behavior-inline: contain` stops a
+   sideways flick at the end of the row from turning into a browser back
+   gesture; the block axis is left alone so vertical chaining still works.
+
+   The row is padded rather than gapped at its ends so the lead card's 9% scale
+   and its shadow are not clipped by the scroll port.
 -------------------------------------------------------------------------- */
 .lp-new-deck {
     align-items: center;
     display: grid;
-    gap: clamp(0.75rem, 1.8vw, 1.6rem);
-    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3.2vw, 3.25rem);
+    grid-auto-columns: calc((100% - 2 * clamp(1.5rem, 3.2vw, 3.25rem)) / 3);
+    grid-auto-flow: column;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    padding-block: clamp(1rem, 2.4vh, 2.25rem);
+    scrollbar-width: none;
 }
 
-/* Fewer than three on the last page: they stay card-sized and centred instead
-   of stretching to fill the row. */
-.lp-new-deck[data-count="1"] { grid-template-columns: minmax(0, 1fr); justify-content: center; }
-.lp-new-deck[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* The row has its own buttons, its own dots and a visible focus ring; the
+   native bar would only sit across the grass under it. */
+.lp-new-deck::-webkit-scrollbar { display: none; }
 
-.lp-new-deck[data-count="1"] .lp-new-card,
-.lp-new-deck[data-count="2"] .lp-new-card {
-    margin-inline: auto;
-    max-width: 26rem;
-    width: 100%;
+/* It is a tabbable scroll region (the markup gives it tabindex and a label), so
+   it owes the keyboard a visible focus. */
+.lp-new-deck:focus-visible {
+    border-radius: clamp(1rem, 1.8vw, 1.65rem);
+    outline: 3px solid var(--lpn-thread-edge);
+    outline-offset: 6px;
 }
 
+/* Grabbing the row. The class is written by the script while a drag is live,
+   so a plain click on a card still opens it. Snap goes off with it: on a narrow
+   window the row snaps, and a snap point recaptures a short drag the moment the
+   pointer is released — the row would spring back to where it started and the
+   drag would read as rejected. */
+.lp-new-deck.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+}
+
+.lp-new-deck.is-dragging .lp-new-card { pointer-events: none; }
+
+/* A category short enough to fit stays a centred row instead of a row of
+   stretched cards pinned to the left edge. */
+.lp-new-deck[data-count="1"],
+.lp-new-deck[data-count="2"] { justify-content: center; }
+
+.lp-new-deck[data-count="1"] { grid-auto-columns: min(26rem, 100%); }
+.lp-new-deck[data-count="2"] { grid-auto-columns: min(26rem, calc((100% - clamp(1.5rem, 3.2vw, 3.25rem)) / 2)); }
+
+/* The snap point. It is only ever armed at phone width, where the row is read
+   by swiping one card at a time — see the 768 block. On a wide window the row
+   is driven by drag and by the two buttons, and both want to stop where they
+   were put rather than at the nearest card. */
 .lp-new-card {
     background: linear-gradient(165deg, #a98ef0, #8b6fe4);
     border-radius: clamp(1rem, 1.8vw, 1.65rem);
     box-shadow: 0 22px 44px rgba(96, 74, 168, 0.28);
     display: flex;
     flex-direction: column;
-    height: min(40vh, 420px);
+    height: min(46vh, 470px);
     isolation: isolate;
     overflow: hidden;
     position: relative;
+    scroll-snap-align: center;
     transition: transform 220ms ease, box-shadow 220ms ease;
 }
 
@@ -689,57 +805,95 @@ body.lp-new-page {
     width: 1.5rem;
 }
 
-/* ---------------------------------------------------------------------------
-   After the scene — on the ground.
-
-   Flat colour on purpose. A second copy of the grass PNG here reads as "the
-   lawn tiled"; the stage's band meets this colour, so the joint does not show
-   when the sticky releases.
---------------------------------------------------------------------------- */
-.lp-new-after {
-    background: linear-gradient(to bottom,
-        var(--lpn-turf-near) 0%, var(--lpn-turf-mid) 34%, var(--lpn-turf-far) 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    min-height: 42svh;
-    padding: 12svh var(--page-gutter) clamp(3rem, 9svh, 6rem);
-    position: relative;
-}
-
-.lp-new-after-caption {
-    bottom: clamp(3rem, 10svh, 7rem);
-    color: var(--lpn-turf-ink);
+/* The far end of the thread, under the deck. Same offset from the right gutter
+   as the hero's caption, so the line runs between the two of them rather than
+   past them. */
+.lp-new-work-caption {
+    color: var(--lpn-hero-ink);
     font-size: clamp(1.1rem, 2.2vw, 1.75rem);
+    letter-spacing: 0.01em;
     line-height: 1.15;
-    margin: 0;
-    position: absolute;
-    right: var(--page-gutter);
+    margin: clamp(1rem, 2.4svh, 1.75rem) 0 0;
+    padding-right: calc(var(--lpn-thread-w) + 1.15rem);
     text-align: right;
-    text-shadow: 0 2px 18px rgba(20, 40, 20, 0.35);
+    text-shadow: var(--lpn-hero-shadow);
     text-transform: uppercase;
 }
 
 /* ---------------------------------------------------------------------------
-   Mobile
---------------------------------------------------------------------------- */
-@media (max-width: 820px) {
-    .lp-new-about { align-content: start; }
+   After the scene — on the ground.
 
-    /* The About copy is a full paragraph and it does not fit a phone screen —
-       nowhere near. The panel keeps `overflow-y: auto` (see .lp-new-about) and
-       is read by scrolling, which chains back to the page at either end, so the
-       flight carries on from where the copy stops. These two only buy back the
-       easy space so that less of it has to be scrolled for. */
-    .lp-new-about .lp2-about-portrait { max-width: 11rem; }
-    .lp-new-about .lp2-about-inner { gap: 1.5rem; }
+   ONE flat colour on purpose, and no longer a ramp. A second copy of the grass
+   PNG here reads as "the lawn tiled"; --lpn-turf-near is the band's own tone at
+   the height it ends, so a solid fill of it meets the stage with no joint —
+   which a gradient could not do, because only its first stop matched.
+
+   It is a bar now, not a screen: it holds one line, one heading and one button,
+   and the height is whatever those need. The 42svh floor and the 12svh of top
+   padding were making a half-screen of empty green above them.
+--------------------------------------------------------------------------- */
+.lp-new-after {
+    background: var(--lpn-turf-near);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(2.5rem, 7svh, 4.5rem) var(--page-gutter);
+    position: relative;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive.
+
+   The project's two breakpoints, and no third. This sheet used to carry a
+   single 820px block, which is neither of them.
+--------------------------------------------------------------------------- */
+
+/* --- 900: the layout goes to one column ---------------------------------- */
+@media (max-width: 900px) {
+    /* The About is a full paragraph and it does not fit a narrow screen with a
+       portrait above it. The point of these is that the copy FITS, so the
+       safety valve on the panel is not what the reader has to use: the portrait
+       stops being a half-screen plate and becomes a stamp beside the tags, and
+       the copy tightens to match. `align-content: start` is what `safe center`
+       would resolve to here anyway — stated so it does not depend on the
+       browser's support for the safe keyword. */
+    .lp-new-about { align-content: start; }
     .lp-new-about-inner { padding-bottom: 2rem; }
 
-    .lp-new-work { align-content: start; }
-    .lp-new-work-inner { padding-top: calc(var(--nav-clearance) + 2rem); }
+    .lp-new-about .lp2-about-inner {
+        align-items: start;
+        gap: 1.25rem;
+        grid-template-columns: minmax(0, 1fr);
+    }
 
-    .lp-new-deck { gap: 0.5rem; }
-    .lp-new-card { height: min(26vh, 210px); border-radius: 0.85rem; }
+    .lp-new-about .lp2-about-portrait {
+        max-width: 9rem;
+        rotate: -2deg;
+    }
+
+    .lp-new-about .lp2-about-tags { margin-bottom: 1rem; }
+
+    .lp-new-about .lp2-about-text {
+        font-size: 0.98rem;
+        line-height: 1.62;
+        margin-bottom: 1.25rem;
+    }
+
+    .lp-new-work { padding-bottom: clamp(1rem, 3svh, 2rem); }
+    .lp-new-work-inner { padding-top: calc(var(--nav-clearance) + 1.5rem); }
+
+    /* Two per screen rather than three: at this width a third column leaves a
+       card too narrow for its own title. The row still holds every project and
+       still scrolls to them. */
+    .lp-new-deck {
+        gap: 1rem;
+        grid-auto-columns: calc((100% - 1rem) / 2);
+        padding-block: 0.75rem;
+    }
+
+    .lp-new-deck[data-count="2"] { grid-auto-columns: calc((100% - 1rem) / 2); }
+
+    .lp-new-card { height: min(30vh, 260px); border-radius: 0.85rem; }
     .lp-new-card.is-lead { transform: none; }
     .lp-new-card.is-lead:hover { transform: translateY(-4px); }
     .lp-new-card-arrow { display: none; }
@@ -751,6 +905,46 @@ body.lp-new-page {
         background-size: 220% auto;
         height: 48vh;
     }
+}
+
+/* --- 768: the phone ------------------------------------------------------ */
+@media (max-width: 768px) {
+    /* The portrait shrinks to a stamp. It cannot move out of the copy's way
+       instead — the tags, the paragraph and the buttons are one element in
+       lp2.css, which the home page shares, and squeezing all three into the
+       column beside a portrait is worse than the height it would save. */
+    .lp-new-about .lp2-about-portrait { max-width: 6.5rem; }
+
+    .lp-new-about .lp2-about-text {
+        font-size: 0.92rem;
+        line-height: 1.55;
+    }
+
+    .lp-new-about .lp2-about-actions { gap: 0.65rem; }
+
+    /* Every remaining scrap of height. Below roughly 700px of viewport the copy
+       still does not fit and the panel scrolls — that is a length-of-paragraph
+       problem, not a layout one, and the scroll now reaches all of it. */
+    .lp-new-about-inner {
+        padding-bottom: 1.25rem;
+        padding-top: calc(var(--nav-clearance) + 0.5rem);
+    }
+
+    /* One card at a time, and the row is read by swiping it. */
+    .lp-new-deck {
+        gap: 0.85rem;
+        grid-auto-columns: min(17rem, 78%);
+        scroll-snap-type: x mandatory;
+    }
+
+    .lp-new-deck[data-count="1"],
+    .lp-new-deck[data-count="2"] { grid-auto-columns: min(17rem, 78%); }
+
+    .lp-new-card { height: min(34vh, 280px); }
+
+    /* The thread is a hair's breadth on a phone and the gutter it lives in is
+       the narrow one. It stays, at the thinnest the tokens allow. */
+    .lp-new-thread { opacity: 0.7; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -776,6 +970,11 @@ body.lp-new-page {
 .lpn-reduced .lp-new-lower-sky,
 .lpn-reduced .lp-new-about-clouds,
 .lpn-reduced .lp-new-veil { display: none; }
+
+/* The thread connects two ends of a flight, and in ordinary flow there is no
+   flight — the stage is a stack of blocks and a line down the gutter would run
+   past three of them for no reason. */
+.lpn-reduced .lp-new-thread { display: none; }
 
 .lpn-reduced .lp-new-sky,
 .lpn-reduced .lp-new-hero {
@@ -805,8 +1004,20 @@ body.lp-new-page {
 .lpn-reduced .lp-new-about.is-in,
 .lpn-reduced .lp-new-work.is-in { opacity: 1; }
 
-.lpn-reduced .lp-new-card { height: auto; aspect-ratio: 3 / 4; }
+/* The row keeps scrolling sideways here — it is a gesture, not an animation,
+   and taking it away would hide the projects past the third. Only the snap goes:
+   snapping moves the viewport for you, which is the part someone asking for less
+   motion is asking not to happen. */
+.lpn-reduced .lp-new-deck { scroll-snap-type: none; }
+.lpn-reduced .lp-new-card { height: auto; aspect-ratio: 3 / 4; scroll-snap-align: none; }
 .lpn-reduced .lp-new-card.is-lead { transform: none; }
+
+/* On the ground there is no sky behind it; the caption takes the ink that
+   works on the panel it is actually sitting on. */
+.lpn-reduced .lp-new-work-caption {
+    color: var(--lp2-title);
+    text-shadow: none;
+}
 
 .lpn-reduced .lp-new-ground {
     background-position: center bottom;
@@ -816,3 +1027,14 @@ body.lp-new-page {
     position: relative;
     transform: none !important;
 }
+
+/* ---------------------------------------------------------------------------
+   The fallback sticker rain.
+
+   page-style.css draws every drop over a tinted halo, which is how the home
+   page's rain reads against a flat lavender ground. This page asked for the
+   artwork alone: the WebGL set it stands in for has no halo either — what
+   lights those is the scene — so keeping one here would make the fallback the
+   odd one out rather than the quiet one.
+--------------------------------------------------------------------------- */
+.emoji-rain--flat .emoji-drop-inner::before { content: none; }
