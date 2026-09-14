@@ -58,6 +58,11 @@ const canAffordIt = () => window.matchMedia("(pointer: fine)").matches
 const nightIsOn = () =>
     document.documentElement.getAttribute("data-lp2-theme") === "dark";
 
+/* Which of the two pages is running this. lp-new is the scene page; anything
+   else loading this file is LP2 (the home page), which wants the lettering and
+   nothing else out of the scene. */
+const keepsStickers = document.body.classList.contains("lp-new-page");
+
 const boot = async () => {
     try {
         const host = document.querySelector(HOST);
@@ -77,7 +82,7 @@ const boot = async () => {
            The grid goes with it: a lattice belongs to the home page's flat
            backdrop, and there is nothing straight in a photograph of the sky
            for it to agree with. */
-        const { BACKGROUND } = await import("./hero/config.js");
+        const { BACKGROUND, STICKERS } = await import("./hero/config.js");
         const sky = nightIsOn() ? SKY.dark : SKY.light;
         BACKGROUND.top = sky.top;
         BACKGROUND.bottom = sky.bottom;
@@ -85,16 +90,32 @@ const boot = async () => {
         BACKGROUND.lavender = sky.lavender;
         BACKGROUND.gridOpacity = 0;
 
+        /* The scene page keeps the stickers; LP2 does not. Sized here rather
+           than in config.js because the home hero shares that file: on a page
+           whose whole hero is one word over open sky they read as too small,
+           and the artwork has to survive being magnified into a smear behind
+           the tube. Written before mountHero for the same reason BACKGROUND
+           is — config is read when the materials are built. */
+        if (keepsStickers) {
+            STICKERS.size.min = 0.083;
+            STICKERS.size.max = 0.144;
+        }
+
         const { mountHero } = await import("./hero/stage.js");
         const hero = await mountHero({ host, wordBox });
 
-        /* The two things the home page's hero puts on the page and LP2 does
-           not want on top of the sky: the visible copy of the backdrop, and
-           the falling stickers. Both stay in the scene — hiding them here
-           keeps them out of the frame and out of the transmission pass, so
-           what the glass bends is the sky-coloured plate alone. */
+        /* The visible copy of the backdrop always goes: on both pages the real
+           sky is behind the canvas, and drawing the plate over it would read as
+           a panel. Both copies stay in the scene either way — what the glass
+           refracts is the opaque one, which is never drawn to screen.
+
+           The stickers are the difference between the two pages. LP2 flies
+           through photographs and does not want them on top of the sky; the
+           scene page is where they belong, and they are the ONLY stickers it
+           has that lean away from the cursor and get bent by the glass —
+           scripts/lp-new-stickers.js stands down as soon as this mounts. */
         hero.background.mesh.visible = false;
-        hero.stickers.group.visible = false;
+        hero.stickers.group.visible = keepsStickers;
         hero.redraw();
 
         /* Follow the theme switch. BACKGROUND is only read when the materials

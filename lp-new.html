@@ -130,6 +130,20 @@
             <p class="lp-new-hero-caption" aria-hidden="true">Dreaming big</p>
         </div>
 
+        <!-- The thread. One line of glass running the height of the flight,
+             from "Dreaming big" in the hero down to "Staying grounded" under
+             the work. It never moves: it is the fixed thing the scene travels
+             along, which is what makes the two captions read as two ends of
+             one idea rather than two labels.
+
+             Its z-index (8) is the whole spec: above the low sky and the
+             ground, below the cloud that settles on the About (9), below the
+             About (10) and below the deck of cards (11). It passes BEHIND the
+             weather and behind the work, and is never drawn over content. -->
+        <div class="lp-new-thread" id="thread" aria-hidden="true">
+            <span class="lp-new-thread-core"></span>
+        </div>
+
         <!-- the rising bank -->
         <canvas class="lp-new-clouds" id="clouds" aria-hidden="true"></canvas>
 
@@ -185,9 +199,16 @@
                     <h2 class="lp-new-work-title">My work</h2>
                     <div class="lp-new-filters" data-lp-new-filters role="tablist" aria-label="Project categories"></div>
                 </div>
-                <!-- Three across, the middle one leading. Filled by
-                     scripts/lp-new-work.js from data/projects-data.js. -->
-                <div class="lp-new-deck" data-lp-new-deck></div>
+                <!-- A row that scrolls sideways, filled by
+                     scripts/lp-new-work.js from data/projects-data.js. It is a
+                     real overflow container, so drag, trackpad swipe, keyboard
+                     and the two buttons all move it — but it never takes the
+                     mouse WHEEL. A vertical wheel over this row belongs to the
+                     page: the section is a panel of a sticky scene that scroll
+                     is flying, and a row that swallowed the wheel would stop
+                     the flight for as long as the cursor sat on a card. -->
+                <div class="lp-new-deck" data-lp-new-deck role="group"
+                     aria-label="Projects, scroll sideways" tabindex="0"></div>
                 <div class="lp-new-pager" data-lp-new-pager hidden>
                     <button class="lp-new-pager-btn" type="button" data-lp-new-prev aria-label="Previous projects">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4.5 7.5 12l7.5 7.5"/></svg>
@@ -197,6 +218,10 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5 16.5 12 9 19.5"/></svg>
                     </button>
                 </div>
+                <!-- The far end of the thread. It belongs under the cards, not
+                     under the CTA a screen further down: the pair only reads as
+                     a pair while both ends are on the same flight. -->
+                <p class="lp-new-work-caption" aria-hidden="true">Staying grounded</p>
             </div>
         </div>
 
@@ -219,9 +244,11 @@
      4. On the ground.
 
      A flat colour, not a second copy of the grass — repeating the photograph
-     here reads as "the lawn tiled". #77b53c is the image's real average at the
-     height the band ends, sampled from the PNG, so the joint does not show
-     when the stage lets go.
+     here reads as "the lawn tiled". --lpn-turf-near is the image's real average
+     at the height the band ends, sampled from the PNG, so the joint does not
+     show when the stage lets go. It is now one solid tone rather than a ramp:
+     a bar this short reads as a band of colour, and a gradient across it only
+     made the seam with the grass above it harder to hide.
 =========================================================================== -->
 <section class="lp-new-after" id="contact">
     <div class="lp2-cta-inner">
@@ -229,7 +256,6 @@
         <h2 class="lp2-cta-title">Let's build something extraordinary!</h2>
         <a class="lp2-cta-btn" href="mailto:milena.am.caldas@gmail.com">send a message</a>
     </div>
-    <p class="lp-new-after-caption" aria-hidden="true">Staying grounded</p>
 </section>
 
 </main>

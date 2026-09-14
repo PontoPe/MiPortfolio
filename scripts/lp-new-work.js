@@ -6,11 +6,17 @@
 // category pill, and the whole section fitting one window with no scroll of
 // its own.
 //
-// That last constraint is why this is a paged deck and not the LP2 carousel. A
-// carousel is a row that scrolls; the section it lives in here is a panel of a
-// sticky stage, and a panel that scrolls inside a scene that is itself driven
-// by scroll fights the page for the same gesture. So a category longer than
-// three pages instead — the geometry stays fixed and the deck changes hands.
+// The row scrolls sideways and holds the whole category. The reason it was a
+// paged deck before is still true and is what shapes this: the section is a
+// panel of a sticky stage, and a scroller inside a scene that is itself driven
+// by scroll can fight the page for the same gesture.
+//
+// So it takes every way of moving a row EXCEPT the one that would: drag, a
+// trackpad's sideways swipe, the two buttons, the dots, and the arrow keys the
+// browser gives any focusable scroll container for free. It never listens for
+// `wheel`. A vertical wheel over the cards therefore does what it does
+// everywhere else on the page — it flies the scene — and the row only moves
+// when the reader means the row.
 (function () {
     "use strict";
 
@@ -27,7 +33,13 @@
     var previous = pager ? pager.querySelector("[data-lp-new-prev]") : null;
     var next = pager ? pager.querySelector("[data-lp-new-next]") : null;
 
-    var PER_PAGE = 3;
+    // How many cards stand on the window at once. The row is measured, not
+    // sliced, so this is only what decides which card leads at rest.
+    var ACROSS = 3;
+
+    var smooth = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth";
 
     var escapeHtml = function (value) {
         return String(value === null || value === undefined ? "" : value)
@@ -151,63 +163,101 @@
             + "</a>";
     };
 
-    var current = { category: categories[0], page: 0, pages: 1 };
+    var current = { category: categories[0] };
 
-    var pageCount = function (projects) {
-        return Math.max(1, Math.ceil(projects.length / PER_PAGE));
+    /* Where the row is, in windows. Measured from the scroll port every time
+       rather than remembered: the card width is a clamp against the viewport,
+       so the answer changes with the window and there is nothing to keep in
+       sync. */
+    var span = function () {
+        return deck.clientWidth || 1;
     };
 
-    var paintPager = function () {
+    var maxScroll = function () {
+        return Math.max(0, deck.scrollWidth - deck.clientWidth);
+    };
+
+    var pageCount = function () {
+        return Math.max(1, Math.ceil(maxScroll() / span()) + 1);
+    };
+
+    var pageIndex = function () {
+        return Math.min(pageCount() - 1, Math.round(deck.scrollLeft / span()));
+    };
+
+    /* The dots are rebuilt only when the row itself changes — a new category, a
+       resize. Rewriting this markup on every scroll frame would throw away the
+       focused dot in the middle of someone tabbing through them. */
+    var buildDots = function () {
         if (!pager) {
             return;
         }
 
-        var many = current.pages > 1;
-        pager.hidden = !many;
+        var count = pageCount();
+        pager.hidden = count < 2;
 
-        if (!many) {
+        if (pager.hidden || !dots) {
             return;
         }
 
-        if (dots) {
-            var markup = "";
-            for (var i = 0; i < current.pages; i += 1) {
-                markup += '<button class="lp-new-dot' + (i === current.page ? " is-active" : "") + '"'
-                    + ' type="button" data-lp-new-page="' + i + '"'
-                    + ' aria-label="Projects, page ' + (i + 1) + '"'
-                    + ' aria-current="' + (i === current.page ? "true" : "false") + '"></button>';
-            }
-            dots.innerHTML = markup;
+        var markup = "";
+        for (var i = 0; i < count; i += 1) {
+            markup += '<button class="lp-new-dot" type="button" data-lp-new-page="' + i + '"'
+                + ' aria-label="Projects, page ' + (i + 1) + '"></button>';
         }
-
-        if (previous) { previous.disabled = current.page === 0; }
-        if (next) { next.disabled = current.page >= current.pages - 1; }
+        dots.innerHTML = markup;
     };
 
-    var paintDeck = function () {
+    /* The cheap half, safe to run on every scroll frame: it only writes state
+       onto nodes that already exist. */
+    var markPosition = function () {
+        if (!pager || pager.hidden) {
+            return;
+        }
+
+        var index = pageIndex();
+        var limit = maxScroll();
+
+        if (dots) {
+            Array.prototype.forEach.call(dots.children, function (dot, i) {
+                var on = i === index;
+                dot.classList.toggle("is-active", on);
+                dot.setAttribute("aria-current", on ? "true" : "false");
+            });
+        }
+
+        // A pixel of slack: a smooth scroll lands a fraction short of the end
+        // often enough that an exact test leaves "next" enabled at the end.
+        if (previous) { previous.disabled = deck.scrollLeft <= 1; }
+        if (next) { next.disabled = deck.scrollLeft >= limit - 1; }
+    };
+
+    var repaintPager = function () {
+        buildDots();
+        markPosition();
+    };
+
+    var renderCards = function () {
         var projects = projectsFor(current.category);
-        current.pages = pageCount(projects);
-        current.page = Math.min(current.page, current.pages - 1);
 
-        var slice = projects.slice(current.page * PER_PAGE, current.page * PER_PAGE + PER_PAGE);
+        // The lead is the middle card of the three standing on the window at
+        // rest, which is where the design puts it. A category too short to fill
+        // the row has no middle: one card blown up 9% next to no siblings reads
+        // as a mistake rather than as emphasis.
+        var leadAt = projects.length >= ACROSS ? 1 : -1;
 
-        // The lead is the middle of a full row of three. A short last page has
-        // no middle, so nothing leads on it — a single card blown up 9% next to
-        // no siblings reads as a mistake rather than as emphasis.
-        var leadAt = slice.length === PER_PAGE ? 1 : -1;
-
-        deck.dataset.count = String(slice.length);
-        deck.innerHTML = slice.map(function (project, index) {
+        deck.dataset.count = String(projects.length);
+        deck.innerHTML = projects.map(function (project, index) {
             return renderCard(project, current.category, index === leadAt);
         }).join("");
+        deck.scrollLeft = 0;
 
-        paintPager();
+        repaintPager();
     };
 
     var show = function (category) {
         current.category = category;
-        current.page = 0;
-        paintDeck();
+        renderCards();
     };
 
     if (filters) {
@@ -244,12 +294,7 @@
     }
 
     var step = function (direction) {
-        var target = current.page + direction;
-        if (target < 0 || target >= current.pages) {
-            return;
-        }
-        current.page = target;
-        paintDeck();
+        deck.scrollBy({ left: direction * span(), behavior: smooth });
     };
 
     if (previous) { previous.addEventListener("click", function () { step(-1); }); }
@@ -261,10 +306,117 @@
             if (!dot) {
                 return;
             }
-            current.page = Number(dot.dataset.lpNewPage) || 0;
-            paintDeck();
+            deck.scrollTo({ left: (Number(dot.dataset.lpNewPage) || 0) * span(), behavior: smooth });
         });
     }
 
+    /* Scroll and resize only ever repaint the pager, and never more than once a
+       frame. `scroll` on a container the user is dragging fires far faster than
+       the compositor draws. */
+    var pending = 0;
+    var afterScroll = function () {
+        if (pending) {
+            return;
+        }
+        pending = requestAnimationFrame(function () {
+            pending = 0;
+            markPosition();
+        });
+    };
+
+    deck.addEventListener("scroll", afterScroll, { passive: true });
+
+    /* A resize changes the card width, so it changes how many windows the row
+       is — the dots have to be rebuilt, not just re-marked. */
+    var resizing = 0;
+    window.addEventListener("resize", function () {
+        clearTimeout(resizing);
+        resizing = setTimeout(repaintPager, 150);
+    }, { passive: true });
+
+    /* --- drag to pan --------------------------------------------------------
+
+       Mouse and pen only. A touch already pans the row natively and capturing
+       it here would take that away and re-implement it worse.
+
+       The threshold is what keeps a click a click: below it nothing has
+       happened and the card opens as normal; above it the row is being dragged,
+       the cards go inert (see .is-dragging in lp-new.css) and the click that
+       fires after pointerup is swallowed once — without that, letting go over a
+       card navigates away at the end of every drag.
+    ---------------------------------------------------------------------- */
+    var DRAG_THRESHOLD = 6;
+    var drag = { id: -1, startX: 0, startLeft: 0, moved: false };
+
+    deck.addEventListener("pointerdown", function (event) {
+        if (event.pointerType === "touch" || event.button !== 0) {
+            return;
+        }
+        drag.id = event.pointerId;
+        drag.startX = event.clientX;
+        drag.startLeft = deck.scrollLeft;
+        drag.moved = false;
+    });
+
+    deck.addEventListener("pointermove", function (event) {
+        if (event.pointerId !== drag.id) {
+            return;
+        }
+
+        var travel = event.clientX - drag.startX;
+
+        if (!drag.moved) {
+            if (Math.abs(travel) < DRAG_THRESHOLD) {
+                return;
+            }
+            drag.moved = true;
+            deck.classList.add("is-dragging");
+            /* Capture only once it IS a drag: taken on pointerdown it would
+               swallow the click on a card that was never dragged. */
+            if (deck.setPointerCapture) {
+                deck.setPointerCapture(event.pointerId);
+            }
+        }
+
+        deck.scrollLeft = drag.startLeft - travel;
+        event.preventDefault();
+    });
+
+    var endDrag = function (event) {
+        if (event.pointerId !== drag.id) {
+            return;
+        }
+
+        drag.id = -1;
+
+        if (!drag.moved) {
+            return;
+        }
+
+        deck.classList.remove("is-dragging");
+        // The click is dispatched after pointerup; this is the one that has to
+        // go, and only this one.
+        window.addEventListener("click", function (click) {
+            click.stopPropagation();
+            click.preventDefault();
+        }, { capture: true, once: true });
+    };
+
+    deck.addEventListener("pointerup", endDrag);
+    deck.addEventListener("pointercancel", endDrag);
+
+    /* A card is a link, and a link inside a scroller is draggable by default —
+       the browser would start a link drag instead of panning the row. */
+    deck.addEventListener("dragstart", function (event) {
+        event.preventDefault();
+    });
+
     show(categories[0]);
+
+    /* The row is measured, and at this point the cards have markup but no
+       layout yet: the first pass reads a scrollWidth that is still catching up,
+       and on a cold load the images have not sized either. Re-measure once the
+       frame has been laid out, and again when the page reports itself loaded. */
+    requestAnimationFrame(repaintPager);
+    window.addEventListener("load", repaintPager, { once: true });
 })();
